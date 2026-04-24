@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRaL Workshop · Φύλλο Εργασίας</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --accent: #D4462F;
+    --accent-soft: #FFE8E0;
+    --yellow: #F4C430;
+    --yellow-soft: #FFF4D0;
+    --green: #2D5A3D;
+    --green-soft: #D9E8DE;
+    --blue: #1E3A5F;
+    --blue-soft: #D5E1F0;
+    --purple: #5B3A8B;
+    --purple-soft: #E8DDF5;
+    --gray: #E8E2D5;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html { scroll-behavior: smooth; }
+  
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(212, 70, 47, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(244, 196, 48, 0.04) 0%, transparent 40%);
+  }
+  
+  /* NAVIGATION */
+  nav.toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px 30px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--accent);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  nav.toc .brand {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+  }
+  
+  nav.toc .brand span {
+    color: var(--yellow);
+  }
+  
+  nav.toc .steps-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  nav.toc .steps-nav a {
+    color: var(--bg);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 10px;
+    border: 1px solid var(--bg);
+    transition: all 0.2s;
+  }
+  
+  nav.toc .steps-nav a:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  
+  /* HERO */
+  .hero {
+    padding: 120px 40px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  
+  .hero::before {
+    content: 'BRAL';
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 280px;
+    color: rgba(212, 70, 47, 0.06);
+    z-index: 0;
+    letter-spacing: -10px;
+    line-height: 0.9;
+    pointer-events: none;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 6px 14px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+  }
+  
+  h1.main-title {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 20px;
+  }
+  
+  h1.main-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  
+  .hero .subtitle {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2vw, 24px);
+    font-style: italic;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 30px;
+  }
+  
+  .hero-meta {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #555;
+    padding-top: 30px;
+    border-top: 1px solid var(--ink);
+    max-width: 600px;
+    margin: 30px auto 0;
+  }
+  
+  /* SECTIONS */
+  .section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+  
+  .section-intro {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 50px 40px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .section-intro::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.2;
+  }
+  
+  .section-intro h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 42px;
+    margin-bottom: 15px;
+    line-height: 1;
+  }
+  
+  .section-intro p {
+    font-size: 17px;
+    max-width: 700px;
+    line-height: 1.7;
+  }
+  
+  /* BEFORE-WE-START BOX */
+  .checklist-box {
+    background: var(--yellow-soft);
+    border: 3px solid var(--ink);
+    padding: 35px 40px;
+    margin: 40px 0;
+    position: relative;
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+  
+  .checklist-box h3 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .checklist-box ul {
+    list-style: none;
+  }
+  
+  .checklist-box li {
+    padding: 10px 0;
+    padding-left: 35px;
+    position: relative;
+    border-bottom: 1px dashed var(--ink);
+    font-size: 15px;
+  }
+  
+  .checklist-box li:last-child { border-bottom: none; }
+  
+  .checklist-box li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--ink);
+    background: white;
+  }
+  
+  /* STEP CARDS */
+  .step {
+    margin: 80px 0;
+    position: relative;
+  }
+  
+  .step-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 25px;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--ink);
+  }
+  
+  .step-number {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 120px;
+    line-height: 0.8;
+    color: var(--accent);
+  }
+  
+  .step-title-block h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  
+  .step-title-block .greek-sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--accent);
+  }
+  
+  .phase-badge {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 8px 14px;
+    text-transform: uppercase;
+  }
+  
+  .phase-build { background: var(--blue-soft); color: var(--blue); border: 2px solid var(--blue); }
+  .phase-refine { background: var(--accent-soft); color: var(--accent); border: 2px solid var(--accent); }
+  .phase-learn { background: var(--green-soft); color: var(--green); border: 2px solid var(--green); }
+  .phase-setup { background: var(--yellow-soft); color: var(--ink); border: 2px solid var(--ink); }
+  .phase-close { background: var(--purple-soft); color: var(--purple); border: 2px solid var(--purple); }
+  
+  .time-badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 10px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+  }
+  
+  /* INSTRUCTION BLOCKS */
+  .instruction {
+    background: white;
+    border-left: 5px solid var(--ink);
+    padding: 25px 30px;
+    margin: 20px 0;
+    font-size: 16px;
+  }
+  
+  .instruction h4 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .instruction ol, .instruction ul {
+    padding-left: 25px;
+  }
+  
+  .instruction li {
+    margin-bottom: 8px;
+  }
+  
+  /* PROMPT BOX */
+  .prompt-box {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 0;
+    margin: 25px 0;
+    position: relative;
+    border: 3px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--accent);
+  }
+  
+  .prompt-header {
+    background: var(--accent);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .copy-btn {
+    background: white;
+    color: var(--accent);
+    border: none;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  
+  .copy-btn:hover {
+    background: var(--yellow);
+    color: var(--ink);
+  }
+  
+  .copy-btn.copied {
+    background: #4CAF50;
+    color: white;
+  }
+  
+  .prompt-content {
+    padding: 25px 30px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  
+  .prompt-content .fillable {
+    color: var(--yellow);
+    background: rgba(244, 196, 48, 0.15);
+    padding: 1px 5px;
+    border-bottom: 1px dashed var(--yellow);
+  }
+  
+  /* EXPECTATION BOX */
+  .expect-box {
+    background: var(--green-soft);
+    border-left: 5px solid var(--green);
+    padding: 20px 25px;
+    margin: 20px 0;
+    font-size: 14.5px;
+  }
+  
+  .expect-box h4 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 17px;
+    color: var(--green);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* WARNING BOX */
+  .warning-box {
+    background: var(--yellow-soft);
+    border-left: 5px solid var(--yellow);
+    padding: 20px 25px;
+    margin: 20px 0;
+    font-size: 14.5px;
+  }
+  
+  .warning-box h4 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 17px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* TEACHER MOVE BOX */
+  .teacher-box {
+    background: var(--purple-soft);
+    border: 2px dashed var(--purple);
+    padding: 22px 28px;
+    margin: 25px 0;
+    position: relative;
+    font-size: 14.5px;
+  }
+  
+  .teacher-box::before {
+    content: '🎓';
+    position: absolute;
+    top: -18px;
+    left: 20px;
+    background: var(--bg);
+    padding: 0 10px;
+    font-size: 24px;
+  }
+  
+  .teacher-box h4 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 17px;
+    color: var(--purple);
+    margin-bottom: 10px;
+    margin-top: 5px;
+  }
+  
+  .teacher-box em {
+    font-style: italic;
+    color: #555;
+    display: block;
+    margin-top: 10px;
+    font-size: 13.5px;
+  }
+  
+  /* BRAL CONNECTION */
+  .bral-box {
+    background: #fafafa;
+    border: 1px solid var(--ink);
+    padding: 18px 22px;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #333;
+    font-style: italic;
+    border-left: 4px solid var(--accent);
+  }
+  
+  .bral-box strong {
+    font-style: normal;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+  
+  /* TOOL SWITCH */
+  .tool-switch {
+    background: linear-gradient(135deg, var(--accent) 0%, #E06040 100%);
+    color: white;
+    padding: 25px 30px;
+    margin: 40px 0;
+    text-align: center;
+    position: relative;
+    border: 3px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+  
+  .tool-switch h3 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .tool-switch .arrow {
+    font-size: 40px;
+    margin: 10px 0;
+  }
+  
+  .tool-switch p {
+    font-size: 15px;
+    opacity: 0.95;
+  }
+  
+  /* EXAMPLE BOX */
+  .example-box {
+    background: var(--blue-soft);
+    border-left: 5px solid var(--blue);
+    padding: 20px 25px;
+    margin: 20px 0;
+    font-size: 14.5px;
+  }
+  
+  .example-box h4 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 17px;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  
+  .example-box code {
+    font-family: var(--mono);
+    background: rgba(30, 58, 95, 0.1);
+    padding: 2px 6px;
+    font-size: 13px;
+  }
+  
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    background: white;
+    border: 2px solid var(--ink);
+  }
+  
+  .data-table th {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .data-table td {
+    border: 1px solid var(--ink);
+    padding: 12px;
+    vertical-align: top;
+    min-height: 50px;
+  }
+  
+  /* CHECKLIST INLINE */
+  .inline-checklist {
+    background: white;
+    border: 2px solid var(--ink);
+    padding: 20px 25px;
+    margin: 20px 0;
+  }
+  
+  .inline-checklist h4 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  
+  .inline-checklist label {
+    display: block;
+    padding: 8px 0;
+    padding-left: 30px;
+    position: relative;
+    cursor: pointer;
+    font-size: 14.5px;
+    border-bottom: 1px dashed #ccc;
+  }
+  
+  .inline-checklist label:last-child { border-bottom: none; }
+  
+  .inline-checklist input[type="checkbox"] {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+  }
+  
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 60px 40px 40px;
+    margin-top: 100px;
+    text-align: center;
+  }
+  
+  footer h3 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+  
+  footer p {
+    max-width: 600px;
+    margin: 0 auto 20px;
+    font-size: 15px;
+    opacity: 0.9;
+  }
+  
+  footer .golden-rule {
+    background: var(--yellow);
+    color: var(--ink);
+    padding: 25px 35px;
+    margin: 30px auto;
+    max-width: 700px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  
+  footer .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    opacity: 0.6;
+    margin-top: 30px;
+    letter-spacing: 1px;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav.toc { padding: 10px 15px; }
+    nav.toc .steps-nav { display: none; }
+    .hero { padding: 100px 20px 50px; }
+    .hero::before { font-size: 150px; top: 80px; }
+    .section { padding: 40px 20px; }
+    .step-header { grid-template-columns: 1fr; gap: 10px; }
+    .step-number { font-size: 80px; }
+    .step-title-block h2 { font-size: 30px; }
+    .prompt-content { font-size: 12px; padding: 20px; }
+    h1.main-title { font-size: 42px; }
+    .section-intro { padding: 30px 20px; }
+    .section-intro h2 { font-size: 30px; }
+  }
+  
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .step {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  /* HIGHLIGHT */
+  .highlight {
+    background: linear-gradient(transparent 60%, var(--yellow) 60%);
+    font-weight: 600;
+  }
+  
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 60px 0;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--ink);
+  }
+  
+  .divider-text {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .progress-bar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: transparent;
+    z-index: 999;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.1s;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="toc">
+  <div class="brand">BRa<span>L</span> · Workshop</div>
+  <div class="steps-nav">
+    <a href="#start">ΕΝΑΡΞΗ</a>
+    <a href="#step1">1</a>
+    <a href="#step2">2</a>
+    <a href="#step3">3</a>
+    <a href="#step4">4</a>
+    <a href="#step5">5</a>
+    <a href="#step6">6</a>
+    <a href="#step7">7</a>
+    <a href="#step8">8</a>
+    <a href="#close">ΚΛΕΙΣΙΜΟ</a>
+  </div>
+</nav>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="start">
+  <div class="hero-content">
+    <div class="eyebrow">⚡ WORKSHOP · 120 ΛΕΠΤΑ</div>
+    <h1 class="main-title">Χτίσε<br><em>Διόρθωσε</em><br>Μάθε</h1>
+    <p class="subtitle">Δημιουργία διαδραστικών προσομοιώσεων φυσικών επιστημών με παραγωγική ΤΝ — χωρίς προγραμματισμό</p>
+    <div class="hero-meta">
+      <div>📚 BRaL Framework</div>
+      <div>🤖 Claude + ChatGPT</div>
+      <div>👥 Ομαδική Εργασία</div>
+      <div>🔬 Νόμος του Hooke</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: ΠΡΙΝ ΞΕΚΙΝΗΣΟΥΜΕ -->
+<section class="section">
+  
+  <div class="section-intro">
+    <h2>Πριν ξεκινήσουμε</h2>
+    <p>Αυτό το φύλλο εργασίας σας καθοδηγεί βήμα–βήμα μέσα από έναν πλήρη κύκλο BRaL. Θα δημιουργήσετε μια διαδραστική προσομοίωση του νόμου του Hooke, ακριβώς όπως θα την κάνατε με τους μαθητές σας. Σε κάθε βήμα θα βρείτε <span class="highlight">έτοιμα prompts για copy/paste</span>, <span class="highlight">αναμενόμενες απαντήσεις</span> και <span class="highlight">σημεία παρέμβασης</span> ως εκπαιδευτικός.</p>
+  </div>
+  
+  <div class="checklist-box">
+    <h3>✅ Τι χρειάζεστε ανοιχτό (σε 3 tabs)</h3>
+    <ul>
+      <li><strong>Tab 1:</strong> Αυτό το φύλλο εργασίας (για να το ακολουθείτε)</li>
+      <li><strong>Tab 2:</strong> <a href="https://claude.ai" target="_blank" style="color: var(--accent); font-weight: 700;">claude.ai</a> — Logged in (για Build & Learn)</li>
+      <li><strong>Tab 3:</strong> <a href="https://chatgpt.com" target="_blank" style="color: var(--accent); font-weight: 700;">chatgpt.com</a> — Logged in (για Refine)</li>
+    </ul>
+  </div>
+  
+  <div class="teacher-box">
+    <h4>Γιατί δύο εργαλεία;</h4>
+    <p>Το <strong>Claude</strong> έχει Artifacts — ο κώδικας τρέχει μέσα στο chat, χωρίς copy/paste σε external editor. Ιδανικό για Build (δημιουργία) και Learn (αναστοχασμός).</p>
+    <p style="margin-top: 10px;">Το <strong>ChatGPT</strong> έχει πιο γενναιόδωρα όρια στη δωρεάν έκδοση και δίνει "fresh perspective" για το Refine (debugging). Έτσι εξοικονομούμε τα Claude credits για τη δημιουργική δουλειά.</p>
+    <em>💡 Αυτή η λογική είναι αντιγράψιμη: οι μαθητές σας θα μάθουν ότι διαφορετικά εργαλεία ΤΝ εξυπηρετούν διαφορετικούς σκοπούς — σημαντική δεξιότητα AI literacy.</em>
+  </div>
+  
+</section>
+
+<div class="divider">
+  <span class="divider-text">Η δραστηριότητα ξεκινά</span>
+</div>
+
+<!-- STEP 1 -->
+<section class="section" id="step1">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">01</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-setup">⚙ SETUP</span>
+        <h2 style="margin-top: 10px;">Ορίζω το φαινόμενο & τον στόχο</h2>
+        <div class="greek-sub">Defining phenomenon & learning goal</div>
+      </div>
+      <div class="time-badge">⏱ 5'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Πριν αγγίξετε οποιοδήποτε AI, συμπληρώστε αυτά τα στοιχεία. Μην παραλείψετε αυτό το βήμα — είναι η καρδιά του BRaL.</p>
+      <ol>
+        <li><strong>Φαινόμενο:</strong> <em>Νόμος του Hooke (ταλάντωση ελατηρίου)</em></li>
+        <li><strong>Τάξη:</strong> <em>Α' Λυκείου ή Β' Γυμνασίου (ανάλογα)</em></li>
+        <li><strong>Μαθησιακός στόχος:</strong> <em>Οι μαθητές να ανακαλύψουν τη γραμμική σχέση F = -kx και την περίοδο ταλάντωσης T = 2π√(m/k)</em></li>
+        <li><strong>Στοχευμένη παρανόηση:</strong> <em>«Όσο βαρύτερη η μάζα, τόσο πιο γρήγορη η ταλάντωση»</em> — στην πραγματικότητα βραδύτερη!</li>
+      </ol>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p>Στην τάξη σας, <strong>μην</strong> δώσετε έτοιμα τα παραπάνω στους μαθητές. Κάντε τους να τα βρουν μόνοι τους με ερωτήσεις:</p>
+      <ul style="margin-top: 10px;">
+        <li>«Τι θέλετε να ανακαλύψουν οι μαθητές σας;»</li>
+        <li>«Ποια παρανόηση έχετε παρατηρήσει συχνά;»</li>
+        <li>«Ποιες μεταβλητές είναι σημαντικές;»</li>
+      </ul>
+      <em>Πιθανή δυσκολία μαθητών: Θα πουν «θέλω να μάθουν για τα ελατήρια». Πιέστε για ΠΙΟ ΣΥΓΚΕΚΡΙΜΕΝΟ στόχο — τι ακριβώς να ανακαλύψουν.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Στο BRaL η επιστημονική σκέψη προηγείται της ΤΝ. Οι μαθητές είναι "model builders" — πρέπει να ξέρουν <strong>τι μοντελοποιούν</strong> και <strong>γιατί</strong>, πριν ζητήσουν από την ΤΝ να γράψει κώδικα (Sotiropoulos, 2026).
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section class="section" id="step2">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">02</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-build">◆ BUILD</span>
+        <h2 style="margin-top: 10px;">Κάνω πρόβλεψη πριν τρέξω</h2>
+        <div class="greek-sub">Prediction before execution</div>
+      </div>
+      <div class="time-badge">⏱ 5'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Πριν δημιουργήσετε οτιδήποτε, γράψτε τι <strong>περιμένετε</strong> να συμβεί. Αυτό δεν είναι διακοσμητικό βήμα — είναι η βάση για μετέπειτα έλεγχο.</p>
+      
+      <p style="margin-top: 15px;"><strong>Πρόβλεψη 1:</strong> Αν αυξήσω τη μάζα (m), η περίοδος T θα...</p>
+      <div style="background: white; border-bottom: 2px solid var(--ink); height: 30px; margin: 8px 0;"></div>
+      
+      <p><strong>Πρόβλεψη 2:</strong> Αν αυξήσω τη σταθερά ελατηρίου (k), η περίοδος T θα...</p>
+      <div style="background: white; border-bottom: 2px solid var(--ink); height: 30px; margin: 8px 0;"></div>
+      
+      <p><strong>Πρόβλεψη 3:</strong> Αν διπλασιάσω την αρχική μετατόπιση (x₀), η περίοδος T θα...</p>
+      <div style="background: white; border-bottom: 2px solid var(--ink); height: 30px; margin: 8px 0;"></div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι περιμένουμε (σωστές απαντήσεις)</h4>
+      <p><strong>Πρόβλεψη 1:</strong> Θα αυξηθεί (T ∝ √m). Πολλοί μαθητές θα πουν «θα μειωθεί» — κλασική παρανόηση!</p>
+      <p><strong>Πρόβλεψη 2:</strong> Θα μειωθεί (T ∝ 1/√k). Σκληρότερο ελατήριο = γρηγορότερη ταλάντωση.</p>
+      <p><strong>Πρόβλεψη 3:</strong> ΔΕΝ θα αλλάξει! (Η περίοδος είναι ανεξάρτητη από το πλάτος στην απλή αρμονική ταλάντωση). Αυτό είναι counterintuitive — πολλοί θα το μαντέψουν λάθος.</p>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p><strong>ΜΗΝ</strong> διορθώσετε τώρα! Αφήστε τους να δουν τι λένε — ακόμα και αν είναι λάθος. Οι λάθος προβλέψεις θα γίνουν <strong>καύσιμο μάθησης</strong> αργότερα όταν τρέξουμε την προσομοίωση.</p>
+      <em>💡 Tip: Ζητήστε από κάθε ομάδα να συμφωνήσει πριν γράψει — αν υπάρχει διαφωνία, αυτή η συζήτηση είναι χρυσάφι.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      "Predictive reasoning" πριν την εκτέλεση — αυτό μετατρέπει το "τρέχω και βλέπω" σε συνειδητή μάθηση αντί τυχαίο παιχνίδι. Είναι ρητά απαιτούμενο στο BRaL framework.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section class="section" id="step3">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">03</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-build">◆ BUILD</span>
+        <h2 style="margin-top: 10px;">Στέλνω το πρώτο prompt στο Claude</h2>
+        <div class="greek-sub">Initial prompt to Claude</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <ol>
+        <li>Πηγαίνετε στο <strong>Claude.ai</strong> (Tab 2)</li>
+        <li>Ξεκινήστε νέα συνομιλία</li>
+        <li>Αντιγράψτε το παρακάτω prompt και επικολλήστε το στο Claude</li>
+        <li>Πατήστε Enter και περιμένετε</li>
+      </ol>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #1 · BUILD</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt1')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt1">Δημιούργησε ένα HTML artifact με διαδραστική προσομοίωση για τον νόμο του Hooke (ταλάντωση ελατηρίου-μάζας).
+
+ΠΡΟΔΙΑΓΡΑΦΕΣ:
+- Κάθετο ελατήριο με μάζα που κρέμεται
+- 3 sliders:
+  * Σταθερά ελατηρίου k (10-200 N/m)
+  * Μάζα m (0.1-2 kg)
+  * Αρχική μετατόπιση x₀ (-0.5 έως 0.5 m)
+- Κουμπί Play/Pause και Reset
+- Εμφάνιση σε πραγματικό χρόνο:
+  * Θέση x(t)
+  * Ταχύτητα v(t)
+  * Περίοδος T
+  * Κινητική + Δυναμική ενέργεια (μπάρες)
+- Γραφική παράσταση x(t) σε πραγματικό χρόνο
+- Εξίσωση F = -kx ορατή στην οθόνη
+
+ΤΕΧΝΙΚΑ:
+- Single HTML file, χωρίς εξωτερικές βιβλιοθήκες
+- Χρώματα: κόκκινο ελατήριο, μπλε μάζα
+- Labels στα Ελληνικά
+- Σχόλια στον κώδικα στα Ελληνικά
+
+ΕΚΠΑΙΔΕΥΤΙΚΟ ΠΛΑΙΣΙΟ:
+- Για μαθητές Α' Λυκείου
+- Στόχος: ανακάλυψη της σχέσης T = 2π√(m/k)
+- Παρανόηση που στοχεύω: «βαρύτερη μάζα = γρηγορότερη ταλάντωση»</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι αναμένουμε από το Claude</h4>
+      <ul>
+        <li>Θα δημιουργήσει ένα <strong>Artifact</strong> (δεξιά πλευρά της οθόνης)</li>
+        <li>Θα βλέπετε την προσομοίωση να <strong>τρέχει άμεσα</strong> μέσα στο Claude</li>
+        <li>Θα δώσει σύντομη εξήγηση του κώδικα</li>
+        <li>Χρόνος απόκρισης: 30-60 δευτερόλεπτα</li>
+      </ul>
+    </div>
+    
+    <div class="warning-box">
+      <h4>⚠ Πιθανές δυσκολίες</h4>
+      <ul>
+        <li><strong>«Δεν βλέπω Artifact»:</strong> Κοιτάξτε δεξιά — μπορεί να είναι minimized. Πατήστε πάνω στο preview.</li>
+        <li><strong>Το ελατήριο δείχνει "περίεργο":</strong> Είναι ΟΚ! Θα το διορθώσουμε στο Refine — είναι μέρος της διαδικασίας.</li>
+        <li><strong>Δεν τρέχει η ταλάντωση:</strong> Δοκιμάστε να σύρετε τη μάζα και αφήστε την. Αν δεν δουλεύει, το εντοπίζουμε στο Refine.</li>
+        <li><strong>«Ο κώδικας είναι πολύ μεγάλος»:</strong> Δεν πειράζει — δεν θα τον διαβάσετε. Εστιάζουμε στη συμπεριφορά.</li>
+      </ul>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p><strong>Στην τάξη σας:</strong> Αφήστε τους μαθητές να γράψουν το δικό τους prompt πρώτα (με καθοδήγηση). Το παραπάνω prompt είναι πολύ λεπτομερές — ξεκινήστε με απλούστερη έκδοση για τους μαθητές.</p>
+      <p style="margin-top: 10px;"><strong>Απλούστερο prompt για μαθητές:</strong></p>
+      <p style="font-family: var(--mono); font-size: 13px; background: white; padding: 10px; margin-top: 8px;">«Φτιάξε προσομοίωση ελατηρίου με μάζα. Θέλω sliders για τη μάζα και τη σταθερά. Δείξε μου την ταλάντωση και την περίοδο.»</p>
+      <em>Πιθανή δυσκολία: Οι μαθητές θα ξεχάσουν σημαντικά στοιχεία (units, εκπαιδευτικό πλαίσιο). Αυτό είναι διδακτική ευκαιρία — δείξτε τους ότι το AI "ξεχνά" αν δεν ζητήσετε συγκεκριμένα.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Το Claude εδώ λειτουργεί ως "on-demand coder" — μεταφέρει το γνωστικό φορτίο από τη σύνταξη κώδικα στη μοντελοποίηση. Οι μαθητές εστιάζουν στη φυσική, όχι στη σύνταξη JavaScript.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section class="section" id="step4">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">04</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-build">◆ BUILD</span>
+        <h2 style="margin-top: 10px;">Τρέχω & επιβεβαιώνω τις προβλέψεις</h2>
+        <div class="greek-sub">Testing against predictions</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <ol>
+        <li>Σύρετε τους sliders και παρατηρήστε την προσομοίωση</li>
+        <li>Επιβεβαιώστε τις 3 προβλέψεις σας από το Βήμα 2</li>
+        <li>Σημειώστε τι συμφωνεί / διαφωνεί με τις προβλέψεις σας</li>
+        <li>Σημειώστε τουλάχιστον <strong>1 πράγμα που φαίνεται «ύποπτο»</strong></li>
+      </ol>
+    </div>
+    
+    <div class="inline-checklist">
+      <h4>📋 Checklist ελέγχου</h4>
+      <label><input type="checkbox"> Η ταλάντωση ξεκινά όταν αφήνω τη μάζα</label>
+      <label><input type="checkbox"> Βλέπω την τιμή της περιόδου T</label>
+      <label><input type="checkbox"> Η μάζα πραγματικά επηρεάζει την περίοδο</label>
+      <label><input type="checkbox"> Το k πραγματικά επηρεάζει την περίοδο</label>
+      <label><input type="checkbox"> Η αρχική μετατόπιση ΔΕΝ επηρεάζει την περίοδο</label>
+      <label><input type="checkbox"> Οι ενέργειες (KE, PE) αλλάζουν με την κίνηση</label>
+      <label><input type="checkbox"> Η συνολική ενέργεια παραμένει <strong>σταθερή</strong></label>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι πιθανότατα θα παρατηρήσετε</h4>
+      <ul>
+        <li>✅ <strong>Οι προβλέψεις επιβεβαιώνονται</strong> — εκεί βασίζεται η μάθηση των μαθητών!</li>
+        <li>⚠ <strong>Η ταλάντωση δεν σταματά ποτέ</strong> — αυτό είναι perpetual motion, μη ρεαλιστικό. <strong>Αυτό είναι το κύριο πρόβλημα</strong> για το Refine phase.</li>
+        <li>⚠ Η μάζα μπορεί να ξεφεύγει από το πλαίσιο σε μεγάλες αρχικές μετατοπίσεις</li>
+        <li>⚠ Η γραφική παράσταση μπορεί να "σπάει" μετά από αρκετό χρόνο</li>
+      </ul>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p><strong>Αυτή είναι η πιο σημαντική στιγμή του μαθήματος!</strong> Όταν οι μαθητές βλέπουν ότι η προσομοίωση <em>δεν σταματά ποτέ</em>, ρωτήστε:</p>
+      <ol style="margin-top: 10px;">
+        <li>«Είδατε ποτέ στην πραγματικότητα ελατήριο που ταλαντώνεται για πάντα;»</li>
+        <li>«Γιατί πιστεύετε ότι σταματά στην πραγματικότητα;»</li>
+        <li>«Τι λείπει από το μοντέλο μας;»</li>
+      </ol>
+      <em>Αναμενόμενες απαντήσεις μαθητών: «τριβή», «αντίσταση του αέρα», «χάνει ενέργεια». Όλες οδηγούν στην ίδια έννοια: damping.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Αυτό το βήμα είναι το σημείο-καμπή μεταξύ Build και Refine. Οι μαθητές δεν είναι "passengers" σε έτοιμη προσομοίωση — είναι "drivers" που αναγνωρίζουν ότι το μοντέλο τους έχει <strong>κενά</strong> και θέλει <strong>βελτίωση</strong>.
+    </div>
+  </div>
+</section>
+
+<!-- TOOL SWITCH -->
+<section class="section">
+  <div class="tool-switch">
+    <h3>⟲ Αλλαγή Εργαλείου</h3>
+    <div class="arrow">↓</div>
+    <p style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Claude → ChatGPT</p>
+    <p>Κρατήστε το Claude tab ανοιχτό! Πηγαίνετε στο <strong>ChatGPT (Tab 3)</strong>.<br>Φρέσκο μάτι για debugging + εξοικονόμηση Claude credits για το Learn.</p>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section class="section" id="step5">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">05</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-refine">◆ REFINE</span>
+        <h2 style="margin-top: 10px;">Μεταφέρω τον κώδικα & ζητάω sanity checks</h2>
+        <div class="greek-sub">Transfer code & request sanity checks</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <ol>
+        <li>Επιστροφή στο <strong>Claude</strong> (Tab 2)</li>
+        <li>Στο Artifact, πατήστε το κουμπί <strong>Copy</strong> (πάνω δεξιά στο preview)</li>
+        <li>Πηγαίνετε στο <strong>ChatGPT</strong> (Tab 3) — νέα συνομιλία</li>
+        <li>Επικολλήστε το παρακάτω prompt <strong>ΚΑΙ</strong> τον κώδικα μαζί</li>
+      </ol>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #2 · REFINE / SANITY CHECK</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt2')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt2">Έχω έναν HTML/JavaScript κώδικα εκπαιδευτικής προσομοίωσης για τον νόμο του Hooke (ελατήριο-μάζα) που δημιούργησε άλλο AI tool.
+
+ΑΚΟΛΟΥΘΩ ΤΗ ΜΕΘΟΔΟΛΟΓΙΑ BRaL (Build-Refine-Learn) και είμαστε τώρα στο REFINE phase.
+
+ΧΡΕΙΑΖΟΜΑΙ:
+1. Να εκτελέσεις 3 "sanity checks" για φυσική ορθότητα:
+   α) Στο x=0 είναι F=0;
+   β) Όταν διπλασιάζω το k, η δύναμη για ίδιο x διπλασιάζεται;
+   γ) Η συνολική ενέργεια διατηρείται σταθερή (χωρίς damping);
+
+2. Να εντοπίσεις συγκεκριμένα προβλήματα:
+   - Perpetual motion (η ταλάντωση δεν σταματά ποτέ)
+   - Πιθανή "ενεργειακή ολίσθηση" (energy drift)
+   - Άλλα προβλήματα που βλέπεις
+
+3. Να δώσεις ΜΟΝΟ patches (τι γραμμές να αλλάξω),
+   ΟΧΙ ξαναγράψιμο όλου του κώδικα.
+
+4. Να συνδέσεις κάθε διόρθωση με τον φυσικό νόμο/αρχή.
+
+ΣΗΜΑΝΤΙΚΟ: Μη λύσεις όλα τα προβλήματα μονομιάς. Εστίασε πρώτα στα 3 sanity checks και τον εντοπισμό.
+
+ΚΩΔΙΚΑΣ:
+[ΕΠΙΚΟΛΛΗΣΕ ΕΔΩ ΟΛΟ ΤΟΝ ΚΩΔΙΚΑ ΑΠΟ ΤΟ CLAUDE]</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι αναμένουμε από το ChatGPT</h4>
+      <p>Το ChatGPT συνήθως θα:</p>
+      <ul>
+        <li>Εκτελέσει νοητά τα 3 sanity checks και θα σας πει τι βρήκε</li>
+        <li>Εντοπίσει το perpetual motion ως κύριο πρόβλημα</li>
+        <li>Επισημάνει πιθανή energy drift λόγω numerical integration (συνήθως Euler method)</li>
+        <li>Προτείνει πιο ακριβή μέθοδο (π.χ. Verlet integration) ή προσθήκη damping</li>
+        <li>Δώσει συγκεκριμένες γραμμές κώδικα που πρέπει να αλλάξουν</li>
+      </ul>
+    </div>
+    
+    <div class="warning-box">
+      <h4>⚠ Πιθανές δυσκολίες</h4>
+      <ul>
+        <li><strong>«Το ChatGPT μου δίνει ολόκληρο τον κώδικα ξανά»:</strong> Φυσιολογικό — το ChatGPT τείνει να επαναγράφει. Αγνοήστε το full code και εστιάστε στα patches.</li>
+        <li><strong>«Δεν βρίσκει πρόβλημα»:</strong> Πιθανόν το prompt δεν πέρασε σωστά. Βεβαιωθείτε ότι επικολλήσατε και τον κώδικα.</li>
+        <li><strong>«Ο κώδικας είναι πολύ μεγάλος, δεν χωράει»:</strong> Το ChatGPT free έχει context limit. Επικολλήστε μόνο το κύριο JavaScript block.</li>
+      </ul>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p>Στους μαθητές, <strong>μην</strong> εξηγήσετε τι είναι "Euler method" ή "Verlet integration". Αρκεί να καταλάβουν: <em>«ο υπολογιστής έχει ένα μικρό λάθος κάθε φορά που υπολογίζει — και αυτά μαζεύονται».</em></p>
+      <p style="margin-top: 10px;">Εστιάστε στο <strong>physics insight</strong>: <em>«γιατί τα πραγματικά ελατήρια σταματούν;»</em></p>
+      <em>💡 Tip: Αν το ChatGPT δώσει πολύ τεχνική απάντηση, ζητήστε απλοποίηση: "Εξήγησέ το ώστε να το καταλάβει μαθητής Α' Λυκείου."</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Refine ≠ debugging. Είναι <strong>validation</strong> (έλεγχος συμφωνίας με νόμους φυσικής), <strong>diagnosis</strong> (γιατί αποκλίνει) και <strong>justification</strong> (σύνδεση με θεωρία). Χωρίς αυτό, το Refine γίνεται τυφλό trial-and-error.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section class="section" id="step6">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">06</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-refine">◆ REFINE</span>
+        <h2 style="margin-top: 10px;">Προσθέτω damping (επέκταση μοντέλου)</h2>
+        <div class="greek-sub">Model extension — adding damping</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <ol>
+        <li>Παραμείνετε στο ChatGPT (ίδια συνομιλία)</li>
+        <li>Επικολλήστε το παρακάτω prompt</li>
+        <li>Αντιγράψτε τον νέο κώδικα ή τα patches που θα δώσει</li>
+      </ol>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #3 · MODEL EXTENSION</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt3')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt3">Τέλεια! Τώρα ας προσθέσουμε damping (απόσβεση) στο μοντέλο μας, ώστε να είναι πιο ρεαλιστικό.
+
+ΖΗΤΑΩ:
+1. Πρόσθεσε έναν τέταρτο slider για damping coefficient (c):
+   - Εύρος: 0 έως 2 N·s/m
+   - Default value: 0.3
+
+2. Τροποποίησε την εξίσωση κίνησης:
+   Από: F = -kx
+   Σε:  F = -kx - c·v (c·v είναι η δύναμη απόσβεσης)
+
+3. Πρόσθεσε ένα label που δείχνει σε ποιο regime είμαστε:
+   - Underdamped (c² < 4mk): "Υποκρίσιμη απόσβεση"
+   - Critically damped (c² = 4mk): "Κρίσιμη απόσβεση"
+   - Overdamped (c² > 4mk): "Υπερκρίσιμη απόσβεση"
+
+4. Δώσε μου τον ΠΛΗΡΗ νέο κώδικα (τώρα χρειάζομαι ολόκληρο)
+
+5. Σε 2-3 γραμμές: εξήγησε ποια φυσική αρχή ενσωματώσαμε.</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>🔄 Επιστροφή στο Claude</h4>
+      <ol>
+        <li>Αντιγράψτε τον νέο κώδικα από το ChatGPT</li>
+        <li>Πηγαίνετε πίσω στο <strong>Claude</strong> (Tab 2)</li>
+        <li>Στην ίδια συνομιλία, στείλτε:</li>
+      </ol>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #4 · UPDATE CLAUDE ARTIFACT</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt4')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt4">Ενημέρωσε το artifact μας με τον παρακάτω κώδικα (έχει ενσωματωμένη απόσβεση/damping). Διατήρησε τη δομή του artifact:
+
+[ΕΠΙΚΟΛΛΗΣΕ ΕΔΩ ΤΟΝ ΝΕΟ ΚΩΔΙΚΑ ΑΠΟ CHATGPT]</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι να δοκιμάσετε τώρα</h4>
+      <p>Ρυθμίστε: <code>k=100 N/m, m=1 kg</code> και πειραματιστείτε με το damping c:</p>
+      <ul>
+        <li><strong>c = 0</strong> → Συνεχής ταλάντωση (όπως πριν)</li>
+        <li><strong>c = 0.5</strong> → Υποκρίσιμη — ταλάντωση που "σβήνει" σταδιακά</li>
+        <li><strong>c = 20</strong> (≈2√(km)) → Κρίσιμη — επιστροφή στο 0 <em>όσο πιο γρήγορα γίνεται χωρίς ταλάντωση</em></li>
+        <li><strong>c = 50</strong> → Υπερκρίσιμη — πολύ αργή επιστροφή στο 0</li>
+      </ul>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού · Η "ΑΗΑ!" στιγμή</h4>
+      <p>Ρωτήστε τους μαθητές σας:</p>
+      <ol>
+        <li>«Γιατί η πόρτα με "αυτόματο κλείστρο" δεν χτυπάει δυνατά;» → κρίσιμη απόσβεση!</li>
+        <li>«Γιατί το αμορτισέρ του αυτοκινήτου σας κάνει την ίδια δουλειά;» → ίδια αρχή!</li>
+        <li>«Ποιο regime θα θέλατε σε σεισμόμετρο; Γιατί;» → υποκρίσιμη (για να καταγράφει το σήμα)</li>
+      </ol>
+      <em>Πιθανή δυσκολία: Οι μαθητές μπορεί να μπερδέψουν "κρίσιμη" με "χειρότερη". Εξηγήστε ότι "κρίσιμη" = η βέλτιστη για γρήγορη ηρεμία.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Αυτό είναι <strong>model extension</strong> — η "καρδιά" του Refine. Οι μαθητές δεν διορθώνουν απλά bugs, αλλά <strong>εμπλουτίζουν το μοντέλο τους με νέες φυσικές αρχές</strong>. Έτσι μαθαίνουν ότι τα μοντέλα στη φυσική είναι πάντα απλοποιήσεις που βελτιώνονται.
+    </div>
+  </div>
+</section>
+
+<!-- TOOL SWITCH BACK -->
+<section class="section">
+  <div class="tool-switch">
+    <h3>⟲ Επιστροφή στο Claude</h3>
+    <div class="arrow">↓</div>
+    <p style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">ChatGPT → Claude</p>
+    <p>Για το Learn phase χρειαζόμαστε context retention.<br>Το Claude θυμάται την αρχική μας συνομιλία και μπορεί να δημιουργήσει lesson plan artifact.</p>
+  </div>
+</section>
+
+<!-- STEP 7 -->
+<section class="section" id="step7">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">07</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-learn">◆ LEARN</span>
+        <h2 style="margin-top: 10px;">Αναστοχασμός & σύνδεση με θεωρία</h2>
+        <div class="greek-sub">Reflection & theory connection</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Στο Claude (ίδια συνομιλία από πριν), επικολλήστε:</p>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #5 · REFLECTION</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt5')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt5">Είμαστε τώρα στο LEARN phase του BRaL framework. Χρειάζομαι τη βοήθειά σου για αναστοχασμό.
+
+Βασισμένος στην προσομοίωση που φτιάξαμε (νόμος Hooke + damping), απάντησε:
+
+1. ΤΙ ΑΛΛΑΞΕ: Σύγκρινε v1 (χωρίς damping) με v2 (με damping). 
+   Τι μαθησιακές ευκαιρίες προσφέρει κάθε έκδοση;
+
+2. ΣΥΝΔΕΣΗ ΜΕ ΘΕΩΡΙΑ: 
+   - Ποια εξίσωση περιγράφει το σύστημα v2;
+   - Ποια είναι τα 3 damping regimes και πώς σχετίζονται με την εξίσωση;
+   - Γιατί η αρχική μετατόπιση ΔΕΝ επηρεάζει την περίοδο; (isochronism)
+
+3. ΠΙΘΑΝΕΣ ΠΑΡΑΝΟΗΣΕΙΣ που η προσομοίωση μπορεί να αποκαλύψει:
+   - Αναφέρε 3 κοινές παρανοήσεις μαθητών
+   - Πώς η προσομοίωση τις διορθώνει;
+
+4. ΜΕΤΑΦΟΡΑ (TRANSFER): 
+   - Πού αλλού στην καθημερινή ζωή συναντάμε την ίδια φυσική;
+   - Δώσε 3 παραδείγματα με διαφορετικά damping regimes.
+
+Κράτα τις απαντήσεις σύντομες και κατάλληλες για μαθητές Α' Λυκείου.</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι αναμένουμε</h4>
+      <p>Το Claude θα δώσει δομημένες απαντήσεις που μπορείτε να χρησιμοποιήσετε απευθείας στην τάξη:</p>
+      <ul>
+        <li><strong>3 παρανοήσεις:</strong> βαρύτερη=γρηγορότερη, μεγαλύτερο πλάτος=μεγαλύτερη περίοδος, damping="θυσία" ακρίβειας</li>
+        <li><strong>Παραδείγματα transfer:</strong> αμορτισέρ αυτοκινήτου (κρίσιμη), χορδή κιθάρας (υποκρίσιμη), πόρτα αυτόματου κλεισίματος (κρίσιμη)</li>
+      </ul>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p><strong>ΜΗΝ</strong> δεχτείτε τις απαντήσεις του AI παθητικά! Στην τάξη:</p>
+      <ol>
+        <li>Οι μαθητές γράφουν πρώτα τις <strong>δικές τους</strong> απαντήσεις (5 λεπτά)</li>
+        <li>Μετά ζητάνε την απάντηση του AI</li>
+        <li>Συγκρίνουν — ποιο έχει δίκιο; Υπάρχουν λάθη στο AI;</li>
+      </ol>
+      <em>💡 Αυτό καλλιεργεί critical thinking απέναντι στο AI output — κρίσιμη δεξιότητα AI literacy (Wetzel & Kani, 2025).</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Το Learn phase "κλείνει τον κύκλο" μέσω reflection και connection με θεωρία. Χωρίς αυτό, η δραστηριότητα παραμένει "τεχνικό παιχνίδι". <em>«Δεν μετράει τι φτιάξαμε — μετράει τι μάθαμε φτιάχνοντάς το»</em> (Sotiropoulos, 2026).
+    </div>
+  </div>
+</section>
+
+<!-- STEP 8 -->
+<section class="section" id="step8">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">08</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-learn">◆ LEARN</span>
+        <h2 style="margin-top: 10px;">Δημιουργώ φύλλο εργασίας για μαθητές</h2>
+        <div class="greek-sub">Creating student worksheet</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Τελευταίο prompt — δημιουργούμε έτοιμο υλικό για την τάξη μας:</p>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #6 · STUDENT WORKSHEET</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt6')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt6">Τέλεια! Τώρα δημιούργησε ένα HTML artifact φύλλο εργασίας για μαθητές Α' Λυκείου που θα χρησιμοποιήσουν την προσομοίωσή μας.
+
+ΠΕΡΙΕΧΟΜΕΝΟ:
+1. Τίτλος & οδηγίες συμπλήρωσης
+2. Ενότητα Α: "Προβλέπω" (3 προβλέψεις πριν τη χρήση της προσομοίωσης)
+3. Ενότητα Β: "Πειραματίζομαι" 
+   - Πίνακας με 5 πειράματα (αλλαγή μιας μεταβλητής κάθε φορά)
+   - Στήλες: μεταβλητή που αλλάζω, τιμή, αποτέλεσμα (T), σχόλια
+4. Ενότητα Γ: "Ανακαλύπτω" 
+   - 3 ερωτήσεις που οδηγούν στην εξίσωση T = 2π√(m/k)
+   - 1 ερώτηση για damping
+5. Ενότητα Δ: "Μεταφέρω" 
+   - Σύνδεση με 2 πραγματικά παραδείγματα (αμορτισέρ, πόρτα)
+6. Ενότητα Ε: "Αναστοχάζομαι"
+   - 3 ανοιχτές ερωτήσεις (τι έμαθα, τι με δυσκόλεψε, τι παρανόηση είχα)
+
+ΣΧΕΔΙΑΣΜΟΣ:
+- Εκτυπώσιμο (A4 format)
+- Κενά για γραφή απαντήσεων
+- Σαφή section breaks
+- Ελαφρώς παιχνιδιάρικο design (όχι βαρετό σχολικό)
+- Πεδία για όνομα, ομάδα, ημερομηνία</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι αποκτάτε</h4>
+      <p>Ένα <strong>έτοιμο φύλλο εργασίας</strong> που μπορείτε:</p>
+      <ul>
+        <li>Να εκτυπώσετε αμέσως και να το δώσετε στους μαθητές σας</li>
+        <li>Να το προσαρμόσετε (πείτε στο Claude: «άλλαξε το [X]»)</li>
+        <li>Να το αποθηκεύσετε ως HTML file και να το μοιραστείτε ψηφιακά</li>
+      </ul>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού · Final Check</h4>
+      <p><strong>ΔΙΑΒΑΣΤΕ ΤΟ ΦΥΛΛΟ ΠΡΙΝ ΤΟ ΔΩΣΕΤΕ ΣΤΟΥΣ ΜΑΘΗΤΕΣ ΣΑΣ.</strong></p>
+      <p style="margin-top: 10px;">Το Claude μπορεί να κάνει λάθη:</p>
+      <ul>
+        <li>Λάθος εξισώσεις</li>
+        <li>Ακατάλληλο επίπεδο δυσκολίας</li>
+        <li>Ασαφείς οδηγίες</li>
+        <li>Παραλείψεις σε ελληνική ορολογία</li>
+      </ul>
+      <em>Ζητήστε αλλαγές από το Claude πριν χρησιμοποιήσετε το φύλλο. Αυτή είναι πρακτική εφαρμογή του "teacher-in-the-loop" που περιγράφεται στο BRaL framework.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Αυτό το βήμα δείχνει ότι το BRaL δεν τελειώνει με την προσομοίωση — τελειώνει με <strong>εκπαιδευτική χρήση</strong>. Το AI σάς βοηθά να μετατρέψετε τη δημιουργία σε οργανωμένη μαθησιακή εμπειρία.
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="section" id="close">
+  
+  <div class="section-intro" style="background: var(--green);">
+    <h2>Ολοκληρώσατε τον κύκλο BRaL ✓</h2>
+    <p>Περάσατε μέσα από έναν πλήρη κύκλο Build → Refine → Learn. Ακριβώς αυτό θα κάνουν και οι μαθητές σας — με τη διαφορά ότι εσείς θα είστε ο "teacher-in-the-loop" που τους καθοδηγεί.</p>
+  </div>
+  
+  <div class="checklist-box">
+    <h3>🎯 Τι έχετε τώρα στα χέρια σας</h3>
+    <ul>
+      <li>Μια <strong>λειτουργική διαδραστική προσομοίωση</strong> του νόμου του Hooke (με και χωρίς damping)</li>
+      <li>Ένα <strong>φύλλο εργασίας</strong> έτοιμο για τους μαθητές σας</li>
+      <li>Μια <strong>μεθοδολογία</strong> που μπορείτε να επαναλάβετε για οποιοδήποτε θέμα φυσικής</li>
+      <li><strong>Prompts</strong> που μπορείτε να προσαρμόσετε για άλλα φαινόμενα</li>
+      <li><strong>Πρακτική εμπειρία</strong> του multi-AI workflow</li>
+    </ul>
+  </div>
+  
+  <div class="teacher-box">
+    <h4>Το επόμενο βήμα: Εφαρμογή στην τάξη</h4>
+    <p><strong>Προτεινόμενη δομή (2 διδακτικές ώρες):</strong></p>
+    <ul style="margin-top: 10px;">
+      <li><strong>Ώρα 1:</strong> Βήματα 1–4 (Build + πρώτη επιβεβαίωση)</li>
+      <li><strong>Ώρα 2:</strong> Βήματα 5–7 (Refine + Learn)</li>
+      <li><strong>Homework:</strong> Το φύλλο εργασίας που δημιουργήσατε στο Βήμα 8</li>
+    </ul>
+    <p style="margin-top: 15px;"><strong>Προτεινόμενα θέματα για άλλους κύκλους BRaL:</strong></p>
+    <ul>
+      <li>Κίνηση βλήματος (με/χωρίς αντίσταση αέρα)</li>
+      <li>Απλά κυκλώματα (σειρά/παράλληλα)</li>
+      <li>Κύματα (συμβολή, περίθλαση)</li>
+      <li>Κίνηση πλανητών (Kepler)</li>
+      <li>Θερμική διαστολή / μετάδοση θερμότητας</li>
+    </ul>
+  </div>
+  
+  <div class="checklist-box" style="background: var(--blue-soft);">
+    <h3>📚 Πού να ψάξετε παραπάνω</h3>
+    <ul>
+      <li>Το κεφάλαιο: <em>Sotiropoulos, D. (2026). Student-Created GenAI Physics Simulations: A BRaL Framework.</em> IGI Global.</li>
+      <li>UNESCO (2024): Guidance for Generative AI in Education and Research</li>
+      <li>Magana et al. (2024): Scaffolded team-based computational modeling</li>
+      <li>Kaldaras et al. (2024): Technology-enhanced feedback and scaffolding</li>
+    </ul>
+  </div>
+  
+</section>
+
+<footer>
+  <h3>BRaL Framework</h3>
+  <p>Χτίσε · Διόρθωσε · Μάθε</p>
+  
+  <div class="golden-rule">
+    «Ο στόχος δεν είναι μια τέλεια προσομοίωση, αλλά μια βαθιά κατανόηση της φυσικής μέσω της διαδικασίας δημιουργίας της.»
+  </div>
+  
+  <p class="meta">Workshop Worksheet v1.0 · University of Thessaly · 2026</p>
+</footer>
+
+<script>
+  // Copy prompts to clipboard
+  function copyPrompt(btn, promptId) {
+    const promptText = document.getElementById(promptId).innerText;
+    navigator.clipboard.writeText(promptText).then(() => {
+      btn.textContent = '✓ COPIED!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(err => {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = promptText;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      btn.textContent = '✓ COPIED!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+  
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+  });
+</script>
+
+</body>
+</html>
