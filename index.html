@@ -28,14 +28,12 @@
     min-height: 100vh;
     padding: 40px 20px;
     background-image: 
-      radial-gradient(circle at 20% 10%, rgba(212, 70, 47, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 90%, rgba(244, 196, 48, 0.08) 0%, transparent 50%);
+      radial-gradient(circle at 15% 10%, rgba(212, 70, 47, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 85% 90%, rgba(244, 196, 48, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(45, 90, 61, 0.05) 0%, transparent 60%);
   }
   
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .container { max-width: 1200px; margin: 0 auto; }
   
   /* HERO */
   .hero {
@@ -94,16 +92,16 @@
     font-size: clamp(18px, 2vw, 24px);
     font-style: italic;
     color: #555;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto 40px;
     line-height: 1.4;
   }
   
-  /* CARDS CONTAINER */
+  /* CARDS CONTAINER - 3 cards */
   .cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
     margin: 60px 0;
   }
   
@@ -111,28 +109,21 @@
   .card {
     background: white;
     border: 3px solid var(--ink);
-    padding: 40px 35px;
+    padding: 35px 30px;
     position: relative;
     transition: all 0.3s ease;
     text-decoration: none;
     color: var(--ink);
     display: flex;
     flex-direction: column;
-    min-height: 450px;
+    min-height: 520px;
   }
   
-  .card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 10px 10px 0 var(--ink);
-  }
+  .card:hover { transform: translate(-4px, -4px); }
   
-  .card.gymnasio:hover {
-    box-shadow: 10px 10px 0 var(--green);
-  }
-  
-  .card.lyceum:hover {
-    box-shadow: 10px 10px 0 var(--accent);
-  }
+  .card.gymnasio:hover { box-shadow: 10px 10px 0 var(--yellow); }
+  .card.lyceum:hover { box-shadow: 10px 10px 0 var(--accent); }
+  .card.deepseek:hover { box-shadow: 10px 10px 0 var(--green); }
   
   .card-badge {
     display: inline-block;
@@ -140,98 +131,153 @@
     font-size: 11px;
     letter-spacing: 3px;
     padding: 6px 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     text-transform: uppercase;
     font-weight: 700;
     width: fit-content;
   }
   
-  .card.lyceum .card-badge {
-    background: var(--accent);
-    color: white;
-  }
-  
-  .card.gymnasio .card-badge {
-    background: var(--green);
-    color: white;
-  }
+  .card.gymnasio .card-badge { background: var(--yellow); color: var(--ink); }
+  .card.lyceum .card-badge { background: var(--accent); color: white; }
+  .card.deepseek .card-badge { background: var(--green); color: white; }
   
   .card h2 {
     font-family: var(--serif);
     font-weight: 900;
-    font-size: 42px;
+    font-size: 36px;
     line-height: 1;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     letter-spacing: -1px;
   }
   
   .card-age {
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 12px;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     letter-spacing: 1px;
   }
   
+  .card-flow {
+    background: var(--bg);
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink);
+    border-left: 3px solid;
+    letter-spacing: 0.5px;
+  }
+  
+  .card.gymnasio .card-flow { border-left-color: var(--yellow); }
+  .card.lyceum .card-flow { border-left-color: var(--accent); }
+  .card.deepseek .card-flow { border-left-color: var(--green); }
+  
   .card-description {
-    font-size: 15px;
+    font-size: 14.5px;
     color: #444;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
     line-height: 1.6;
   }
   
   .card-features {
     list-style: none;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     flex: 1;
   }
   
   .card-features li {
-    padding: 8px 0;
-    padding-left: 28px;
+    padding: 7px 0;
+    padding-left: 24px;
     position: relative;
-    font-size: 14px;
+    font-size: 13.5px;
     border-bottom: 1px dashed #ddd;
   }
   
-  .card-features li:last-child {
-    border-bottom: none;
-  }
+  .card-features li:last-child { border-bottom: none; }
   
   .card-features li::before {
     content: '→';
     position: absolute;
     left: 0;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
   }
   
+  .card.gymnasio .card-features li::before { color: #B8860B; }
   .card.lyceum .card-features li::before { color: var(--accent); }
-  .card.gymnasio .card-features li::before { color: var(--green); }
+  .card.deepseek .card-features li::before { color: var(--green); }
   
   .card-cta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 20px;
+    padding-top: 18px;
     border-top: 2px solid var(--ink);
     font-family: var(--mono);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 2px;
     text-transform: uppercase;
   }
   
   .card-cta .arrow {
-    font-size: 24px;
+    font-size: 22px;
     transition: transform 0.3s;
   }
   
-  .card:hover .card-cta .arrow {
-    transform: translateX(8px);
+  .card:hover .card-cta .arrow { transform: translateX(8px); }
+  
+  /* COMPARISON TABLE */
+  .comparison {
+    background: white;
+    border: 3px solid var(--ink);
+    padding: 30px;
+    margin: 60px 0;
+    box-shadow: 8px 8px 0 var(--ink);
   }
   
-  /* ABOUT SECTION */
+  .comparison h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  
+  .comparison table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  
+  .comparison th {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: left;
+  }
+  
+  .comparison th:first-child { width: 30%; }
+  
+  .comparison td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  
+  .comparison tr:hover td { background: var(--bg); }
+  
+  .comparison .feature-name { font-weight: 600; color: var(--ink); }
+  .comparison .yes { color: var(--green); font-weight: 700; }
+  .comparison .no { color: #999; }
+  .comparison .partial { color: #B8860B; }
+  
+  /* ABOUT */
   .about-section {
     background: var(--ink);
     color: var(--bg);
@@ -295,7 +341,7 @@
     opacity: 0.9;
   }
   
-  /* RESOURCES SECTION */
+  /* RESOURCES */
   .resources {
     background: var(--yellow);
     padding: 45px;
@@ -328,9 +374,7 @@
     gap: 12px;
   }
   
-  .resource-icon {
-    font-size: 24px;
-  }
+  .resource-icon { font-size: 24px; }
   
   /* FOOTER */
   footer {
@@ -362,87 +406,101 @@
   }
   
   /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .hero::before { font-size: 120px; }
+  @media (max-width: 968px) {
     .cards { grid-template-columns: 1fr; }
+    .card { min-height: auto; padding: 30px 25px; }
     .about-grid { grid-template-columns: 1fr; gap: 20px; }
     .resources-list { grid-template-columns: 1fr; }
-    .card { padding: 30px 25px; min-height: auto; }
-    .card h2 { font-size: 32px; }
-    .about-section { padding: 30px 25px; }
-    .resources { padding: 30px 25px; }
   }
   
-  /* ANIMATION */
+  @media (max-width: 768px) {
+    .hero::before { font-size: 120px; }
+    .about-section { padding: 30px 25px; }
+    .resources { padding: 30px 25px; }
+    .comparison { padding: 20px; }
+    .comparison table { font-size: 12px; }
+    .comparison th, .comparison td { padding: 8px 6px; }
+  }
+  
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
   
-  .card, .about-section, .resources {
-    animation: fadeInUp 0.8s ease-out;
-  }
-  
+  .card, .about-section, .resources, .comparison { animation: fadeInUp 0.8s ease-out; }
   .card:nth-child(1) { animation-delay: 0.1s; }
   .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
 </style>
 </head>
 <body>
 
 <div class="container">
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-content">
       <div class="eyebrow">⚡ WORKSHOP · ΠΥΛΗ ΕΙΣΟΔΟΥ</div>
       <h1>Χτίσε<br><em>Διόρθωσε</em><br>Μάθε</h1>
-      <p class="subtitle">Δημιουργία εκπαιδευτικών προσομοιώσεων φυσικής με παραγωγική ΤΝ — επιλέξτε την έκδοση που σας ταιριάζει</p>
+      <p class="subtitle">Δημιουργία εκπαιδευτικών προσομοιώσεων φυσικής με GenAI — Επιλέξτε την έκδοση που σας ταιριάζει</p>
     </div>
   </div>
 
-  <!-- CARDS -->
   <div class="cards">
     
-    <!-- LYCEUM CARD -->
-    <a href="./lyceum/" class="card lyceum">
-      <span class="card-badge">🎓 Λύκειο</span>
-      <h2>Έκδοση Λυκείου</h2>
-      <div class="card-age">Α' - Γ' ΛΥΚΕΙΟΥ · 15-17 ΕΤΩΝ</div>
-      
-      <p class="card-description">Πλήρης έκδοση με τεχνική φυσική ορολογία, damping regimes και λεπτομερή ανάλυση για μαθητές/τριες λυκείου.</p>
-      
+    <a href="./gymnasio/" class="card gymnasio">
+      <span class="card-badge">📚 Γυμνάσιο</span>
+      <h2>Έκδοση Γυμνασίου</h2>
+      <div class="card-age">Γ' ΓΥΜΝΑΣΙΟΥ · 13-15 ΕΤΩΝ</div>
+      <div class="card-flow">Claude → Gemini → Claude</div>
+      <p class="card-description">Πλήρης έκδοση με <strong>3 εργαλεία AI</strong>, απλή γλώσσα, και πλούσια εμπειρία AI literacy μέσω εναλλαγής εργαλείων.</p>
       <ul class="card-features">
-        <li>Νόμος του Hooke με damping regimes</li>
-        <li>Underdamped / Critical / Overdamped</li>
-        <li>Transfer σε αμορτισέρ & πόρτες</li>
-        <li>Multi-tool workflow (Claude ⟷ ChatGPT)</li>
-        <li>Σενάρια sanity check</li>
-        <li>Αναστοχασμός & σύνδεση με θεωρία</li>
+        <li>Απλοποιημένη φυσική ορολογία</li>
+        <li>Μάζα σε kg ΚΑΙ γραμμάρια</li>
+        <li>Φιλική απόσβεση (μικρή/μέτρια/μεγάλη)</li>
+        <li>Anti-capitulation rules</li>
+        <li>Σωκρατικός διάλογος μία ερώτηση τη φορά</li>
+        <li>Διπλή επαλήθευση (Claude + Gemini)</li>
       </ul>
-      
       <div class="card-cta">
         <span>Ξεκινήστε</span>
         <span class="arrow">→</span>
       </div>
     </a>
     
-    <!-- GYMNASIO CARD -->
-    <a href="./gymnasio/" class="card gymnasio">
-      <span class="card-badge">📚 Γυμνάσιο</span>
-      <h2>Έκδοση Γυμνασίου</h2>
-      <div class="card-age">Γ' ΓΥΜΝΑΣΙΟΥ · 13-15 ΕΤΩΝ</div>
-      
-      <p class="card-description">Προσαρμοσμένη έκδοση με απλή γλώσσα, μάζες σε kg & γραμμάρια, φιλική τριβή και περιεκτική γλώσσα.</p>
-      
+    <a href="./lyceum/" class="card lyceum">
+      <span class="card-badge">🎓 Λύκειο</span>
+      <h2>Έκδοση Λυκείου</h2>
+      <div class="card-age">Α'-Γ' ΛΥΚΕΙΟΥ · 15-18 ΕΤΩΝ</div>
+      <div class="card-flow">Claude → Gemini → Claude</div>
+      <p class="card-description">Πλήρης έκδοση με <strong>τεχνική φυσική</strong>, μαθηματικά, και τις <strong>3 καταστάσεις απόσβεσης</strong>.</p>
       <ul class="card-features">
-        <li>Απλοποιημένη φυσική ορολογία</li>
-        <li>Μάζα σε kg ΚΑΙ γραμμάρια (1,2 kg / 1200 gr)</li>
-        <li>Φιλική τριβή (μικρή/μέτρια/μεγάλη)</li>
-        <li>Πρώτο απλό prompt στο Claude</li>
-        <li>Βελτιώσεις στο ChatGPT (περισσότερα credits)</li>
-        <li>Περιεκτική γλώσσα (μαθητές/τριες)</li>
+        <li>Νόμος του Hooke + απλή αρμονική κίνηση</li>
+        <li>Υπο-/Κρίσιμη/Υπερ- απόσβεση</li>
+        <li>Διακρίνουσα Δ = c² - 4mk</li>
+        <li>Σύνδεση με LC κυκλώματα</li>
+        <li>Εφαρμογές: αμορτισέρ, σεισμόμετρα</li>
+        <li>Anti-capitulation rules</li>
       </ul>
-      
+      <div class="card-cta">
+        <span>Ξεκινήστε</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+    
+    <a href="./deepseek/" class="card deepseek">
+      <span class="card-badge">🤖 DeepSeek</span>
+      <h2>DeepSeek Edition</h2>
+      <div class="card-age">Γ' ΓΥΜΝΑΣΙΟΥ · 13-15 ΕΤΩΝ</div>
+      <div class="card-flow">DeepSeek (μόνο)</div>
+      <p class="card-description">Αυτοτελής έκδοση με <strong>ένα μόνο εργαλείο</strong>. Ιδανική όταν τα credits Claude/Gemini εξαντληθούν ή για πιο απλό workshop.</p>
+      <ul class="card-features">
+        <li>Πολύ γενναιόδωρα δωρεάν credits</li>
+        <li>Ένα chat από αρχή έως τέλος</li>
+        <li>Δεν χρειάζονται Projects/Gems</li>
+        <li>Ένα μεγάλο αρχικό prompt</li>
+        <li>Ίδια παιδαγωγική ποιότητα</li>
+        <li>Πιο απλή ροή για μαθητές/τριες</li>
+      </ul>
       <div class="card-cta">
         <span>Ξεκινήστε</span>
         <span class="arrow">→</span>
@@ -451,7 +509,94 @@
     
   </div>
   
-  <!-- ABOUT BRAL -->
+  <div class="comparison">
+    <h2>Σύγκριση των 3 εκδόσεων</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Χαρακτηριστικό</th>
+          <th>📚 Γυμνάσιο</th>
+          <th>🎓 Λύκειο</th>
+          <th>🤖 DeepSeek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature-name">Επίπεδο μαθητών/τριών</td>
+          <td>Γ' Γυμνασίου</td>
+          <td>Α'-Γ' Λυκείου</td>
+          <td>Γ' Γυμνασίου</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Εργαλεία AI</td>
+          <td>Claude + Gemini</td>
+          <td>Claude + Gemini</td>
+          <td>DeepSeek</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Ροή</td>
+          <td>3 περάσματα</td>
+          <td>3 περάσματα</td>
+          <td>1 μόνο εργαλείο</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Διάρκεια</td>
+          <td>~120 λεπτά</td>
+          <td>~120-180 λεπτά</td>
+          <td>~90 λεπτά</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Επίπεδο φυσικής</td>
+          <td>Απλή ταλάντωση</td>
+          <td>+ 3 καταστάσεις απόσβεσης</td>
+          <td>Απλή ταλάντωση</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Μαθηματικά</td>
+          <td>Βασικά (T = 2π√(m/k))</td>
+          <td>Προχωρημένα (Δ, c_crit)</td>
+          <td>Βασικά (T = 2π√(m/k))</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Απαιτεί Projects/Gems</td>
+          <td><span class="yes">✓</span> (Claude + Gemini)</td>
+          <td><span class="yes">✓</span> (Claude + Gemini)</td>
+          <td><span class="no">✗</span> (μόνο prompt)</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Anti-capitulation rules</td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Σωκρατικός διάλογος</td>
+          <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
+          <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
+          <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Διπλή επαλήθευση</td>
+          <td><span class="yes">✓</span> (Claude + Gemini)</td>
+          <td><span class="yes">✓</span> (Claude + Gemini)</td>
+          <td><span class="partial">~</span> (αυτο-έλεγχος)</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Artifacts (live preview)</td>
+          <td><span class="yes">✓</span> (Claude)</td>
+          <td><span class="yes">✓</span> (Claude)</td>
+          <td><span class="no">✗</span> (Notepad μόνο)</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Δωρεάν credits</td>
+          <td>Περιορισμένα</td>
+          <td>Περιορισμένα</td>
+          <td><span class="yes">Πολλά</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
   <div class="about-section">
     <h2>Τι είναι το BRaL Framework;</h2>
     <p style="font-size: 16px; line-height: 1.7; max-width: 700px;">Ένα παιδαγωγικό πλαίσιο τριών φάσεων όπου οι μαθητές/τριες <strong>δημιουργούν</strong> τις δικές τους προσομοιώσεις φυσικής με GenAI, αντί να χρησιμοποιούν έτοιμες. Η γνώση χτίζεται μέσα από τον κύκλο Build → Refine → Learn.</p>
@@ -475,7 +620,6 @@
     </div>
   </div>
   
-  <!-- RESOURCES -->
   <div class="resources">
     <h2>📚 Υλικά Υποστήριξης</h2>
     <p style="font-size: 15px; margin-bottom: 10px;">Επιπλέον πόροι για την υλοποίηση του workshop:</p>
@@ -486,15 +630,23 @@
       </div>
       <div class="resource-item">
         <span class="resource-icon">🤖</span>
-        <div><strong>Εργαλεία:</strong> Claude (claude.ai) + ChatGPT (chatgpt.com)</div>
+        <div><strong>Εργαλεία:</strong> Claude · Gemini · DeepSeek (όλα δωρεάν)</div>
       </div>
       <div class="resource-item">
         <span class="resource-icon">⏱</span>
-        <div><strong>Διάρκεια:</strong> 2 ώρες (120 λεπτά)</div>
+        <div><strong>Διάρκεια:</strong> 90-180 λεπτά (ανάλογα με έκδοση)</div>
       </div>
       <div class="resource-item">
         <span class="resource-icon">👥</span>
         <div><strong>Ομάδες:</strong> 3-4 μαθητές/τριες ανά ομάδα</div>
+      </div>
+      <div class="resource-item">
+        <span class="resource-icon">🛡</span>
+        <div><strong>Anti-capitulation rules:</strong> Σε όλες τις εκδόσεις</div>
+      </div>
+      <div class="resource-item">
+        <span class="resource-icon">🇬🇷</span>
+        <div><strong>Γλώσσα:</strong> Πλήρως ελληνική φυσική ορολογία</div>
       </div>
     </div>
   </div>
@@ -504,7 +656,7 @@
 <footer>
   <div class="author">Dr. Dimitrios Sotiropoulos</div>
   <div>Πανεπιστήμιο Θεσσαλίας · 2026</div>
-  <div class="tag">BRAL FRAMEWORK · V1.0</div>
+  <div class="tag">BRAL FRAMEWORK · v2.0</div>
 </footer>
 
 </body>
