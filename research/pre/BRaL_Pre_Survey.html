@@ -1092,6 +1092,11 @@
       <p><strong>Η συμμετοχή σας είναι πολύτιμη για την έρευνα.</strong></p>
       <p>Οι απαντήσεις σας έχουν καταχωρηθεί ανώνυμα.<br>Θα συναντηθούμε στο workshop!</p>
       
+      <!-- Status indicator για την αποστολή στον server -->
+      <div id="submitStatus" style="margin: 20px auto; padding: 12px 20px; max-width: 500px; font-family: var(--mono); font-size: 14px; font-weight: 700;">
+        ⏳ Αποστολή...
+      </div>
+      
       <div style="background: var(--yellow-soft); padding: 20px; margin: 30px auto; max-width: 500px; border: 2px solid var(--ink);">
         <strong>💡 Σημαντικό:</strong><br>
         Παρακαλώ <strong>σημειώστε τον προσωπικό σας κωδικό</strong>: 
@@ -1232,7 +1237,13 @@
     this.value = this.value.toUpperCase();
   });
   
-  function submitForm() {
+  // ============================================
+  // ΡΥΘΜΙΣΗ: URL του Google Apps Script Web App
+  // ============================================
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcR4VOupBqlE_fp_ysSb5wV2eufKHWuCkuC1hzk37OgX5aH0pZO1l1tLBDUMORGRbQzA/exec';
+  // ============================================
+  
+  async function submitForm() {
     if (!validateSection(6)) return;
     
     // Collect all data
@@ -1249,11 +1260,11 @@
     data['A3'] = formData.getAll('A3');
     data['E1'] = formData.getAll('E1');
     
-    // Timestamp
+    // Timestamp & type
     data['timestamp'] = new Date().toISOString();
     data['type'] = 'PRE';
     
-    // Store in localStorage (για test / δεν είναι production ready)
+    // Store in localStorage as backup (in case server fails)
     const existing = JSON.parse(localStorage.getItem('bral_responses') || '[]');
     existing.push(data);
     localStorage.setItem('bral_responses', JSON.stringify(existing));
@@ -1264,14 +1275,102 @@
     // Display data preview
     document.getElementById('dataPreview').textContent = JSON.stringify(data, null, 2);
     
-    // Show success page
+    // Show "sending..." status (you may need to add this element to your success page)
+    const statusEl = document.getElementById('submitStatus');
+    if (statusEl) {
+      statusEl.textContent = '⏳ Αποστολή στον server...';
+      statusEl.style.color = '#666';
+    }
+    
+    // Show success page (we'll update status if server fails)
     showSection(7);
     document.getElementById('progressFill').style.width = '100%';
     document.getElementById('progressPercent').textContent = '100%';
     
-    // ΣΗΜΑΝΤΙΚΟ: Εδώ θα πρέπει να στέλνετε τα δεδομένα στον server σας
-    // π.χ., via fetch() σε Google Sheets / Formspree / own backend
-    console.log('Survey Data:', data);
+    console.log('Submitting survey data:', data);
+    
+    // ============================================
+    // ΑΠΟΣΤΟΛΗ ΣΤΟ GOOGLE APPS SCRIPT
+    // ============================================
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
+      console.warn('⚠ APPS_SCRIPT_URL is not configured. ' +
+                   'Data saved only in localStorage. ' +
+                   'Please set the Web App URL in the HTML file.');
+      if (statusEl) {
+        statusEl.textContent = '⚠ Local backup only (server not configured)';
+        statusEl.style.color = '#B8860B';
+      }
+      return;
+    }
+    
+    try {
+      // ΣΗΜΑΝΤΙΚΟ: Το Google Apps Script απαιτεί:
+      // 1) method: POST
+      // 2) Content-Type: text/plain (ΟΧΙ application/json - προκαλεί CORS preflight)
+      //    Το Apps Script διαβάζει e.postData.contents ως string και το κάνει JSON.parse
+      // 3) Όχι extra headers (αλλιώς preflight αποτυγχάνει)
+      
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',  // Apps Script default deployment requires no-cors
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      });
+      
+      // Με mode: 'no-cors' δεν μπορούμε να διαβάσουμε το response (opaque),
+      // αλλά αν δεν έγινε exception, το request στάλθηκε επιτυχώς.
+      console.log('✓ Submission sent to Apps Script');
+      
+      if (statusEl) {
+        statusEl.textContent = '✅ Επιτυχής αποστολή!';
+        statusEl.style.color = '#2D5A3D';
+      }
+      
+    } catch (error) {
+      console.error('✗ Failed to send to server:', error);
+      
+      if (statusEl) {
+        statusEl.innerHTML = '⚠ <strong>Πρόβλημα αποστολής.</strong> ' +
+                             'Τα δεδομένα αποθηκεύτηκαν τοπικά. ' +
+                             'Παρακαλώ ενημερώστε τον/την εκπαιδευτικό σας ' +
+                             'και πατήστε «Λήψη CSV» για backup.';
+        statusEl.style.color = '#D4462F';
+      }
+    }
+  }
+  
+  /**
+   * Επαναφορά αποθηκευμένων responses στον server
+   * (Καλέστε χειροκίνητα από το console αν θέλετε να ξαναστείλετε)
+   */
+  async function retryFailedSubmissions() {
+    const data = JSON.parse(localStorage.getItem('bral_responses') || '[]');
+    if (data.length === 0) {
+      console.log('No data to retry.');
+      return;
+    }
+    
+    console.log('Retrying ' + data.length + ' submissions...');
+    let success = 0;
+    
+    for (const entry of data) {
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(entry)
+        });
+        success++;
+      } catch (err) {
+        console.error('Retry failed for entry:', entry.A4, err);
+      }
+    }
+    
+    console.log('✓ Retry complete: ' + success + '/' + data.length + ' sent');
+    alert('Επανάληψη αποστολής: ' + success + ' από ' + data.length + ' απάντησεις στάλθηκαν.');
   }
   
   function downloadData() {
