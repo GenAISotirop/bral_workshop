@@ -1,1 +1,1306 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRaL Workshop · Pre-Questionnaire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=Inter+Tight:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --accent: #D4462F;
+    --accent-soft: #FFE8E0;
+    --yellow: #F4C430;
+    --yellow-soft: #FFF4D0;
+    --green: #2D5A3D;
+    --green-soft: #D9E8DE;
+    --blue: #1E3A5F;
+    --blue-soft: #D5E1F0;
+    --purple: #5B3A8B;
+    --purple-soft: #E8DDF5;
+    --gray: #E8E2D5;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html { scroll-behavior: smooth; }
+  
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+    padding: 20px 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* PROGRESS BAR */
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    z-index: 1000;
+    padding: 10px 20px;
+    color: var(--bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 15px;
+    position: relative;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s;
+  }
+  
+  .progress-percent {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 45px;
+    text-align: right;
+  }
+  
+  main {
+    margin-top: 50px;
+  }
+  
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 60px 50px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: 'BRAL';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 180px;
+    color: rgba(212, 70, 47, 0.15);
+    letter-spacing: -8px;
+    line-height: 1;
+  }
+  
+  .hero-content { position: relative; z-index: 1; }
+  
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    background: var(--accent);
+    padding: 5px 12px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  
+  h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 15px;
+    letter-spacing: -2px;
+  }
+  
+  h1 em {
+    color: var(--yellow);
+    font-style: italic;
+    font-weight: 400;
+  }
+  
+  .hero p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    opacity: 0.9;
+    max-width: 500px;
+  }
+  
+  .hero-meta {
+    display: flex;
+    gap: 25px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    flex-wrap: wrap;
+  }
+  
+  .hero-meta span { opacity: 0.9; }
+  
+  /* SECTION */
+  section.form-section {
+    background: white;
+    padding: 40px 45px;
+    margin-bottom: 20px;
+    border: 2px solid var(--ink);
+    position: relative;
+    display: none;
+  }
+  
+  section.form-section.active {
+    display: block;
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--ink);
+  }
+  
+  .section-number {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 64px;
+    color: var(--accent);
+    line-height: 0.8;
+  }
+  
+  .section-title {
+    flex: 1;
+  }
+  
+  .section-title h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  
+  .section-title .greek-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #777;
+    text-transform: uppercase;
+  }
+  
+  .section-intro {
+    background: var(--yellow-soft);
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border-left: 4px solid var(--yellow);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  /* QUESTIONS */
+  .question {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #ddd;
+  }
+  
+  .question:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .q-number {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 3px 8px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  
+  .q-text {
+    font-weight: 500;
+    margin-bottom: 12px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+  
+  .q-text .required {
+    color: var(--accent);
+    margin-left: 4px;
+  }
+  
+  .q-hint {
+    font-size: 13px;
+    color: #777;
+    font-style: italic;
+    margin-top: 5px;
+  }
+  
+  /* LIKERT SCALE */
+  .likert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 15px 10px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .likert-option {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .likert-option input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .likert-label {
+    display: block;
+    padding: 12px 4px;
+    background: white;
+    border: 2px solid #ccc;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .likert-option input[type="radio"]:checked + .likert-label {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+  
+  .likert-option:hover .likert-label {
+    border-color: var(--accent);
+  }
+  
+  .likert-anchors {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    padding: 0 5px;
+  }
+  
+  /* RADIO / CHECKBOX OPTIONS */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: white;
+    border: 1.5px solid #ddd;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .option-item:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  
+  .option-item input[type="radio"],
+  .option-item input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  
+  .option-item input[type="radio"]:checked ~ label,
+  .option-item input[type="checkbox"]:checked ~ label {
+    font-weight: 600;
+  }
+  
+  .option-item label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 14.5px;
+  }
+  
+  .option-item.checked {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 600;
+  }
+  
+  /* TEXT INPUTS */
+  .text-input,
+  .textarea-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ccc;
+    background: white;
+    font-family: var(--sans);
+    font-size: 15px;
+    transition: border-color 0.2s;
+  }
+  
+  .text-input:focus,
+  .textarea-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  
+  .textarea-input {
+    min-height: 80px;
+    resize: vertical;
+    font-family: var(--sans);
+  }
+  
+  /* CONSENT SECTION */
+  .consent-box {
+    background: var(--yellow-soft);
+    border: 3px solid var(--ink);
+    padding: 30px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  
+  .consent-box h3 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 22px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .consent-box h4 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  
+  .consent-box p {
+    margin-bottom: 10px;
+  }
+  
+  .consent-box ul {
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .consent-box li {
+    margin-bottom: 6px;
+  }
+  
+  .consent-checkboxes {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border: 2px solid var(--ink);
+  }
+  
+  .consent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    border-bottom: 1px dashed #ddd;
+  }
+  
+  .consent-checkbox:last-child { border-bottom: none; }
+  
+  .consent-checkbox input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  /* BUTTONS */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #ddd;
+  }
+  
+  .btn {
+    padding: 14px 28px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+  }
+  
+  .btn:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  
+  .btn.primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  
+  .btn.primary:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  .btn:disabled:hover {
+    background: white;
+    color: var(--ink);
+  }
+  
+  /* VALIDATION MESSAGE */
+  .validation-msg {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    margin-top: 15px;
+    font-size: 14px;
+    color: var(--accent);
+    display: none;
+  }
+  
+  .validation-msg.show { display: block; }
+  
+  /* SUCCESS PAGE */
+  .success-page {
+    text-align: center;
+    padding: 60px 40px;
+  }
+  
+  .success-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .success-page h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 42px;
+    margin-bottom: 15px;
+    line-height: 1;
+  }
+  
+  .success-page p {
+    font-size: 16px;
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+  
+  .data-preview {
+    background: #fafafa;
+    padding: 20px;
+    margin-top: 25px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  
+  /* TIME INDICATOR */
+  .time-indicator {
+    display: inline-block;
+    background: var(--blue-soft);
+    color: var(--blue);
+    padding: 4px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-left: 10px;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .container { padding: 0 15px; }
+    .hero { padding: 40px 25px; }
+    .hero::before { font-size: 100px; }
+    h1 { font-size: 32px; }
+    section.form-section { padding: 25px 20px; }
+    .section-header { gap: 10px; }
+    .section-number { font-size: 48px; }
+    .section-title h2 { font-size: 22px; }
+    .likert-label { padding: 10px 2px; font-size: 14px; }
+    .likert { gap: 4px; padding: 10px 5px; }
+    .nav-buttons { flex-direction: column-reverse; }
+    .btn { width: 100%; }
+    .consent-box { padding: 20px; }
+  }
+</style>
+</head>
+<body>
 
+<!-- PROGRESS BAR -->
+<div class="progress-container">
+  <div class="progress-label">ΠΡΟΟΔΟΣ</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-percent" id="progressPercent">0%</div>
+</div>
+
+<main>
+<div class="container">
+
+<form id="surveyForm">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">PRE · QUESTIONNAIRE</div>
+      <h1>BRa<em>L</em><br>Workshop</h1>
+      <p>Ερευνητικό ερωτηματολόγιο πριν τη συμμετοχή σας στο workshop</p>
+      <div class="hero-meta">
+        <span>⏱ 5 λεπτά</span>
+        <span>🔒 Ανώνυμο</span>
+        <span>📚 Ερευνητικό</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 1: GDPR CONSENT -->
+  <!-- ========================================== -->
+  <section class="form-section active" data-section="1">
+    
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title">
+        <h2>Ενημερωμένη Συγκατάθεση</h2>
+        <div class="greek-sub">GDPR COMPLIANT · INFORMED CONSENT</div>
+      </div>
+    </div>
+    
+    <div class="consent-box">
+      <h3>📋 Ενημέρωση για την Έρευνα</h3>
+      
+      <p><strong>Τίτλος Έρευνας:</strong> Αξιολόγηση του BRaL Framework (Build–Refine–Learn) για τη Δημιουργία Εκπαιδευτικών Προσομοιώσεων με Παραγωγική Τεχνητή Νοημοσύνη</p>
+      
+      <p><strong>Επιστημονικός Υπεύθυνος:</strong> Δρ. Δημήτριος Σωτηρόπουλος, Πανεπιστήμιο Θεσσαλίας</p>
+      
+      <h4>🎯 Σκοπός της Έρευνας</h4>
+      <p>Η παρούσα έρευνα στοχεύει στην αξιολόγηση της αποτελεσματικότητας του workshop για το BRaL Framework στην ανάπτυξη δεξιοτήτων των εκπαιδευτικών σχετικά με την ενσωμάτωση εργαλείων Παραγωγικής Τεχνητής Νοημοσύνης (GenAI) στη διδασκαλία των Φυσικών Επιστημών.</p>
+      
+      <h4>📝 Τι θα Περιλαμβάνει η Συμμετοχή σας</h4>
+      <ul>
+        <li>Συμπλήρωση <strong>ανώνυμου ερωτηματολογίου</strong> πριν το workshop (5 λεπτά)</li>
+        <li>Συμπλήρωση <strong>ανώνυμου ερωτηματολογίου</strong> μετά το workshop (7 λεπτά)</li>
+        <li>Προαιρετικά: Follow-up ερωτηματολόγιο 4-6 εβδομάδες μετά (3 λεπτά)</li>
+      </ul>
+      
+      <h4>🔒 Προστασία Προσωπικών Δεδομένων (GDPR)</h4>
+      <p>Σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (ΕΕ 2016/679):</p>
+      <ul>
+        <li><strong>Ανωνυμία:</strong> Δεν συλλέγονται στοιχεία που σας ταυτοποιούν (όνομα, email, τηλέφωνο).</li>
+        <li><strong>Προσωπικός Κωδικός:</strong> Χρησιμοποιείται ένας κωδικός που δημιουργείτε εσείς για τη σύνδεση pre/post απαντήσεων χωρίς ταυτοποίηση.</li>
+        <li><strong>Αποθήκευση:</strong> Τα δεδομένα αποθηκεύονται σε ασφαλείς servers του Πανεπιστημίου Θεσσαλίας για 5 έτη.</li>
+        <li><strong>Πρόσβαση:</strong> Μόνο η ερευνητική ομάδα έχει πρόσβαση στα ανεπεξέργαστα δεδομένα.</li>
+        <li><strong>Χρήση:</strong> Τα δεδομένα θα χρησιμοποιηθούν αποκλειστικά για ερευνητικούς και εκπαιδευτικούς σκοπούς (δημοσιεύσεις, συνέδρια).</li>
+        <li><strong>Δημοσιεύσεις:</strong> Τα αποτελέσματα θα παρουσιάζονται μόνο σε συγκεντρωτική μορφή.</li>
+      </ul>
+      
+      <h4>⚖️ Τα Δικαιώματά σας</h4>
+      <ul>
+        <li>Η συμμετοχή σας είναι <strong>απολύτως εθελοντική</strong>.</li>
+        <li>Μπορείτε να <strong>αποσυρθείτε οποτεδήποτε</strong> χωρίς συνέπειες.</li>
+        <li>Έχετε το δικαίωμα <strong>πρόσβασης, διόρθωσης ή διαγραφής</strong> των δεδομένων σας.</li>
+        <li>Μπορείτε να υποβάλλετε καταγγελία στην Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα.</li>
+      </ul>
+      
+      <h4>⚠️ Πιθανοί Κίνδυνοι & Οφέλη</h4>
+      <p><strong>Κίνδυνοι:</strong> Δεν υπάρχουν σωματικοί ή ψυχολογικοί κίνδυνοι. Η μόνη δέσμευση είναι χρόνος (~15 λεπτά συνολικά).</p>
+      <p><strong>Οφέλη:</strong> Συμβάλλετε στην ανάπτυξη εκπαιδευτικής έρευνας για GenAI στην Ελλάδα. Θα λάβετε περίληψη των αποτελεσμάτων (αν επιθυμείτε).</p>
+      
+      <h4>📞 Επικοινωνία</h4>
+      <p>Για απορίες ή ανάκληση συναίνεσης: <strong>[email επικοινωνίας]</strong></p>
+      <p>Για ζητήματα προστασίας δεδομένων: <strong>[DPO Πανεπιστημίου Θεσσαλίας]</strong></p>
+    </div>
+    
+    <div class="consent-checkboxes">
+      <h4 style="margin-bottom: 15px; font-family: var(--serif); font-weight: 900;">✅ Επιβεβαίωση Συγκατάθεσης</h4>
+      
+      <label class="consent-checkbox">
+        <input type="checkbox" required name="consent_1" id="consent_1">
+        <span>Δηλώνω ότι <strong>έχω διαβάσει και κατανοήσει</strong> τις παραπάνω πληροφορίες σχετικά με την έρευνα.</span>
+      </label>
+      
+      <label class="consent-checkbox">
+        <input type="checkbox" required name="consent_2" id="consent_2">
+        <span>Κατανοώ ότι η <strong>συμμετοχή μου είναι εθελοντική</strong> και μπορώ να αποσυρθώ οποτεδήποτε.</span>
+      </label>
+      
+      <label class="consent-checkbox">
+        <input type="checkbox" required name="consent_3" id="consent_3">
+        <span>Συναινώ στη <strong>συλλογή και επεξεργασία</strong> των ανώνυμων απαντήσεών μου για τους ερευνητικούς σκοπούς που περιγράφηκαν.</span>
+      </label>
+      
+      <label class="consent-checkbox">
+        <input type="checkbox" required name="consent_4" id="consent_4">
+        <span>Είμαι <strong>άνω των 18 ετών</strong> και συναινώ ελεύθερα στη συμμετοχή μου.</span>
+      </label>
+    </div>
+    
+    <div class="validation-msg" id="consent-validation">
+      ⚠️ Παρακαλώ τσεκάρετε όλα τα παραπάνω για να συνεχίσετε.
+    </div>
+    
+    <div class="nav-buttons">
+      <div></div>
+      <button type="button" class="btn primary" onclick="nextSection(1)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 2: DEMOGRAPHICS -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="2">
+    
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title">
+        <h2>Σχετικά με Εσάς <span class="time-indicator">~1 ΛΕΠΤΟ</span></h2>
+        <div class="greek-sub">DEMOGRAPHICS</div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">A1</div>
+      <div class="q-text">Φύλο<span class="required">*</span></div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="A1" value="male" required> <label>Άνδρας</label></label>
+        <label class="option-item"><input type="radio" name="A1" value="female"> <label>Γυναίκα</label></label>
+        <label class="option-item"><input type="radio" name="A1" value="other"> <label>Άλλο / Δεν επιθυμώ να απαντήσω</label></label>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">A2</div>
+      <div class="q-text">Έτη διδακτικής εμπειρίας<span class="required">*</span></div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="A2" value="0-5" required> <label>0-5 έτη</label></label>
+        <label class="option-item"><input type="radio" name="A2" value="6-15"> <label>6-15 έτη</label></label>
+        <label class="option-item"><input type="radio" name="A2" value="16-25"> <label>16-25 έτη</label></label>
+        <label class="option-item"><input type="radio" name="A2" value="25+"> <label>25+ έτη</label></label>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">A3</div>
+      <div class="q-text">Ειδικότητα <span style="font-weight:400;font-size:13px;color:#777;">(μπορείτε να επιλέξετε περισσότερες από μία)</span><span class="required">*</span></div>
+      <div class="options-list">
+        <label class="option-item"><input type="checkbox" name="A3" value="physics"> <label>Φυσική</label></label>
+        <label class="option-item"><input type="checkbox" name="A3" value="chemistry"> <label>Χημεία</label></label>
+        <label class="option-item"><input type="checkbox" name="A3" value="biology"> <label>Βιολογία</label></label>
+        <label class="option-item"><input type="checkbox" name="A3" value="math"> <label>Μαθηματικά</label></label>
+        <label class="option-item"><input type="checkbox" name="A3" value="cs"> <label>Πληροφορική</label></label>
+        <label class="option-item"><input type="checkbox" name="A3" value="other"> <label>Άλλο</label></label>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">A4</div>
+      <div class="q-text">Προσωπικός Κωδικός<span class="required">*</span></div>
+      <div class="q-hint">Δημιουργήστε έναν κωδικό που θα θυμάστε. Προτεινόμενη φόρμουλα:<br>
+      <strong>Πρώτα 2 γράμματα ονόματος μητέρας + ημέρα γέννησης</strong> (π.χ., ΜΑ15)<br>
+      Ο ίδιος κωδικός θα χρησιμοποιηθεί στο μετά-workshop ερωτηματολόγιο για ανώνυμη σύνδεση.</div>
+      <input type="text" class="text-input" name="A4" required placeholder="π.χ., ΜΑ15" maxlength="10" style="text-transform: uppercase;">
+    </div>
+    
+    <div class="validation-msg" id="demo-validation">
+      ⚠️ Παρακαλώ συμπληρώστε όλα τα υποχρεωτικά πεδία.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(2)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(2)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 3: SELF-EFFICACY -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="3">
+    
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title">
+        <h2>Αυτο-Αποτελεσματικότητα <span class="time-indicator">~1.5 ΛΕΠΤΑ</span></h2>
+        <div class="greek-sub">SELF-EFFICACY (TAICS)</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <strong>Οδηγίες:</strong> Σκεφτείτε την <strong>τρέχουσα</strong> κατάστασή σας. Πόσο συμφωνείτε με τις παρακάτω προτάσεις;<br>
+      <em>1 = Διαφωνώ απόλυτα · 5 = Συμφωνώ απόλυτα</em>
+    </div>
+    
+    <!-- B1 -->
+    <div class="question">
+      <div class="q-number">B1</div>
+      <div class="q-text">Μπορώ να χρησιμοποιώ αποτελεσματικά εργαλεία GenAI (π.χ., ChatGPT, Claude).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <!-- B2 -->
+    <div class="question">
+      <div class="q-number">B2</div>
+      <div class="q-text">Μπορώ να σχεδιάσω μαθήματα που ενσωματώνουν GenAI.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <!-- B3 -->
+    <div class="question">
+      <div class="q-number">B3</div>
+      <div class="q-text">Μπορώ να καθοδηγήσω μαθητές στη δημιουργική χρήση GenAI.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <!-- B4 -->
+    <div class="question">
+      <div class="q-number">B4</div>
+      <div class="q-text">Μπορώ να διακρίνω περιορισμούς/λάθη σε AI-generated περιεχόμενο.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B4" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <!-- B5 -->
+    <div class="question">
+      <div class="q-number">B5</div>
+      <div class="q-text">Μπορώ να διδάξω υπεύθυνη χρήση GenAI στους μαθητές μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B5" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="validation-msg" id="se-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(3)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(3)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 4: AI-TPACK -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="4">
+    
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title">
+        <h2>Γνώση για GenAI στη Διδασκαλία <span class="time-indicator">~1 ΛΕΠΤΟ</span></h2>
+        <div class="greek-sub">AI-TPACK (CELIK, 2023)</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <strong>Οδηγίες:</strong> Αξιολογήστε τη <strong>γνώση</strong> σας στους παρακάτω τομείς.<br>
+      <em>1 = Πολύ χαμηλή γνώση · 5 = Πολύ υψηλή γνώση</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C1</div>
+      <div class="q-text">Τεχνική γνώση GenAI εργαλείων (πώς να τα χρησιμοποιώ).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C2</div>
+      <div class="q-text">Παιδαγωγική αξιοποίηση GenAI στη διδασκαλία γενικά.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C3</div>
+      <div class="q-text">Αξιοποίηση GenAI στην ειδικότητά μου (το μάθημά μου).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C4</div>
+      <div class="q-text">Συνδυασμός GenAI + παιδαγωγικές στρατηγικές + περιεχόμενο ειδικότητας.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C4" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="validation-msg" id="tpack-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(4)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(4)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 5: BEHAVIORAL INTENTION -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="5">
+    
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-title">
+        <h2>Πρόθεση Χρήσης <span class="time-indicator">~30 ΔΕΥΤ</span></h2>
+        <div class="greek-sub">BEHAVIORAL INTENTION (UTAUT2)</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <em>1 = Διαφωνώ απόλυτα · 5 = Συμφωνώ απόλυτα</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">D1</div>
+      <div class="q-text">Η χρήση GenAI θα βελτιώσει τη διδασκαλία μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="D1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">D2</div>
+      <div class="q-text">Σκοπεύω να χρησιμοποιήσω GenAI στη διδασκαλία μου τους επόμενους 3 μήνες.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="D2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">D3</div>
+      <div class="q-text">Θα ενσωματώσω συστηματικά GenAI στα μαθήματά μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="D3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="validation-msg" id="bi-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(5)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(5)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 6: CONCERNS & HOPES -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="6">
+    
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div class="section-title">
+        <h2>Ανησυχίες & Προσδοκίες <span class="time-indicator">~1.5 ΛΕΠΤΑ</span></h2>
+        <div class="greek-sub">CONCERNS & EXPECTATIONS</div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E1</div>
+      <div class="q-text">Οι μεγαλύτερες ανησυχίες μου για GenAI στην εκπαίδευση είναι <span style="font-weight:400;font-size:13px;color:#777;">(επιλέξτε μέχρι 3)</span><span class="required">*</span></div>
+      <div class="options-list">
+        <label class="option-item"><input type="checkbox" name="E1" value="dependence" data-max="3"> <label>Υπερβολική εξάρτηση μαθητών από AI</label></label>
+        <label class="option-item"><input type="checkbox" name="E1" value="plagiarism" data-max="3"> <label>Λογοκλοπή / Ακαδημαϊκή ακεραιότητα</label></label>
+        <label class="option-item"><input type="checkbox" name="E1" value="hallucinations" data-max="3"> <label>Λανθασμένες πληροφορίες (hallucinations)</label></label>
+        <label class="option-item"><input type="checkbox" name="E1" value="ethics" data-max="3"> <label>Ηθικά ζητήματα / Privacy</label></label>
+        <label class="option-item"><input type="checkbox" name="E1" value="skills" data-max="3"> <label>Έλλειψη δεξιοτήτων μου</label></label>
+        <label class="option-item"><input type="checkbox" name="E1" value="resistance" data-max="3"> <label>Αντίσταση συναδέλφων / σχολείου</label></label>
+        <label class="option-item"><input type="checkbox" name="E1" value="none" data-max="3"> <label>Δεν έχω ανησυχίες</label></label>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E2</div>
+      <div class="q-text">Τι ελπίζετε να πάρετε από το workshop;<span class="required">*</span></div>
+      <div class="q-hint">1-2 σύντομες προτάσεις</div>
+      <textarea class="textarea-input" name="E2" required placeholder="Π.χ., Να μάθω πώς να χρησιμοποιώ GenAI με τους μαθητές μου στη Φυσική..."></textarea>
+    </div>
+    
+    <div class="validation-msg" id="concerns-validation">
+      ⚠️ Παρακαλώ συμπληρώστε όλα τα υποχρεωτικά πεδία.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(6)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="submitForm()">Υποβολή ✓</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 7: SUCCESS -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="7">
+    <div class="success-page">
+      <div class="success-icon">🎉</div>
+      <h2>Ευχαριστούμε!</h2>
+      <p><strong>Η συμμετοχή σας είναι πολύτιμη για την έρευνα.</strong></p>
+      <p>Οι απαντήσεις σας έχουν καταχωρηθεί ανώνυμα.<br>Θα συναντηθούμε στο workshop!</p>
+      
+      <div style="background: var(--yellow-soft); padding: 20px; margin: 30px auto; max-width: 500px; border: 2px solid var(--ink);">
+        <strong>💡 Σημαντικό:</strong><br>
+        Παρακαλώ <strong>σημειώστε τον προσωπικό σας κωδικό</strong>: 
+        <div style="font-family: var(--mono); font-size: 24px; font-weight: 700; color: var(--accent); margin-top: 10px;" id="userCode">____</div>
+        Θα τον χρειαστείτε για το μετά-workshop ερωτηματολόγιο.
+      </div>
+      
+      <p style="font-size: 13px; color: #666; margin-top: 30px;">
+        Για απορίες: <strong>[email επικοινωνίας]</strong>
+      </p>
+      
+      <!-- DATA EXPORT FOR TESTING -->
+      <details style="margin-top: 40px; text-align: left;">
+        <summary style="cursor: pointer; font-family: var(--mono); font-size: 12px; color: #999;">🔍 Προβολή Δεδομένων (για test)</summary>
+        <div class="data-preview" id="dataPreview"></div>
+        <button type="button" class="btn" style="margin-top: 10px;" onclick="downloadData()">📥 Download CSV</button>
+      </details>
+    </div>
+  </section>
+  
+</form>
+
+</div>
+</main>
+
+<script>
+  let currentSection = 1;
+  const totalSections = 6;
+  
+  function updateProgress() {
+    const percent = Math.round(((currentSection - 1) / totalSections) * 100);
+    document.getElementById('progressFill').style.width = percent + '%';
+    document.getElementById('progressPercent').textContent = percent + '%';
+  }
+  
+  function showSection(n) {
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-section="${n}"]`).classList.add('active');
+    currentSection = n;
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  function nextSection(currentN) {
+    if (!validateSection(currentN)) return;
+    showSection(currentN + 1);
+  }
+  
+  function prevSection(currentN) {
+    showSection(currentN - 1);
+  }
+  
+  function validateSection(n) {
+    const section = document.querySelector(`[data-section="${n}"]`);
+    const msg = section.querySelector('.validation-msg');
+    
+    // Section 1: Consent
+    if (n === 1) {
+      const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      if (!allChecked) {
+        if (msg) msg.classList.add('show');
+        return false;
+      }
+      if (msg) msg.classList.remove('show');
+      return true;
+    }
+    
+    // Other sections: check all required fields
+    const required = section.querySelectorAll('[required]');
+    for (let field of required) {
+      if (field.type === 'radio') {
+        const group = section.querySelectorAll(`input[name="${field.name}"]`);
+        if (!Array.from(group).some(r => r.checked)) {
+          if (msg) msg.classList.add('show');
+          return false;
+        }
+      } else if (field.type === 'checkbox') {
+        const group = section.querySelectorAll(`input[name="${field.name}"]`);
+        if (!Array.from(group).some(c => c.checked)) {
+          if (msg) msg.classList.add('show');
+          return false;
+        }
+      } else if (!field.value.trim()) {
+        if (msg) msg.classList.add('show');
+        field.focus();
+        return false;
+      }
+    }
+    
+    // Section 3 demographics: check A3 checkboxes (at least one)
+    if (n === 2) {
+      const a3 = section.querySelectorAll('input[name="A3"]:checked');
+      if (a3.length === 0) {
+        if (msg) msg.classList.add('show');
+        return false;
+      }
+    }
+    
+    // Section 6 concerns: check E1 (at least one, max 3)
+    if (n === 6) {
+      const e1 = section.querySelectorAll('input[name="E1"]:checked');
+      if (e1.length === 0) {
+        if (msg) msg.classList.add('show');
+        return false;
+      }
+      if (e1.length > 3) {
+        alert('Παρακαλώ επιλέξτε το πολύ 3 ανησυχίες.');
+        return false;
+      }
+    }
+    
+    if (msg) msg.classList.remove('show');
+    return true;
+  }
+  
+  // Max checkbox selection for E1
+  document.querySelectorAll('input[name="E1"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const checked = document.querySelectorAll('input[name="E1"]:checked').length;
+      if (checked > 3) {
+        this.checked = false;
+        alert('Μπορείτε να επιλέξετε το πολύ 3 ανησυχίες.');
+      }
+      // If "none" selected, uncheck others
+      if (this.value === 'none' && this.checked) {
+        document.querySelectorAll('input[name="E1"]').forEach(other => {
+          if (other !== this) other.checked = false;
+        });
+      } else if (this.checked) {
+        document.querySelector('input[name="E1"][value="none"]').checked = false;
+      }
+    });
+  });
+  
+  // Uppercase code
+  document.querySelector('input[name="A4"]').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
+  
+  function submitForm() {
+    if (!validateSection(6)) return;
+    
+    // Collect all data
+    const form = document.getElementById('surveyForm');
+    const formData = new FormData(form);
+    const data = {};
+    
+    // Single values
+    ['A1', 'A2', 'A4', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2', 'D3', 'E2'].forEach(key => {
+      data[key] = formData.get(key);
+    });
+    
+    // Multi-value (checkbox)
+    data['A3'] = formData.getAll('A3');
+    data['E1'] = formData.getAll('E1');
+    
+    // Timestamp
+    data['timestamp'] = new Date().toISOString();
+    data['type'] = 'PRE';
+    
+    // Store in localStorage (για test / δεν είναι production ready)
+    const existing = JSON.parse(localStorage.getItem('bral_responses') || '[]');
+    existing.push(data);
+    localStorage.setItem('bral_responses', JSON.stringify(existing));
+    
+    // Display code
+    document.getElementById('userCode').textContent = data.A4;
+    
+    // Display data preview
+    document.getElementById('dataPreview').textContent = JSON.stringify(data, null, 2);
+    
+    // Show success page
+    showSection(7);
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressPercent').textContent = '100%';
+    
+    // ΣΗΜΑΝΤΙΚΟ: Εδώ θα πρέπει να στέλνετε τα δεδομένα στον server σας
+    // π.χ., via fetch() σε Google Sheets / Formspree / own backend
+    console.log('Survey Data:', data);
+  }
+  
+  function downloadData() {
+    const data = JSON.parse(localStorage.getItem('bral_responses') || '[]');
+    if (data.length === 0) {
+      alert('Δεν υπάρχουν δεδομένα.');
+      return;
+    }
+    
+    // CSV headers
+    const headers = Object.keys(data[0]).join(',');
+    const rows = data.map(row => 
+      Object.values(row).map(v => 
+        Array.isArray(v) ? `"${v.join(';')}"` : `"${v}"`
+      ).join(',')
+    );
+    const csv = [headers, ...rows].join('\n');
+    
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'BRaL_Pre_Responses_' + new Date().getTime() + '.csv';
+    a.click();
+  }
+  
+  // Init
+  updateProgress();
+</script>
+
+</body>
+</html>
