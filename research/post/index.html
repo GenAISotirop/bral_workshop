@@ -1,1 +1,1193 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRaL Workshop · Post-Questionnaire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=Inter+Tight:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --accent: #2D5A3D;
+    --accent-soft: #D9E8DE;
+    --yellow: #F4C430;
+    --yellow-soft: #FFF4D0;
+    --blue: #1E3A5F;
+    --blue-soft: #D5E1F0;
+    --red: #D4462F;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html { scroll-behavior: smooth; }
+  
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+    padding: 20px 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* PROGRESS BAR */
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    z-index: 1000;
+    padding: 10px 20px;
+    color: var(--bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 15px;
+    position: relative;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s;
+  }
+  
+  .progress-percent {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 45px;
+    text-align: right;
+  }
+  
+  main { margin-top: 50px; }
+  
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 60px 50px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: 'BRAL';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 180px;
+    color: rgba(45, 90, 61, 0.2);
+    letter-spacing: -8px;
+    line-height: 1;
+  }
+  
+  .hero-content { position: relative; z-index: 1; }
+  
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    background: var(--accent);
+    padding: 5px 12px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  
+  h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 15px;
+    letter-spacing: -2px;
+  }
+  
+  h1 em {
+    color: var(--yellow);
+    font-style: italic;
+    font-weight: 400;
+  }
+  
+  .hero p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    opacity: 0.9;
+    max-width: 500px;
+  }
+  
+  .hero-meta {
+    display: flex;
+    gap: 25px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    flex-wrap: wrap;
+  }
+  
+  .hero-meta span { opacity: 0.9; }
+  
+  /* SECTION */
+  section.form-section {
+    background: white;
+    padding: 40px 45px;
+    margin-bottom: 20px;
+    border: 2px solid var(--ink);
+    position: relative;
+    display: none;
+  }
+  
+  section.form-section.active {
+    display: block;
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--ink);
+  }
+  
+  .section-number {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 64px;
+    color: var(--accent);
+    line-height: 0.8;
+  }
+  
+  .section-title { flex: 1; }
+  
+  .section-title h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  
+  .section-title .greek-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #777;
+    text-transform: uppercase;
+  }
+  
+  .section-intro {
+    background: var(--yellow-soft);
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border-left: 4px solid var(--yellow);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  /* QUESTIONS */
+  .question {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #ddd;
+  }
+  
+  .question:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .q-number {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 3px 8px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  
+  .q-text {
+    font-weight: 500;
+    margin-bottom: 12px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+  
+  .q-text .required {
+    color: var(--red);
+    margin-left: 4px;
+  }
+  
+  .q-hint {
+    font-size: 13px;
+    color: #777;
+    font-style: italic;
+    margin-top: 5px;
+  }
+  
+  /* LIKERT SCALE */
+  .likert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 15px 10px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .likert-option {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .likert-option input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .likert-label {
+    display: block;
+    padding: 12px 4px;
+    background: white;
+    border: 2px solid #ccc;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .likert-option input[type="radio"]:checked + .likert-label {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+  
+  .likert-option:hover .likert-label {
+    border-color: var(--accent);
+  }
+  
+  .likert-anchors {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    padding: 0 5px;
+  }
+  
+  /* OPTIONS */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: white;
+    border: 1.5px solid #ddd;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .option-item:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  
+  .option-item input[type="radio"],
+  .option-item input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  
+  .option-item label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 14.5px;
+  }
+  
+  /* TEXT INPUTS */
+  .text-input,
+  .textarea-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ccc;
+    background: white;
+    font-family: var(--sans);
+    font-size: 15px;
+    transition: border-color 0.2s;
+  }
+  
+  .text-input:focus,
+  .textarea-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  
+  .textarea-input {
+    min-height: 70px;
+    resize: vertical;
+  }
+  
+  /* BUTTONS */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #ddd;
+  }
+  
+  .btn {
+    padding: 14px 28px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+  }
+  
+  .btn:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  
+  .btn.primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  
+  .btn.primary:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  
+  /* VALIDATION MESSAGE */
+  .validation-msg {
+    background: #FFEBEE;
+    border-left: 4px solid var(--red);
+    padding: 12px 18px;
+    margin-top: 15px;
+    font-size: 14px;
+    color: var(--red);
+    display: none;
+  }
+  
+  .validation-msg.show { display: block; }
+  
+  /* SUCCESS PAGE */
+  .success-page {
+    text-align: center;
+    padding: 60px 40px;
+  }
+  
+  .success-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .success-page h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 42px;
+    margin-bottom: 15px;
+    line-height: 1;
+  }
+  
+  .success-page p {
+    font-size: 16px;
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+  
+  .data-preview {
+    background: #fafafa;
+    padding: 20px;
+    margin-top: 25px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  
+  /* TIME INDICATOR */
+  .time-indicator {
+    display: inline-block;
+    background: var(--blue-soft);
+    color: var(--blue);
+    padding: 4px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-left: 10px;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .container { padding: 0 15px; }
+    .hero { padding: 40px 25px; }
+    .hero::before { font-size: 100px; }
+    h1 { font-size: 32px; }
+    section.form-section { padding: 25px 20px; }
+    .section-header { gap: 10px; }
+    .section-number { font-size: 48px; }
+    .section-title h2 { font-size: 22px; }
+    .likert-label { padding: 10px 2px; font-size: 14px; }
+    .likert { gap: 4px; padding: 10px 5px; }
+    .nav-buttons { flex-direction: column-reverse; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
 
+<!-- PROGRESS BAR -->
+<div class="progress-container">
+  <div class="progress-label">ΠΡΟΟΔΟΣ</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-percent" id="progressPercent">0%</div>
+</div>
+
+<main>
+<div class="container">
+
+<form id="surveyForm">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">POST · QUESTIONNAIRE</div>
+      <h1>BRa<em>L</em><br>Workshop</h1>
+      <p>Ερωτηματολόγιο μετά τη συμμετοχή σας — 7 λεπτά</p>
+      <div class="hero-meta">
+        <span>⏱ 7 λεπτά</span>
+        <span>🔒 Ανώνυμο</span>
+        <span>✨ Τελευταίο βήμα!</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 1: RECONNECT -->
+  <!-- ========================================== -->
+  <section class="form-section active" data-section="1">
+    
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title">
+        <h2>Επανασύνδεση <span class="time-indicator">~20 ΔΕΥΤ</span></h2>
+        <div class="greek-sub">RECONNECTION</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      👋 Καλώς ήρθατε πίσω! Εισάγετε τον ίδιο κωδικό που δημιουργήσατε στο πρώτο ερωτηματολόγιο (πριν το workshop).
+    </div>
+    
+    <div class="question">
+      <div class="q-number">A1</div>
+      <div class="q-text">Προσωπικός Κωδικός<span class="required">*</span></div>
+      <div class="q-hint">Ο ίδιος κωδικός που δημιουργήσατε στο πρώτο ερωτηματολόγιο.<br>
+      <strong>Φόρμουλα:</strong> Πρώτα 2 γράμματα ονόματος μητέρας + ημέρα γέννησης (π.χ., ΜΑ15)</div>
+      <input type="text" class="text-input" name="A1" required placeholder="π.χ., ΜΑ15" maxlength="10" style="text-transform: uppercase;">
+    </div>
+    
+    <div class="validation-msg" id="reconnect-validation">
+      ⚠️ Παρακαλώ εισάγετε τον προσωπικό σας κωδικό.
+    </div>
+    
+    <div class="nav-buttons">
+      <div></div>
+      <button type="button" class="btn primary" onclick="nextSection(1)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 2: SELF-EFFICACY (POST) -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="2">
+    
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title">
+        <h2>Αυτο-Αποτελεσματικότητα <span class="time-indicator">~1.5 ΛΕΠΤΑ</span></h2>
+        <div class="greek-sub">SELF-EFFICACY (POST)</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <strong>Οδηγίες:</strong> Τώρα, <strong>μετά το workshop</strong>, πόσο συμφωνείτε με τις παρακάτω προτάσεις;<br>
+      <em>1 = Διαφωνώ απόλυτα · 5 = Συμφωνώ απόλυτα</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">B1</div>
+      <div class="q-text">Μπορώ να χρησιμοποιώ αποτελεσματικά εργαλεία GenAI (π.χ., ChatGPT, Claude).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">B2</div>
+      <div class="q-text">Μπορώ να σχεδιάσω μαθήματα που ενσωματώνουν GenAI.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">B3</div>
+      <div class="q-text">Μπορώ να καθοδηγήσω μαθητές στη δημιουργική χρήση GenAI.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">B4</div>
+      <div class="q-text">Μπορώ να διακρίνω περιορισμούς/λάθη σε AI-generated περιεχόμενο.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B4" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B4" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">B5</div>
+      <div class="q-text">Μπορώ να διδάξω υπεύθυνη χρήση GenAI στους μαθητές μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="B5" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="B5" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="validation-msg" id="se-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(2)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(2)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 3: AI-TPACK (POST) -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="3">
+    
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title">
+        <h2>Γνώση για GenAI <span class="time-indicator">~1 ΛΕΠΤΟ</span></h2>
+        <div class="greek-sub">AI-TPACK (POST)</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <em>1 = Πολύ χαμηλή γνώση · 5 = Πολύ υψηλή γνώση</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C1</div>
+      <div class="q-text">Τεχνική γνώση GenAI εργαλείων (πώς να τα χρησιμοποιώ).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C2</div>
+      <div class="q-text">Παιδαγωγική αξιοποίηση GenAI στη διδασκαλία γενικά.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C3</div>
+      <div class="q-text">Αξιοποίηση GenAI στην ειδικότητά μου (το μάθημά μου).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">C4</div>
+      <div class="q-text">Συνδυασμός GenAI + παιδαγωγικές στρατηγικές + περιεχόμενο ειδικότητας.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="C4" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="C4" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Πολύ χαμηλή</span><span>Πολύ υψηλή</span></div>
+    </div>
+    
+    <div class="validation-msg" id="tpack-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(3)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(3)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 4: INTENTION (POST) -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="4">
+    
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title">
+        <h2>Πρόθεση Χρήσης <span class="time-indicator">~30 ΔΕΥΤ</span></h2>
+        <div class="greek-sub">BEHAVIORAL INTENTION (POST)</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <em>1 = Διαφωνώ απόλυτα · 5 = Συμφωνώ απόλυτα</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">D1</div>
+      <div class="q-text">Η χρήση GenAI θα βελτιώσει τη διδασκαλία μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="D1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="D1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">D2</div>
+      <div class="q-text">Σκοπεύω να χρησιμοποιήσω GenAI στη διδασκαλία μου τους επόμενους 3 μήνες.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="D2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="D2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">D3</div>
+      <div class="q-text">Θα ενσωματώσω συστηματικά GenAI στα μαθήματά μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="D3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="D3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="validation-msg" id="bi-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(4)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(4)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 5: BRAL-SPECIFIC -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="5">
+    
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-title">
+        <h2>Σχετικά με το BRaL <span class="time-indicator">~2 ΛΕΠΤΑ</span></h2>
+        <div class="greek-sub">BRaL FRAMEWORK ASSESSMENT</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      <strong>Οδηγίες:</strong> Αξιολογήστε το BRaL framework όπως το βιώσατε στο workshop.<br>
+      <em>1 = Διαφωνώ απόλυτα · 5 = Συμφωνώ απόλυτα</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E1</div>
+      <div class="q-text">Κατανοώ τη λογική του BRaL framework (Build-Refine-Learn).<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="E1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="E1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="E1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="E1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="E1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E2</div>
+      <div class="q-text">Μπορώ να δημιουργήσω interactive simulation με GenAI μόνος/η μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="E2" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="E2" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="E2" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="E2" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="E2" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E3</div>
+      <div class="q-text">Μπορώ να καθοδηγήσω μαθητές να δημιουργήσουν τις δικές τους simulations.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="E3" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="E3" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="E3" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="E3" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="E3" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E4</div>
+      <div class="q-text">Το BRaL είναι εφαρμόσιμο στην τάξη μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="E4" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="E4" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="E4" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="E4" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="E4" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E5</div>
+      <div class="q-text">Η προσέγγιση "AI ως coach, όχι λύτης" είναι παιδαγωγικά πολύτιμη.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="E5" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="E5" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="E5" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="E5" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="E5" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">E6</div>
+      <div class="q-text">Το BRaL αξίζει να δοκιμαστεί με τους μαθητές μου.<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="E6" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="E6" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="E6" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="E6" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="E6" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Διαφωνώ απόλυτα</span><span>Συμφωνώ απόλυτα</span></div>
+    </div>
+    
+    <div class="validation-msg" id="bral-validation">
+      ⚠️ Παρακαλώ απαντήστε σε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(5)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(5)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 6: WORKSHOP EVALUATION -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="6">
+    
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div class="section-title">
+        <h2>Αξιολόγηση Workshop <span class="time-indicator">~1.5 ΛΕΠΤΑ</span></h2>
+        <div class="greek-sub">WORKSHOP EVALUATION</div>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">F1</div>
+      <div class="q-text">Πόσο χρήσιμο ήταν το workshop για εσάς;<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="F1" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="F1" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="F1" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="F1" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="F1" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Καθόλου χρήσιμο</span><span>Πάρα πολύ χρήσιμο</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">F2</div>
+      <div class="q-text">Ποια φάση σας βοήθησε περισσότερο;<span class="required">*</span></div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="F2" value="build" required> <label>Build (Χτίσε) — η δημιουργία της προσομοίωσης</label></label>
+        <label class="option-item"><input type="radio" name="F2" value="refine"> <label>Refine (Διόρθωσε) — η επαναληπτική βελτίωση</label></label>
+        <label class="option-item"><input type="radio" name="F2" value="learn"> <label>Learn (Μάθε) — ο αναστοχασμός και η σύνδεση με θεωρία</label></label>
+        <label class="option-item"><input type="radio" name="F2" value="all"> <label>Όλες οι φάσεις εξίσου</label></label>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">F3</div>
+      <div class="q-text">Η πολυ-εργαλειακή προσέγγιση (Claude + ChatGPT) ήταν:<span class="required">*</span></div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="F3" value="very_useful" required> <label>Πολύ χρήσιμη</label></label>
+        <label class="option-item"><input type="radio" name="F3" value="useful"> <label>Χρήσιμη</label></label>
+        <label class="option-item"><input type="radio" name="F3" value="neutral"> <label>Ουδέτερη</label></label>
+        <label class="option-item"><input type="radio" name="F3" value="unnecessary"> <label>Περιττή</label></label>
+      </div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">F4</div>
+      <div class="q-text">Θα συστήνατε το workshop σε συναδέλφους;<span class="required">*</span></div>
+      <div class="likert">
+        <label class="likert-option"><input type="radio" name="F4" value="1" required><span class="likert-label">1</span></label>
+        <label class="likert-option"><input type="radio" name="F4" value="2"><span class="likert-label">2</span></label>
+        <label class="likert-option"><input type="radio" name="F4" value="3"><span class="likert-label">3</span></label>
+        <label class="likert-option"><input type="radio" name="F4" value="4"><span class="likert-label">4</span></label>
+        <label class="likert-option"><input type="radio" name="F4" value="5"><span class="likert-label">5</span></label>
+      </div>
+      <div class="likert-anchors"><span>Σίγουρα όχι</span><span>Σίγουρα ναι</span></div>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">F5</div>
+      <div class="q-text">Η πιο σημαντική γνώση/δεξιότητα που αποκτήσατε:<span class="required">*</span></div>
+      <div class="q-hint">Μία πρόταση</div>
+      <textarea class="textarea-input" name="F5" required placeholder="Π.χ., Πώς να γράφω αποτελεσματικά prompts..."></textarea>
+    </div>
+    
+    <div class="validation-msg" id="eval-validation">
+      ⚠️ Παρακαλώ συμπληρώστε όλα τα υποχρεωτικά πεδία.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(6)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="nextSection(6)">Συνεχίζω →</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 7: OPEN QUESTIONS -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="7">
+    
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div class="section-title">
+        <h2>Τελευταίες Σκέψεις <span class="time-indicator">~2 ΛΕΠΤΑ</span></h2>
+        <div class="greek-sub">OPEN QUESTIONS</div>
+      </div>
+    </div>
+    
+    <div class="section-intro">
+      🙏 Σχεδόν τελειώσαμε! Οι σύντομες απαντήσεις σας είναι πολύτιμες.<br>
+      <em>Αρκούν 1-2 προτάσεις ανά ερώτηση.</em>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">Z1</div>
+      <div class="q-text">Θα χρησιμοποιήσετε BRaL με τους μαθητές σας; Αν ναι, σε ποιο θέμα;<span class="required">*</span></div>
+      <textarea class="textarea-input" name="Z1" required placeholder="Π.χ., Ναι, στη Φυσική Α' Λυκείου για την κίνηση..."></textarea>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">Z2</div>
+      <div class="q-text">Μεγαλύτερη δυσκολία που αντιμετωπίσατε στο workshop:<span class="required">*</span></div>
+      <textarea class="textarea-input" name="Z2" required placeholder="Π.χ., Η εναλλαγή μεταξύ των εργαλείων..."></textarea>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">Z3</div>
+      <div class="q-text">Τι θα βελτιώνατε στο workshop;<span class="required">*</span></div>
+      <textarea class="textarea-input" name="Z3" required placeholder="Π.χ., Περισσότερος χρόνος για hands-on..."></textarea>
+    </div>
+    
+    <div class="question">
+      <div class="q-number">Z4</div>
+      <div class="q-text">Άλλαξαν οι ανησυχίες σας για το GenAI μετά το workshop; Πώς;<span class="required">*</span></div>
+      <textarea class="textarea-input" name="Z4" required placeholder="Π.χ., Είμαι πιο αισιόδοξος/η τώρα..."></textarea>
+    </div>
+    
+    <div class="validation-msg" id="open-validation">
+      ⚠️ Παρακαλώ συμπληρώστε όλες τις ερωτήσεις.
+    </div>
+    
+    <div class="nav-buttons">
+      <button type="button" class="btn" onclick="prevSection(7)">← Πίσω</button>
+      <button type="button" class="btn primary" onclick="submitForm()">Υποβολή ✓</button>
+    </div>
+  </section>
+  
+  <!-- ========================================== -->
+  <!-- SECTION 8: SUCCESS -->
+  <!-- ========================================== -->
+  <section class="form-section" data-section="8">
+    <div class="success-page">
+      <div class="success-icon">🎉</div>
+      <h2>Ευχαριστούμε!</h2>
+      <p><strong>Η συμμετοχή σας ολοκληρώθηκε!</strong></p>
+      <p>Οι απαντήσεις σας έχουν καταχωρηθεί ανώνυμα και συμβάλλουν σημαντικά στην έρευνά μας για το BRaL Framework.</p>
+      
+      <div style="background: var(--accent-soft); padding: 25px; margin: 30px auto; max-width: 500px; border: 2px solid var(--accent);">
+        <strong>📬 Follow-up σε 4-6 εβδομάδες</strong><br>
+        <p style="font-size: 14px; margin-top: 10px;">Θα σας προσκαλέσουμε να συμπληρώσετε ένα σύντομο follow-up (3 λεπτά) για να μας πείτε πώς εφαρμόσατε το BRaL με τους μαθητές σας.</p>
+      </div>
+      
+      <p style="font-size: 14px; color: #666; margin-top: 30px;">
+        💡 <strong>Καλή επιτυχία στην εφαρμογή του BRaL!</strong><br>
+        Για απορίες: <strong>[email επικοινωνίας]</strong>
+      </p>
+      
+      <!-- DATA EXPORT FOR TESTING -->
+      <details style="margin-top: 40px; text-align: left;">
+        <summary style="cursor: pointer; font-family: var(--mono); font-size: 12px; color: #999;">🔍 Προβολή Δεδομένων (για test)</summary>
+        <div class="data-preview" id="dataPreview"></div>
+        <button type="button" class="btn" style="margin-top: 10px;" onclick="downloadData()">📥 Download CSV</button>
+      </details>
+    </div>
+  </section>
+  
+</form>
+
+</div>
+</main>
+
+<script>
+  let currentSection = 1;
+  const totalSections = 7;
+  
+  function updateProgress() {
+    const percent = Math.round(((currentSection - 1) / totalSections) * 100);
+    document.getElementById('progressFill').style.width = percent + '%';
+    document.getElementById('progressPercent').textContent = percent + '%';
+  }
+  
+  function showSection(n) {
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-section="${n}"]`).classList.add('active');
+    currentSection = n;
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  function nextSection(currentN) {
+    if (!validateSection(currentN)) return;
+    showSection(currentN + 1);
+  }
+  
+  function prevSection(currentN) {
+    showSection(currentN - 1);
+  }
+  
+  function validateSection(n) {
+    const section = document.querySelector(`[data-section="${n}"]`);
+    const msg = section.querySelector('.validation-msg');
+    
+    const required = section.querySelectorAll('[required]');
+    for (let field of required) {
+      if (field.type === 'radio') {
+        const group = section.querySelectorAll(`input[name="${field.name}"]`);
+        if (!Array.from(group).some(r => r.checked)) {
+          if (msg) msg.classList.add('show');
+          return false;
+        }
+      } else if (!field.value.trim()) {
+        if (msg) msg.classList.add('show');
+        field.focus();
+        return false;
+      }
+    }
+    
+    if (msg) msg.classList.remove('show');
+    return true;
+  }
+  
+  // Uppercase code
+  document.querySelector('input[name="A1"]').addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
+  
+  function submitForm() {
+    if (!validateSection(7)) return;
+    
+    const form = document.getElementById('surveyForm');
+    const formData = new FormData(form);
+    const data = {};
+    
+    const fields = ['A1', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 
+                    'D1', 'D2', 'D3', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6',
+                    'F1', 'F2', 'F3', 'F4', 'F5', 'Z1', 'Z2', 'Z3', 'Z4'];
+    
+    fields.forEach(key => {
+      data[key] = formData.get(key);
+    });
+    
+    data['timestamp'] = new Date().toISOString();
+    data['type'] = 'POST';
+    
+    const existing = JSON.parse(localStorage.getItem('bral_post_responses') || '[]');
+    existing.push(data);
+    localStorage.setItem('bral_post_responses', JSON.stringify(existing));
+    
+    document.getElementById('dataPreview').textContent = JSON.stringify(data, null, 2);
+    
+    showSection(8);
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressPercent').textContent = '100%';
+    
+    console.log('POST Survey Data:', data);
+  }
+  
+  function downloadData() {
+    const data = JSON.parse(localStorage.getItem('bral_post_responses') || '[]');
+    if (data.length === 0) {
+      alert('Δεν υπάρχουν δεδομένα.');
+      return;
+    }
+    
+    const headers = Object.keys(data[0]).join(',');
+    const rows = data.map(row => 
+      Object.values(row).map(v => 
+        Array.isArray(v) ? `"${v.join(';')}"` : `"${(v || '').toString().replace(/"/g, '""')}"`
+      ).join(',')
+    );
+    const csv = [headers, ...rows].join('\n');
+    
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'BRaL_Post_Responses_' + new Date().getTime() + '.csv';
+    a.click();
+  }
+  
+  updateProgress();
+</script>
+
+</body>
+</html>
