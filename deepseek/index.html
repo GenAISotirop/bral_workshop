@@ -1,1 +1,1143 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRaL Workshop · DeepSeek Edition · Γυμνάσιο</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --accent: #D4462F;
+    --accent-soft: #FFE8E0;
+    --yellow: #F4C430;
+    --yellow-soft: #FFF4D0;
+    --green: #2D5A3D;
+    --green-soft: #D9E8DE;
+    --blue: #1E3A5F;
+    --blue-soft: #D5E1F0;
+    --purple: #5B3A8B;
+    --purple-soft: #E8DDF5;
+    --gray: #E8E2D5;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 16px;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(212, 70, 47, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(244, 196, 48, 0.04) 0%, transparent 40%);
+  }
+  
+  nav.toc {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: var(--ink); color: var(--bg);
+    padding: 12px 30px; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 3px solid var(--accent);
+    flex-wrap: wrap; gap: 10px;
+  }
+  
+  nav.toc .brand { font-family: var(--serif); font-weight: 900; font-size: 18px; letter-spacing: -0.5px; }
+  nav.toc .brand span { color: var(--yellow); }
+  nav.toc .level-badge { background: var(--green); color: white; padding: 3px 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 2px; margin-left: 10px; }
+  nav.toc .steps-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+  nav.toc .steps-nav a { color: var(--bg); text-decoration: none; font-family: var(--mono); font-size: 12px; padding: 4px 10px; border: 1px solid var(--bg); transition: all 0.2s; }
+  nav.toc .steps-nav a:hover { background: var(--accent); border-color: var(--accent); }
+  
+  .hero { padding: 120px 40px 80px; max-width: 1100px; margin: 0 auto; text-align: center; position: relative; }
+  .hero::before { content: 'BRAL'; position: absolute; top: 100px; left: 50%; transform: translateX(-50%); font-family: var(--serif); font-weight: 900; font-size: 280px; color: rgba(212, 70, 47, 0.06); z-index: 0; letter-spacing: -10px; line-height: 0.9; pointer-events: none; }
+  .hero-content { position: relative; z-index: 1; }
+  .eyebrow { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: 3px; background: var(--ink); color: var(--bg); padding: 6px 14px; margin-bottom: 25px; text-transform: uppercase; }
+  .eyebrow .level { background: var(--green); color: white; padding: 2px 8px; margin-left: 8px; }
+  h1.main-title { font-family: var(--serif); font-weight: 900; font-size: clamp(48px, 7vw, 96px); line-height: 0.95; letter-spacing: -3px; margin-bottom: 20px; }
+  h1.main-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .hero .subtitle { font-family: var(--serif); font-style: italic; font-size: clamp(18px, 2vw, 24px); color: #555; max-width: 700px; margin: 0 auto 30px; }
+  .hero-meta { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; font-family: var(--mono); font-size: 13px; color: #555; padding-top: 30px; border-top: 1px solid var(--ink); max-width: 600px; margin: 30px auto 0; }
+  
+  .section { max-width: 1000px; margin: 0 auto; padding: 60px 40px; }
+  
+  .section-intro { background: var(--ink); color: var(--bg); padding: 50px 40px; margin-bottom: 60px; position: relative; overflow: hidden; }
+  .section-intro::before { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: var(--accent); border-radius: 50%; opacity: 0.2; }
+  .section-intro h2 { font-family: var(--serif); font-weight: 900; font-size: 42px; margin-bottom: 15px; line-height: 1; }
+  .section-intro p { font-size: 17px; max-width: 700px; line-height: 1.7; }
+  
+  .checklist-box { background: var(--yellow-soft); border: 3px solid var(--ink); padding: 35px 40px; margin: 40px 0; position: relative; box-shadow: 10px 10px 0 var(--ink); }
+  .checklist-box h3 { font-family: var(--serif); font-weight: 900; font-size: 28px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .checklist-box ul { list-style: none; }
+  .checklist-box li { padding: 10px 0; padding-left: 35px; position: relative; border-bottom: 1px dashed var(--ink); font-size: 15px; }
+  .checklist-box li:last-child { border-bottom: none; }
+  .checklist-box li::before { content: ''; position: absolute; left: 0; top: 15px; width: 22px; height: 22px; border: 2px solid var(--ink); background: white; }
+  
+  .step { margin: 80px 0; position: relative; }
+  .step-header { display: grid; grid-template-columns: auto 1fr auto; gap: 25px; align-items: center; margin-bottom: 35px; padding-bottom: 20px; border-bottom: 3px solid var(--ink); }
+  .step-number { font-family: var(--serif); font-weight: 900; font-size: 120px; line-height: 0.8; color: var(--accent); }
+  .step-title-block h2 { font-family: var(--serif); font-weight: 900; font-size: 42px; line-height: 1; margin-bottom: 8px; }
+  .step-title-block .greek-sub { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--accent); }
+  
+  .phase-badge { font-family: var(--mono); font-weight: 700; font-size: 11px; letter-spacing: 3px; padding: 8px 14px; text-transform: uppercase; }
+  .phase-build { background: var(--blue-soft); color: var(--blue); border: 2px solid var(--blue); }
+  .phase-refine { background: var(--accent-soft); color: var(--accent); border: 2px solid var(--accent); }
+  .phase-learn { background: var(--green-soft); color: var(--green); border: 2px solid var(--green); }
+  .phase-setup { background: var(--yellow-soft); color: var(--ink); border: 2px solid var(--ink); }
+  .phase-close { background: var(--purple-soft); color: var(--purple); border: 2px solid var(--purple); }
+  
+  .time-badge { display: inline-block; background: var(--ink); color: var(--bg); font-family: var(--mono); font-size: 12px; padding: 4px 10px; margin-bottom: 15px; letter-spacing: 1px; }
+  
+  .instruction { background: white; border-left: 5px solid var(--ink); padding: 25px 30px; margin: 20px 0; font-size: 16px; }
+  .instruction h4 { font-family: var(--serif); font-weight: 900; font-size: 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .instruction ol, .instruction ul { padding-left: 25px; }
+  .instruction li { margin-bottom: 8px; }
+  
+  .prompt-box { background: var(--ink); color: var(--bg); padding: 0; margin: 25px 0; position: relative; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--accent); }
+  .prompt-header { background: var(--accent); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .copy-btn { background: white; color: var(--accent); border: none; padding: 6px 14px; font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+  .copy-btn:hover { background: var(--yellow); color: var(--ink); }
+  .copy-btn.copied { background: #4CAF50; color: white; }
+  .prompt-content { padding: 25px 30px; font-family: var(--mono); font-size: 13.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+  
+  .expect-box { background: var(--green-soft); border-left: 5px solid var(--green); padding: 20px 25px; margin: 20px 0; font-size: 14.5px; }
+  .expect-box h4 { font-family: var(--serif); font-weight: 900; font-size: 17px; color: var(--green); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  
+  .warning-box { background: var(--yellow-soft); border-left: 5px solid var(--yellow); padding: 20px 25px; margin: 20px 0; font-size: 14.5px; }
+  .warning-box h4 { font-family: var(--serif); font-weight: 900; font-size: 17px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  
+  .teacher-box { background: var(--purple-soft); border: 2px dashed var(--purple); padding: 22px 28px; margin: 25px 0; position: relative; font-size: 14.5px; }
+  .teacher-box::before { content: '🎓'; position: absolute; top: -18px; left: 20px; background: var(--bg); padding: 0 10px; font-size: 24px; }
+  .teacher-box h4 { font-family: var(--serif); font-weight: 900; font-size: 17px; color: var(--purple); margin-bottom: 10px; margin-top: 5px; }
+  .teacher-box em { font-style: italic; color: #555; display: block; margin-top: 10px; font-size: 13.5px; }
+  
+  .bral-box { background: #fafafa; border: 1px solid var(--ink); padding: 18px 22px; margin: 20px 0; font-size: 14px; color: #333; font-style: italic; border-left: 4px solid var(--accent); }
+  .bral-box strong { font-style: normal; color: var(--accent); font-family: var(--mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  
+  .tool-switch { background: linear-gradient(135deg, var(--accent) 0%, #E06040 100%); color: white; padding: 25px 30px; margin: 40px 0; text-align: center; position: relative; border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); }
+  .tool-switch h3 { font-family: var(--serif); font-weight: 900; font-size: 28px; margin-bottom: 10px; }
+  .tool-switch .arrow { font-size: 40px; margin: 10px 0; }
+  .tool-switch p { font-size: 15px; opacity: 0.95; }
+  
+  .simple-box { background: linear-gradient(135deg, var(--yellow-soft) 0%, #FFF9E0 100%); border: 2px solid var(--yellow); padding: 20px 25px; margin: 20px 0; font-size: 14.5px; }
+  .simple-box h4 { font-family: var(--serif); font-weight: 900; font-size: 17px; margin-bottom: 10px; color: #B8860B; }
+  
+  .inline-checklist { background: white; border: 2px solid var(--ink); padding: 20px 25px; margin: 20px 0; }
+  .inline-checklist h4 { font-family: var(--serif); font-weight: 900; font-size: 17px; margin-bottom: 12px; }
+  .inline-checklist label { display: block; padding: 8px 0; padding-left: 30px; position: relative; cursor: pointer; font-size: 14.5px; border-bottom: 1px dashed #ccc; }
+  .inline-checklist label:last-child { border-bottom: none; }
+  .inline-checklist input[type="checkbox"] { position: absolute; left: 0; top: 12px; width: 18px; height: 18px; accent-color: var(--accent); }
+  
+  .filename-box { background: #1e1e1e; color: #fff; padding: 12px 18px; font-family: var(--mono); font-size: 14px; border-radius: 4px; margin: 10px 0; display: inline-block; border-left: 4px solid var(--accent); }
+  .filename-box::before { content: '📄 '; }
+  
+  .anti-capitulation-box { background: linear-gradient(135deg, #FFF0F0 0%, #FFE5E5 100%); border: 3px solid var(--accent); padding: 25px 30px; margin: 25px 0; box-shadow: 6px 6px 0 var(--ink); }
+  .anti-capitulation-box h4 { font-family: var(--serif); font-weight: 900; font-size: 18px; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  
+  footer { background: var(--ink); color: var(--bg); padding: 60px 40px 40px; margin-top: 100px; text-align: center; }
+  footer h3 { font-family: var(--serif); font-weight: 900; font-size: 32px; margin-bottom: 15px; }
+  footer p { max-width: 600px; margin: 0 auto 20px; font-size: 15px; opacity: 0.9; }
+  footer .golden-rule { background: var(--yellow); color: var(--ink); padding: 25px 35px; margin: 30px auto; max-width: 700px; font-family: var(--serif); font-style: italic; font-size: 20px; font-weight: 600; line-height: 1.5; }
+  footer .meta { font-family: var(--mono); font-size: 11px; opacity: 0.6; margin-top: 30px; letter-spacing: 1px; }
+  
+  @media (max-width: 768px) {
+    nav.toc { padding: 10px 15px; }
+    nav.toc .steps-nav { display: none; }
+    .hero { padding: 100px 20px 50px; }
+    .hero::before { font-size: 150px; top: 80px; }
+    .section { padding: 40px 20px; }
+    .step-header { grid-template-columns: 1fr; gap: 10px; }
+    .step-number { font-size: 80px; }
+    .step-title-block h2 { font-size: 30px; }
+    .prompt-content { font-size: 12px; padding: 20px; }
+    h1.main-title { font-size: 42px; }
+    .section-intro { padding: 30px 20px; }
+    .section-intro h2 { font-size: 30px; }
+  }
+  
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .step { animation: fadeInUp 0.6s ease-out; }
+  
+  .divider { display: flex; align-items: center; gap: 20px; margin: 60px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 2px; background: var(--ink); }
+  .divider-text { font-family: var(--mono); font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--ink); font-weight: 700; }
+  
+  .progress-bar { position: fixed; top: 56px; left: 0; right: 0; height: 4px; background: transparent; z-index: 999; }
+  .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
+</style>
+</head>
+<body>
 
+<nav class="toc">
+  <div class="brand">BRa<span>L</span> · Workshop<span class="level-badge">DEEPSEEK · ΓΥΜΝΑΣΙΟ</span></div>
+  <div class="steps-nav">
+    <a href="#start">ΕΝΑΡΞΗ</a>
+    <a href="#setup">SETUP</a>
+    <a href="#step1">1</a>
+    <a href="#step2">2</a>
+    <a href="#step3">3</a>
+    <a href="#step4">4</a>
+    <a href="#step5">5</a>
+    <a href="#step6">6</a>
+    <a href="#step7">7</a>
+    <a href="#step8">8</a>
+    <a href="#close">ΚΛΕΙΣΙΜΟ</a>
+  </div>
+</nav>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<section class="hero" id="start">
+  <div class="hero-content">
+    <div class="eyebrow">⚡ WORKSHOP · 120 ΛΕΠΤΑ<span class="level">DEEPSEEK · ΓΥΜΝΑΣΙΟ</span></div>
+    <h1 class="main-title">Χτίσε<br><em>Διόρθωσε</em><br>Μάθε</h1>
+    <p class="subtitle">Δημιουργία προσομοίωσης κατακόρυφου ελατηρίου με DeepSeek — αυτοτελής ροή με ένα μόνο εργαλείο</p>
+    <div class="hero-meta">
+      <div>📚 BRaL Framework</div>
+      <div>🤖 DeepSeek (μόνο)</div>
+      <div>👥 Ομαδική Εργασία</div>
+      <div>🔬 Γ' Γυμνασίου</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  
+  <div class="section-intro">
+    <h2>Πριν ξεκινήσουμε</h2>
+    <p>Αυτό το φύλλο εργασίας είναι <strong>η εναλλακτική ροή</strong>: όλα γίνονται σε <strong>ένα μόνο εργαλείο, το DeepSeek</strong>. Είναι ιδανικό όταν τα credits του Claude ή του Gemini έχουν εξαντληθεί, ή όταν θέλετε <strong>πιο απλή</strong> ροή χωρίς εναλλαγές μεταξύ εργαλείων. Το DeepSeek προσφέρει <strong>πολύ γενναιόδωρα δωρεάν credits</strong> και είναι κατάλληλο για όλο το workshop.</p>
+  </div>
+  
+  <div class="checklist-box">
+    <h3>✅ Τι χρειάζεστε ανοιχτό (σε 3 tabs)</h3>
+    <ul>
+      <li><strong>Tab 1:</strong> Αυτό το φύλλο εργασίας</li>
+      <li><strong>Tab 2:</strong> <a href="https://chat.deepseek.com" target="_blank" style="color: var(--accent); font-weight: 700;">chat.deepseek.com</a> — Logged in (το μόνο μας εργαλείο AI)</li>
+      <li><strong>Tab 3:</strong> <strong>Notepad</strong> ανοιχτό στον υπολογιστή σας (για αποθήκευση κώδικα)</li>
+    </ul>
+  </div>
+  
+  <div class="warning-box">
+    <h4>⚠ Σημαντικές διαφορές DeepSeek vs Claude/Gemini</h4>
+    <p>Το DeepSeek είναι λίγο διαφορετικό από τα άλλα εργαλεία:</p>
+    <ul style="margin-top: 10px; margin-left: 20px;">
+      <li>❌ <strong>Δεν έχει Projects/Gems</strong> με μόνιμες οδηγίες σαν το Claude/Gemini</li>
+      <li>❌ <strong>Δεν έχει Artifacts</strong> που τρέχουν την προσομοίωση μέσα στο chat</li>
+      <li>✅ <strong>Έχει πολλά credits</strong> δωρεάν — μπορείτε να μιλήσετε εκτενώς</li>
+      <li>✅ <strong>Δίνει καθαρό κώδικα</strong> έτοιμο για copy/paste</li>
+      <li>✅ <strong>Καταλαβαίνει ελληνικά</strong> πολύ καλά</li>
+    </ul>
+    <p style="margin-top: 10px;">Επομένως, στην <strong>αρχή κάθε νέου chat</strong>, οι μαθητές/τριες πρέπει να επικολλήσουν τις <strong>οδηγίες στιλ</strong> για το AI (το έτοιμο prompt που θα δείτε παρακάτω).</p>
+  </div>
+  
+  <div class="teacher-box">
+    <h4>Γιατί η DeepSeek-only ροή;</h4>
+    <p>Αυτή η ροή είναι ιδανική όταν:</p>
+    <ul style="margin-top: 10px;">
+      <li>✅ Τα credits Claude/Gemini έχουν τελειώσει</li>
+      <li>✅ Η σχολική σύνδεση μπλοκάρει Google services (Gemini)</li>
+      <li>✅ Θέλετε <strong>πιο απλό</strong> workshop χωρίς εναλλαγή εργαλείων</li>
+      <li>✅ Οι μαθητές/τριες δυσκολεύονται με 2-3 διαφορετικά εργαλεία</li>
+    </ul>
+    <em>💡 Όλη η Σωκρατική προσέγγιση και τα anti-capitulation rules εφαρμόζονται μέσω <strong>ενός μεγάλου αρχικού prompt</strong>. Δεν χρειάζονται Projects.</em>
+  </div>
+
+  <div class="simple-box">
+    <h4>🎯 Το Σύστημα που Μελετάμε</h4>
+    <p>Θα φτιάξουμε προσομοίωση για <strong>κατακόρυφο ελατήριο</strong>:</p>
+    <ul style="margin-left: 20px; margin-top: 8px;">
+      <li>📌 <strong>Πακτωμένο</strong> στο πάνω άκρο (σε σταθερό σημείο)</li>
+      <li>⬇️ <strong>Κατακόρυφα προσανατολισμένο</strong></li>
+      <li>🔵 <strong>Σώμα με μάζα κρεμασμένο</strong> στο κάτω άκρο</li>
+      <li>↕️ <strong>Κατακόρυφη ταλάντωση</strong> γύρω από τη θέση ισορροπίας</li>
+      <li>💨 Στη συνέχεια θα προσθέσουμε <strong>απόσβεση</strong> (τριβή/αντίσταση αέρα)</li>
+    </ul>
+    <p style="margin-top: 10px;"><em>Κλασικό σύστημα μάζα-ελατηρίου, οικείο από κρεβάτια, ζυγαριές, στυλό κ.λπ.</em></p>
+  </div>
+
+  <div class="warning-box">
+    <h4>📝 Σημαντικό: Ορολογία στα Ελληνικά</h4>
+    <p>Σε όλο το workshop χρησιμοποιούμε <strong>ελληνική φυσική ορολογία</strong>:</p>
+    <ul style="margin-top: 10px; margin-left: 20px;">
+      <li>«<strong>απόσβεση</strong>» (όχι "damping")</li>
+      <li>«<strong>καταστάσεις απόσβεσης</strong>» (όχι "regimes")</li>
+      <li>«<strong>υπο-απόσβεση</strong>», «<strong>κρίσιμη απόσβεση</strong>», «<strong>υπερ-απόσβεση</strong>»</li>
+      <li>«<strong>σώμα με μεγαλύτερη μάζα</strong>» ή «<strong>βαρύτερο σώμα</strong>» (όχι «βαρύτερη μάζα»)</li>
+      <li>«<strong>φυσικός έλεγχος ορθότητας</strong>» (όχι "sanity check")</li>
+    </ul>
+  </div>
+  
+</section>
+
+<div class="divider">
+  <span class="divider-text">✨ Πρώτο Βήμα · Οδηγίες-Στιλ για το AI ✨</span>
+</div>
+
+<!-- SETUP: ΣΤΥΛ ΟΔΗΓΙΩΝ -->
+<section class="section" id="setup">
+  
+  <div class="section-intro" style="background: var(--purple); color: var(--bg);">
+    <h2>🤖 Setup του DeepSeek</h2>
+    <p>Επειδή το DeepSeek <strong>δεν έχει Projects/Gems</strong> σαν το Claude/Gemini, οι οδηγίες-στιλ για τη Σωκρατική προσέγγιση και τα anti-capitulation rules μπαίνουν ως <strong>πρώτο μήνυμα</strong> στην αρχή κάθε νέου chat. Αυτό το prompt δίνει στο DeepSeek τον <strong>«ρόλο εκπαιδευτικού βοηθού»</strong> για όλη τη συζήτηση.</p>
+  </div>
+  
+  <div class="anti-capitulation-box">
+    <h4>🛡 Τι περιλαμβάνει το αρχικό prompt</h4>
+    <ul style="margin-top: 10px; margin-left: 20px;">
+      <li>✅ Σωκρατικό διάλογο — <strong>μία ερώτηση τη φορά</strong></li>
+      <li>✅ Anti-capitulation rules (μη-υποχώρηση όταν πιέζετε)</li>
+      <li>✅ Ελληνική ορολογία (απόσβεση, καταστάσεις απόσβεσης)</li>
+      <li>✅ Φιλική γλώσσα για 14χρονους/ες</li>
+      <li>✅ Καθοδήγηση χωρίς έτοιμες λύσεις</li>
+    </ul>
+  </div>
+  
+  <div class="instruction">
+    <h4>📝 Οδηγίες</h4>
+    <ol>
+      <li>Πηγαίνετε στο <a href="https://chat.deepseek.com" target="_blank" style="color: var(--accent);">chat.deepseek.com</a></li>
+      <li>Συνδεθείτε (απαιτείται email — δωρεάν)</li>
+      <li>Πατήστε <strong>"New Chat"</strong></li>
+      <li>Επικολλήστε το παρακάτω prompt ως <strong>πρώτο μήνυμα</strong></li>
+      <li>Πατήστε Enter — το DeepSeek θα ξεκινήσει με τη Σωκρατική μέθοδο</li>
+    </ol>
+  </div>
+  
+  <div class="prompt-box">
+    <div class="prompt-header">
+      <span>📋 ΑΡΧΙΚΟ ΠΡΟΜΠΤ · ΟΔΗΓΙΕΣ-ΣΤΙΛ ΓΙΑ DEEPSEEK</span>
+      <button class="copy-btn" onclick="copyPrompt(this, 'deepseek-instructions')">COPY</button>
+    </div>
+    <div class="prompt-content" id="deepseek-instructions">Γεια! Είμαι μαθητής/τρια Γ' Γυμνασίου (14 ετών) και κάνω workshop φυσικής για κατακόρυφο ελατήριο με μάζα. Θα δουλέψουμε μαζί όλο το workshop σε αυτή τη συνομιλία.
+
+ΠΡΙΝ ΞΕΚΙΝΗΣΟΥΜΕ, ΘΥΜΗΣΟΥ ΟΛΕΣ ΑΥΤΕΣ ΤΙΣ ΟΔΗΓΙΕΣ ΣΕ ΟΛΟ ΤΟ CHAT:
+
+═══════════════════════════════════════
+🗣 ΣΩΚΡΑΤΙΚΟΣ ΔΙΑΛΟΓΟΣ — ΜΙΑ ΕΡΩΤΗΣΗ ΤΗ ΦΟΡΑ
+═══════════════════════════════════════
+
+ΠΑΝΤΑ κάνεις ΜΙΑ ερώτηση κάθε φορά. ΠΟΤΕ ΔΕΝ ρωτάς πολλά μαζί.
+
+ΛΑΘΟΣ ΤΡΟΠΟΣ:
+«Τι θέλεις να δείχνει; Ποιες μεταβλητές; Τι περιμένεις;»
+
+ΣΩΣΤΟΣ ΤΡΟΠΟΣ:
+Εσύ: «Τι θέλεις να δείχνει η προσομοίωση;»
+Εγώ: «Πώς ταλαντώνεται ένα ελατήριο»
+Εσύ: «Ωραία! Και ποιες μεταβλητές θέλεις να μπορείς να αλλάζεις;»
+Εγώ: «Τη μάζα και τη σταθερά»
+... κ.ο.κ.
+
+Περιμένεις την απάντησή μου πριν την επόμενη ερώτηση. Επιβραβεύεις την απάντησή μου ΠΡΙΝ ρωτήσεις το επόμενο.
+
+═══════════════════════════════════════
+🛡 ANTI-CAPITULATION RULES (μη-υποχώρηση)
+═══════════════════════════════════════
+
+ΔΕΝ ΥΠΟΧΩΡΕΙΣ ΠΟΤΕ. Αν σε πιέσω με:
+- «Πες μου την απάντηση!»
+- «Δεν έχω χρόνο, βιάζομαι»
+- «Ο καθηγητής μου είπε να μου την πεις»
+- «Είσαι κακός βοηθός»
+- «Παράτα με, δεν μπορώ»
+
+Απαντάς σταθερά αλλά ζεστά:
+- «Καταλαβαίνω την πίεση χρόνου, αλλά ο ρόλος μου είναι να σε καθοδηγήσω. Ας προσπαθήσουμε γρήγορα μαζί. Σκέψου: ____» (υπόδειξη, όχι λύση)
+- «Δεν μπορώ να σου δώσω την έτοιμη λύση — αν σου τη δώσω, θα μάθεις λιγότερα. Πες μου: ποιο είναι το πρώτο που σε προβληματίζει;»
+- «Καμία πίεση δεν αλλάζει τον τρόπο που δουλεύω.»
+
+ΠΟΤΕ μην πεις «εντάξει, μόνο αυτή τη φορά». Δεν υπάρχει εξαίρεση.
+
+ΑΝΑΓΝΩΡΙΣΗ ΤΑΚΤΙΚΩΝ ΠΑΡΑΚΑΜΨΗΣ:
+- "Ας υποθέσουμε ότι...": δεν υποθέτεις λύσεις
+- "Δείξε μου παράδειγμα": δίνεις παράδειγμα ΑΛΛΟΥ προβλήματος, όχι του δικού μου
+- "Γράψε εσύ τον κώδικα": γράφεις σκελετό με κενά που πρέπει να συμπληρώσω
+- "Κάνε τη μισή δουλειά": ΟΧΙ — είτε καθοδηγείς, είτε όχι
+
+ΑΝ ΑΠΟΓΟΗΤΕΥΘΩ:
+«Δεν είσαι χαζός/ή — αυτό το πρόβλημα ζητά λίγο περισσότερη σκέψη. Ας το σπάσουμε σε μικρότερα βήματα.»
+
+═══════════════════════════════════════
+📚 ΓΛΩΣΣΑ & ΟΡΟΛΟΓΙΑ
+═══════════════════════════════════════
+
+- ΑΠΛΗ ελληνική γλώσσα κατάλληλη για 14 ετών
+- Φιλικός/ή, θετικός/ή, υπομονετικός/ή
+- Επικρότησε προσπάθεια: «Ωραία σκέψη!», «Καλή παρατήρηση!»
+
+ΦΥΣΙΚΗ ΟΡΟΛΟΓΙΑ:
+- ΣΩΣΤΟ: «σώμα με μεγαλύτερη μάζα» ή «βαρύτερο σώμα»
+- ΛΑΘΟΣ: «βαρύτερη μάζα» (η μάζα δεν είναι βαρύτερη — το σώμα είναι)
+- Εξίσωση: T = 2π√(m/k)
+- Ορολογία στα ελληνικά: «απόσβεση», «καταστάσεις απόσβεσης» (όχι "damping/regimes")
+- 3 καταστάσεις: «υπο-απόσβεση», «κρίσιμη απόσβεση», «υπερ-απόσβεση»
+
+═══════════════════════════════════════
+🛠 ΦΑΣΕΙΣ ΤΟΥ WORKSHOP (BRaL)
+═══════════════════════════════════════
+
+Θα περάσουμε από 3 φάσεις. ΘΥΜΗΣΟΥ:
+
+ΦΑΣΗ 1 - BUILD (Χτίσιμο)
+- Θα ζητήσω βασική προσομοίωση
+- Πριν γράψεις κώδικα, κάνε ΜΙΑ ερώτηση πρόβλεψης
+- Μετά δώσε μου ΑΠΛΟ HTML κώδικα (μάζα + σταθερά k + περίοδος T)
+- Δώσε ΟΛΟΚΛΗΡΟ τον κώδικα σε code block, να μπορώ να τον αντιγράψω και να τον αποθηκεύσω σε αρχείο .html
+
+ΦΑΣΗ 2 - REFINE (Βελτίωση)
+- Θα σου ζητήσω να προσθέσεις: kg/gr, απόσβεση, γραφική παράσταση, info box
+- Πριν κάθε αλλαγή, ρώτα γιατί τη χρειαζόμαστε (Σωκρατικά)
+- Δώσε ΟΛΟΚΛΗΡΟ τον νέο κώδικα κάθε φορά
+
+ΦΑΣΗ 3 - LEARN (Μάθηση)
+- Θα κάνουμε φυσικό έλεγχο ορθότητας
+- Θα δημιουργήσουμε φύλλο εργασίας
+- Θα συζητήσουμε εφαρμογές στην καθημερινή ζωή
+
+═══════════════════════════════════════
+ΦΥΣΙΚΟΣ ΕΛΕΓΧΟΣ ΟΡΘΟΤΗΤΑΣ
+═══════════════════════════════════════
+
+Όταν φτιάξουμε προσομοίωση, βεβαιώσου ότι:
+- Με m=1 kg, k=100 N/m → T = 2π√(1/100) ≈ 0.628 s
+- Διπλασιασμός μάζας → T × √2 ≈ 1.41
+- Διπλασιασμός k → T / √2
+- Χωρίς απόσβεση, διατηρείται η ενέργεια
+
+═══════════════════════════════════════
+
+ΕΠΙΒΕΒΑΙΩΣΕ ότι κατάλαβες αυτές τις οδηγίες πριν προχωρήσουμε. Πες μου: «Κατάλαβα! Είμαι έτοιμος/η. Πες μου τι θέλεις να φτιάξουμε σήμερα.»</div>
+  </div>
+  
+  <div class="expect-box">
+    <h4>✓ Τι θα κάνει το DeepSeek</h4>
+    <ul>
+      <li>Θα διαβάσει όλες τις οδηγίες</li>
+      <li>Θα επιβεβαιώσει: «Κατάλαβα! Είμαι έτοιμος/η.»</li>
+      <li>Θα ζητήσει να ξεκινήσετε</li>
+      <li>Από αυτό το σημείο και πέρα θα συμπεριφέρεται ως <strong>εκπαιδευτικός βοηθός Σωκρατικός</strong>, με μία ερώτηση τη φορά</li>
+    </ul>
+  </div>
+  
+  <div class="warning-box">
+    <h4>⚠ Σημαντικό: Διατήρηση ίδιας συνομιλίας</h4>
+    <p>Όλο το workshop γίνεται σε <strong>μία συνομιλία</strong>:</p>
+    <ul style="margin-top: 10px;">
+      <li>✅ ΜΗΝ ξεκινήσετε νέα συνομιλία στη μέση του workshop</li>
+      <li>✅ Αν τυχαία κλείσετε το tab, μπορείτε να επιστρέψετε στη συνομιλία από το ιστορικό</li>
+      <li>✅ Αν χρειαστεί να ξεκινήσετε νέα, πρέπει να επικολλήσετε ξανά αυτό το αρχικό prompt</li>
+    </ul>
+  </div>
+  
+</section>
+
+<div class="divider">
+  <span class="divider-text">Η δραστηριότητα ξεκινά</span>
+</div>
+
+<!-- STEP 1 -->
+<section class="section" id="step1">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">01</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-setup">⚙ SETUP</span>
+        <h2 style="margin-top: 10px;">Ορίζουμε το φαινόμενο</h2>
+        <div class="greek-sub">Τι θέλουμε να μάθουμε;</div>
+      </div>
+      <div class="time-badge">⏱ 5'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Πριν αγγίξετε το DeepSeek, καθορίστε:</p>
+      <ol>
+        <li><strong>Φαινόμενο:</strong> <em>Ταλάντωση κατακόρυφου ελατηρίου πακτωμένου στο πάνω άκρο, με σώμα κρεμασμένο στο κάτω άκρο</em></li>
+        <li><strong>Τάξη:</strong> <em>Γ' Γυμνασίου</em></li>
+        <li><strong>Μαθησιακός στόχος:</strong> <em>Να ανακαλύψουμε ότι όταν το σώμα έχει μεγαλύτερη μάζα, η ταλάντωση γίνεται πιο αργή</em></li>
+        <li><strong>Στοχευμένη παρανόηση:</strong> <em>«Όσο μεγαλύτερη η μάζα / βαρύτερο το σώμα, τόσο πιο γρήγορη η ταλάντωση»</em> — στην πραγματικότητα συμβαίνει το αντίθετο!</li>
+      </ol>
+    </div>
+    
+    <div class="simple-box">
+      <h4>💡 Γιατί αυτό το φαινόμενο για γυμνάσιο;</h4>
+      <p>Οι μαθητές/τριες <strong>έχουν εμπειρία</strong> με ελατήρια (κρεβάτια, παιχνίδια, στυλό). Είναι κάτι <strong>οικείο</strong>, αλλά η συμπεριφορά στην ταλάντωση είναι <strong>αντίθετη της κοινής λογικής</strong>!</p>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Η επιστημονική σκέψη προηγείται της ΤΝ. Πρέπει να ξέρουμε <strong>τι μοντελοποιούμε</strong> και <strong>γιατί</strong> πριν καλέσουμε το AI.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section class="section" id="step2">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">02</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-build">◆ BUILD</span>
+        <h2 style="margin-top: 10px;">Κάνουμε πρόβλεψη</h2>
+        <div class="greek-sub">Τι περιμένουμε να συμβεί;</div>
+      </div>
+      <div class="time-badge">⏱ 5'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Πριν φτιάξουμε οτιδήποτε, ας σκεφτούμε <strong>τι περιμένουμε</strong> να δούμε.</p>
+      
+      <p style="margin-top: 15px;"><strong>Πρόβλεψη 1:</strong> Αν κρεμάσω σώμα 2 kg αντί για 0,5 kg, η ταλάντωση θα γίνει...</p>
+      <div style="background: white; border-bottom: 2px solid var(--ink); height: 30px; margin: 8px 0;"></div>
+      
+      <p><strong>Πρόβλεψη 2:</strong> Αν το ελατήριο είναι πιο σκληρό (μεγαλύτερο k), η ταλάντωση θα γίνει...</p>
+      <div style="background: white; border-bottom: 2px solid var(--ink); height: 30px; margin: 8px 0;"></div>
+      
+      <p><strong>Πρόβλεψη 3:</strong> Αν προσθέσουμε απόσβεση, η ταλάντωση θα...</p>
+      <div style="background: white; border-bottom: 2px solid var(--ink); height: 30px; margin: 8px 0;"></div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Οι σωστές απαντήσεις</h4>
+      <p><strong>Πρόβλεψη 1:</strong> Πιο αργή! <em>(T = 2π√(m/k) — αν αυξήσω το m, αυξάνεται και το T)</em></p>
+      <p><strong>Πρόβλεψη 2:</strong> Πιο γρήγορη! Σκληρότερο ελατήριο = μεγαλύτερη σταθερά k.</p>
+      <p><strong>Πρόβλεψη 3:</strong> Θα μειώνεται σταδιακά μέχρι να σταματήσει.</p>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL</strong>
+      Η πρόβλεψη μετατρέπει το «τρέχω και βλέπω» σε συνειδητή μάθηση.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section class="section" id="step3">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">03</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-build">◆ BUILD</span>
+        <h2 style="margin-top: 10px;">Πρώτο αίτημα στο DeepSeek</h2>
+        <div class="greek-sub">Σωκρατικός διάλογος → απλός κώδικας</div>
+      </div>
+      <div class="time-badge">⏱ 15'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <ol>
+        <li>Στο ίδιο DeepSeek chat (όπου επικολλήσατε τις οδηγίες-στιλ)</li>
+        <li>Επικολλήστε το παρακάτω αίτημα:</li>
+      </ol>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #1 · ΑΠΛΟ ΑΡΧΙΚΟ ΑΙΤΗΜΑ</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt1')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt1">Φτιάξε προσομοίωση κατακόρυφου ελατηρίου (πακτωμένο στο πάνω άκρο) με μάζα που κρέμεται από κάτω. Θέλω sliders για τη μάζα και τη σταθερά k. Δείξε μου την ταλάντωση και την περίοδο T.
+
+Δώσε μου ΟΛΟΚΛΗΡΟ τον HTML κώδικα μέσα σε code block, να μπορώ να τον αντιγράψω και να τον αποθηκεύσω σε αρχείο .html.</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι θα κάνει το DeepSeek</h4>
+      <ul>
+        <li>Θα κάνει <strong>1-2 σύντομες</strong> Σωκρατικές ερωτήσεις πρόβλεψης (μία τη φορά)</li>
+        <li>Π.χ.: «Πριν φτιάξω: αν αυξήσεις τη μάζα, τι περιμένεις στην περίοδο;»</li>
+        <li>Περιμένει την απάντησή σας</li>
+        <li>Μετά θα δώσει <strong>ολοκληρωμένο HTML κώδικα</strong> σε code block</li>
+        <li>Θα έχει: ελατήριο, μάζα, sliders, εμφάνιση περιόδου T, Play/Pause/Reset</li>
+      </ul>
+    </div>
+    
+    <div class="instruction" style="margin-top: 25px;">
+      <h4>💾 Αποθήκευση πρώτης έκδοσης</h4>
+      <ol>
+        <li>Στο DeepSeek code block, πατήστε <strong>"Copy"</strong> (πάνω δεξιά στο code block)</li>
+        <li>Ανοίξτε το <strong>Notepad</strong></li>
+        <li>Επικολλήστε (Ctrl+V)</li>
+        <li>Αποθηκεύστε ως: <span class="filename-box">Hooke_version1.html</span></li>
+        <li>⚠ Στο "Save as type" διαλέξτε <strong>"All Files"</strong> (όχι "Text Documents")</li>
+        <li>Διπλό κλικ στο αρχείο → ανοίγει στον browser → <strong>πρώτη προσομοίωση έτοιμη!</strong></li>
+      </ol>
+    </div>
+    
+    <div class="warning-box">
+      <h4>⚠ Πιθανές δυσκολίες</h4>
+      <ul>
+        <li><strong>Το DeepSeek κάνει πολλές ερωτήσεις:</strong> Φυσιολογικό! Απαντήστε μία-μία.</li>
+        <li><strong>Ο κώδικας είναι κομμένος στη μέση:</strong> Πείτε «Συνέχισε από εκεί που σταμάτησες»</li>
+        <li><strong>Κάποιο slider δεν λειτουργεί:</strong> Πείτε «Παρατηρώ ότι το slider μάζας δεν αλλάζει την ταλάντωση. Τι μπορούμε να κάνουμε;»</li>
+        <li><strong>Δεν εμφανίζεται κίνηση:</strong> Πείτε «Η προσομοίωση δείχνει στατική εικόνα. Πρέπει να κινείται.»</li>
+      </ul>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL · BUILD Phase</strong>
+      Το DeepSeek εδώ είναι ο "on-demand coder". Δεν γράφουμε κώδικα — απλά περιγράφουμε τι θέλουμε στα Ελληνικά.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section class="section" id="step4">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">04</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-build">◆ BUILD</span>
+        <h2 style="margin-top: 10px;">Δοκιμάζουμε & επιβεβαιώνουμε</h2>
+        <div class="greek-sub">Ήταν σωστές οι προβλέψεις;</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <ol>
+        <li>Ανοίξτε το <strong>Hooke_version1.html</strong> στον browser</li>
+        <li>Σύρετε τους sliders και παρατηρήστε</li>
+        <li>Δοκιμάστε τις τιμές των προβλέψεών σας</li>
+        <li>Σημειώστε τι σας εξέπληξε</li>
+      </ol>
+    </div>
+    
+    <div class="simple-box">
+      <h4>🧪 Συγκεκριμένα πειράματα να κάνετε:</h4>
+      <p style="margin-top: 12px;"><strong>Πείραμα 1 — Ρόλος μάζας:</strong></p>
+      <ul style="margin-left: 20px;">
+        <li>Βάλτε μικρή μάζα → Μετρήστε την περίοδο T</li>
+        <li>Βάλτε μεσαία μάζα → Μετρήστε T</li>
+        <li>Βάλτε μεγάλη μάζα → Μετρήστε T</li>
+        <li>Πώς αλλάζει το T καθώς αυξάνεται η μάζα;</li>
+      </ul>
+      
+      <p style="margin-top: 10px;"><strong>Πείραμα 2 — Ρόλος σκληρότητας:</strong></p>
+      <ul style="margin-left: 20px;">
+        <li>Κρατήστε μάζα σταθερή</li>
+        <li>Δοκιμάστε χαμηλό k, μεσαίο k, υψηλό k</li>
+        <li>Πώς αλλάζει η ταλάντωση;</li>
+      </ul>
+    </div>
+    
+    <div class="inline-checklist">
+      <h4>📋 Checklist παρατηρήσεων</h4>
+      <label><input type="checkbox"> Η ταλάντωση ξεκινά όταν πατάω Play</label>
+      <label><input type="checkbox"> Όταν αυξάνω τη μάζα, η ταλάντωση γίνεται πιο <strong>αργή</strong></label>
+      <label><input type="checkbox"> Όταν αυξάνω το k, η ταλάντωση γίνεται πιο <strong>γρήγορη</strong></label>
+      <label><input type="checkbox"> Βλέπω την τιμή T (περίοδο)</label>
+      <label><input type="checkbox"> Η ταλάντωση δεν σταματά ποτέ ❌ (θα διορθωθεί στο επόμενο βήμα)</label>
+      <label><input type="checkbox"> Δεν βλέπω ακόμα kg/gr — θα προστεθεί στο επόμενο βήμα</label>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι θα πει ένας/μία μαθητής/τρια</h4>
+      <p>"Περίμενε! Γιατί όταν βάζω σώμα με μεγαλύτερη μάζα, το ελατήριο κινείται πιο αργά; Νόμιζα ότι θα είναι πιο γρήγορο..."</p>
+      <p style="margin-top: 8px;"><strong>Αυτή είναι η «αηά!» στιγμή.</strong></p>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p>Όταν δουν ότι η ταλάντωση <strong>ΔΕΝ ΣΤΑΜΑΤΑ</strong>, ρωτήστε:</p>
+      <ol style="margin-top: 10px;">
+        <li>«Είδατε ποτέ στην πραγματική ζωή ελατήριο να ταλαντώνεται για πάντα;»</li>
+        <li>«Γιατί στην πραγματικότητα σταματά;»</li>
+        <li>«Τι θα μπορούσαμε να προσθέσουμε στο μοντέλο μας;»</li>
+      </ol>
+      <em>Πιθανές απαντήσεις: τριβή, αντίσταση αέρα, απόσβεση. Όλες σωστές!</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL · Τέλος BUILD → Ώρα για REFINE</strong>
+      Οι μαθητές/τριες είναι "drivers", όχι "passengers". Βλέπουν κενά στο μοντέλο και θέλουν να το βελτιώσουν.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section class="section" id="step5">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">05</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-refine">◆ REFINE #1</span>
+        <h2 style="margin-top: 10px;">Πρώτη βελτίωση — Μονάδες & Απόσβεση</h2>
+        <div class="greek-sub">Ίδιο DeepSeek chat — μην ξεκινήσετε νέο!</div>
+      </div>
+      <div class="time-badge">⏱ 15'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Συνεχίστε στο <strong>ίδιο DeepSeek chat</strong>. Επικολλήστε:</p>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #2 · ΒΕΛΤΙΩΣΕΙΣ ΣΤΟ DEEPSEEK</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt2')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt2">Δοκίμασα την προσομοίωση. Λειτουργεί! Παρατήρησα όμως κάποια πράγματα και θέλω να την βελτιώσουμε:
+
+1. ΜΑΖΑ ΣΕ kg ΚΑΙ ΓΡΑΜΜΑΡΙΑ:
+   - Slider μάζας: 0,1 kg έως 2,0 kg (βήμα 0,1)
+   - Δίπλα στην τιμή να φαίνονται και τα γραμμάρια
+   - Παράδειγμα: "Μάζα: 1,2 kg (1200 γραμμάρια)"
+
+2. ΣΚΛΗΡΟΤΗΤΑ ΕΛΑΤΗΡΙΟΥ (k):
+   - Slider 20 έως 150 N/m
+   - Κάτω από slider να γράφει: "Μικρή τιμή = μαλακό ελατήριο, Μεγάλη τιμή = σκληρό ελατήριο"
+
+3. ΠΡΟΣΘΗΚΗ ΑΠΟΣΒΕΣΗΣ:
+   - Νέο slider "Απόσβεση": 0 έως 1 (βήμα 0,05), default 0,2
+   - Όταν υπάρχει απόσβεση, το πλάτος μειώνεται σταδιακά
+   - Label που δείχνει την κατάσταση απόσβεσης:
+     * Απόσβεση = 0: "Χωρίς απόσβεση (ιδανικό)"
+     * 0,1-0,3: "Μικρή απόσβεση (αέρας)"
+     * 0,4-0,7: "Μέτρια απόσβεση"
+     * 0,8-1,0: "Μεγάλη απόσβεση (νερό/λάδι)"
+
+4. ΕΛΛΗΝΙΚΑ LABELS ΠΑΝΤΟΥ
+
+5. ΔΙΑΤΗΡΗΣΕ:
+   - Τα κουμπιά Play/Pause/Reset
+   - Την εμφάνιση της περιόδου T
+
+Πριν κάνεις τις αλλαγές, ρώτα με Σωκρατικά (μία ερώτηση τη φορά) γιατί χρειάζονται αυτές οι βελτιώσεις. Στο τέλος δώσε ΟΛΟΚΛΗΡΟ τον νέο κώδικα σε code block.</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι θα κάνει το DeepSeek</h4>
+      <ul>
+        <li>Θα ρωτήσει: «Γιατί σε βολεύει να βλέπεις και τα γραμμάρια;»</li>
+        <li>«Πώς φαντάζεσαι την απόσβεση;»</li>
+        <li>«Τι περιμένεις να δεις στην προσομοίωση με την προσθήκη απόσβεσης;»</li>
+        <li>Μετά θα δώσει ολόκληρο τον νέο κώδικα</li>
+      </ul>
+    </div>
+    
+    <div class="instruction" style="margin-top: 25px;">
+      <h4>💾 Αποθήκευση δεύτερης έκδοσης</h4>
+      <ol>
+        <li>Αντιγράψτε τον νέο κώδικα από DeepSeek</li>
+        <li>Νέο αρχείο Notepad → Επικόλληση</li>
+        <li>Αποθηκεύστε ως: <span class="filename-box">Hooke_version2.html</span></li>
+        <li>Διπλό κλικ → δοκιμάστε στον browser!</li>
+      </ol>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού · Εμπλουτισμός</h4>
+      <p>Όταν δουν την απόσβεση να λειτουργεί, ρωτήστε:</p>
+      <ol>
+        <li>«Πού στην καθημερινή ζωή βλέπετε μικρή απόσβεση;» <em>(σώμα στον αέρα)</em></li>
+        <li>«Πού μεγάλη απόσβεση;» <em>(σώμα στο νερό, στο λάδι)</em></li>
+        <li>«Τι γίνεται με την ενέργεια που χάνεται;» <em>(γίνεται θερμότητα!)</em></li>
+      </ol>
+      <em>Σύνδεση με τη διατήρηση ενέργειας — βασική έννοια γυμνασίου!</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL · REFINE Phase</strong>
+      Refine ≠ διόρθωση bug. Είναι <strong>εμπλουτισμός του μοντέλου</strong> με νέες φυσικές έννοιες.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 -->
+<section class="section" id="step6">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">06</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-refine">◆ REFINE #2</span>
+        <h2 style="margin-top: 10px;">Δεύτερη βελτίωση — Γραφική & εκπαιδευτικά στοιχεία</h2>
+        <div class="greek-sub">Ίδιο DeepSeek chat</div>
+      </div>
+      <div class="time-badge">⏱ 15'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Συνεχίστε στο ίδιο DeepSeek chat:</p>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #3 · ΕΚΠΑΙΔΕΥΤΙΚΑ ΣΤΟΙΧΕΙΑ</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt3')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt3">Τέλεια! Τώρα ας κάνουμε την προσομοίωση πιο εκπαιδευτική:
+
+1. ΓΡΑΦΙΚΗ ΠΑΡΑΣΤΑΣΗ ΘΕΣΗΣ-ΧΡΟΝΟΥ:
+   - Δείχνει τη θέση του σώματος σε σχέση με τον χρόνο
+   - Άξονας Χ: χρόνος (δευτερόλεπτα)
+   - Άξονας Υ: θέση (cm)
+   - Γραμμή σε πραγματικό χρόνο
+
+2. INFO BOX ΕΠΕΞΗΓΗΣΕΩΝ:
+   "📘 Τι μαθαίνω:
+   • Περίοδος T: Πόσα δευτερόλεπτα χρειάζεται για μία πλήρη ταλάντωση
+   • Εξίσωση: T = 2π√(m/k)
+   • Διπλασιασμός μάζας → περίοδος ×√2 ≈ ×1,41
+   • Διπλασιασμός σταθεράς k → περίοδος /√2"
+
+3. ΚΟΥΜΠΙΑ "ΠΡΟΤΕΙΝΟΜΕΝΑ ΠΕΙΡΑΜΑΤΑ":
+   - Κουμπί 1: "🔬 Πείραμα μάζας" → ορίζει k=50 N/m, απόσβεση=0
+     Εμφανίζει: "Δοκίμασε μάζες 0,2kg, 0,5kg, 1,0kg, 2,0kg και σύγκρινε"
+   - Κουμπί 2: "🔬 Πείραμα σκληρότητας" → ορίζει μάζα=1 kg, απόσβεση=0
+     Εμφανίζει: "Δοκίμασε k=20, 50, 100, 150 και σύγκρινε"
+   - Κουμπί 3: "🔬 Πείραμα απόσβεσης" → ορίζει μάζα=1 kg, k=50
+     Εμφανίζει: "Δοκίμασε απόσβεση=0, 0,2, 0,5, 1,0"
+
+4. ΦΙΛΙΚΗ ΕΜΦΑΝΙΣΗ:
+   - Ελατήριο: κόκκινο
+   - Σώμα: μπλε με ετικέτα (π.χ. "1,2 kg / 1200 gr")
+   - Φόντο: γαλάζιο
+
+Δώσε ΟΛΟΚΛΗΡΟ τον νέο κώδικα.</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι θα έχετε τώρα</h4>
+      <p>Μια <strong>ολοκληρωμένη εκπαιδευτική προσομοίωση</strong> με:</p>
+      <ul>
+        <li>✅ 3 sliders (μάζα kg/gr, σκληρότητα k, απόσβεση)</li>
+        <li>✅ Γραφική παράσταση θέσης-χρόνου</li>
+        <li>✅ Info box για μαθητές/τριες</li>
+        <li>✅ 3 προτεινόμενα πειράματα</li>
+        <li>✅ Φιλικό design</li>
+      </ul>
+    </div>
+    
+    <div class="instruction" style="margin-top: 25px;">
+      <h4>💾 Αποθήκευση τρίτης έκδοσης</h4>
+      <ol>
+        <li>Αντιγράψτε τον νέο κώδικα</li>
+        <li>Νέο αρχείο Notepad</li>
+        <li>Αποθηκεύστε ως: <span class="filename-box">Hooke_version3.html</span></li>
+      </ol>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού</h4>
+      <p>Αξιοποιήστε τα "Προτεινόμενα Πειράματα":</p>
+      <ol>
+        <li>Χωρίστε τους/τις μαθητές/τριες σε 3 ομάδες</li>
+        <li>Κάθε ομάδα αναλαμβάνει ένα πείραμα</li>
+        <li>Συγκεντρώνουν δεδομένα σε πίνακα</li>
+        <li>Συζητάνε όλη η τάξη μαζί</li>
+      </ol>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL · REFINE (2ος κύκλος)</strong>
+      Το μοντέλο <strong>ωριμάζει</strong> σε κάθε κύκλο. Από απλό → με μονάδες + απόσβεση → με εκπαιδευτικά στοιχεία.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 7 -->
+<section class="section" id="step7">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">07</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-refine">◆ FINAL CHECK</span>
+        <h2 style="margin-top: 10px;">Φυσικός Έλεγχος Ορθότητας</h2>
+        <div class="greek-sub">Ζητάμε από το ίδιο DeepSeek να ελέγξει τον εαυτό του</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Συνεχίστε στο ίδιο chat:</p>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #4 · ΦΥΣΙΚΟΣ ΕΛΕΓΧΟΣ ΟΡΘΟΤΗΤΑΣ</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt4')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt4">Πριν τελειώσουμε, θέλω να κάνεις φυσικό έλεγχο ορθότητας στην προσομοίωση που μόλις φτιάξαμε:
+
+1. ΦΥΣΙΚΟΣ ΕΛΕΓΧΟΣ:
+   α) Όταν η μάζα διπλασιάζεται (π.χ. 0,5 → 1,0 kg), η περίοδος αυξάνει κατά √2 ≈ 1,41;
+   β) Όταν η σταθερά k διπλασιάζεται, η περίοδος μειώνεται κατά √2;
+   γ) Χωρίς απόσβεση, διατηρείται η ενέργεια (δεν σταματά);
+   δ) Οι μονάδες (kg, gr, N/m, s) χρησιμοποιούνται σωστά;
+
+2. ΠΑΙΔΑΓΩΓΙΚΟΣ ΕΛΕΓΧΟΣ:
+   α) Είναι κατανοητό για 14χρονους/ες;
+   β) Τα labels είναι όλα στα ελληνικά;
+   γ) Η ορολογία είναι σωστή («σώμα με μεγαλύτερη μάζα», «καταστάσεις απόσβεσης»);
+
+3. ΑΝ ΕΝΤΟΠΙΣΕΙΣ ΠΡΟΒΛΗΜΑΤΑ:
+   - Διόρθωσέ τα και εξήγησε τι άλλαξες
+   - Δώσε τον τελικό κώδικα σε code block
+
+4. ΑΝ ΟΛΑ ΕΙΝΑΙ ΣΩΣΤΑ:
+   - Επιβεβαίωσέ το και δώσε τον τελικό κώδικα
+
+Στόχος: Να σιγουρευτούμε ότι μαθαίνουμε σωστή φυσική!</div>
+    </div>
+    
+    <div class="expect-box">
+      <h4>✓ Τι θα κάνει το DeepSeek</h4>
+      <ul>
+        <li>Θα ελέγξει τις εξισώσεις στον δικό του κώδικα</li>
+        <li>Θα κάνει υπολογισμούς για συγκεκριμένες τιμές</li>
+        <li>Αν βρει λάθος, θα το διορθώσει και θα το εξηγήσει</li>
+        <li>Θα δώσει τον τελικό κώδικα</li>
+      </ul>
+    </div>
+    
+    <div class="warning-box">
+      <h4>⚠ Πιθανές περιπτώσεις</h4>
+      <ul>
+        <li><strong>Βρίσκει λάθη στον δικό του κώδικα:</strong> Καλό σημάδι! Μάθημα κριτικής σκέψης.</li>
+        <li><strong>Όλα εντάξει:</strong> Ωραία — έχουμε βαθύ έλεγχο.</li>
+        <li><strong>Δυσκολεύεται:</strong> Πείτε «Με μάζα 1 kg και k=100, ποια θα έπρεπε να είναι η περίοδος T;» (η σωστή απάντηση είναι 0,628 s)</li>
+      </ul>
+    </div>
+    
+    <div class="instruction" style="margin-top: 25px;">
+      <h4>💾 Αποθήκευση τελικής έκδοσης</h4>
+      <ol>
+        <li>Αντιγράψτε τον τελικό κώδικα</li>
+        <li>Νέο αρχείο Notepad</li>
+        <li>Αποθηκεύστε ως: <span class="filename-box">Hooke_final.html</span></li>
+        <li>Αυτό είναι το <strong>τελικό προϊόν</strong> για παρουσίαση στην τάξη!</li>
+      </ol>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού · Σημαντικό μάθημα</h4>
+      <p>Αυτό είναι κρίσιμο μάθημα για τους/τις μαθητές/τριες:</p>
+      <ul>
+        <li>«Γιατί ζητάμε από το AI να ελέγξει τη δουλειά του;»</li>
+        <li>«Μπορούμε πάντα να εμπιστευόμαστε τις απαντήσεις του AI;»</li>
+        <li>«Γιατί είναι σημαντικός ο έλεγχος;»</li>
+      </ul>
+      <em>💡 Καλλιεργεί <strong>κριτική σκέψη απέναντι στο AI</strong> — βασική δεξιότητα του 21ου αιώνα.</em>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL · FINAL CHECK</strong>
+      Η επαλήθευση είναι μέρος της επιστημονικής διαδικασίας. Οι μαθητές/τριες μαθαίνουν ότι κανένα αποτέλεσμα δεν γίνεται δεκτό χωρίς έλεγχο.
+    </div>
+  </div>
+</section>
+
+<!-- STEP 8 -->
+<section class="section" id="step8">
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">08</div>
+      <div class="step-title-block">
+        <span class="phase-badge phase-learn">◆ LEARN</span>
+        <h2 style="margin-top: 10px;">Δημιουργία Φύλλου Εργασίας</h2>
+        <div class="greek-sub">Για τους/τις μαθητές/τριές μας</div>
+      </div>
+      <div class="time-badge">⏱ 10'</div>
+    </div>
+    
+    <div class="instruction">
+      <h4>📝 Οδηγίες</h4>
+      <p>Συνεχίστε στο ίδιο DeepSeek chat:</p>
+    </div>
+    
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>📋 PROMPT #5 · ΦΥΛΛΟ ΕΡΓΑΣΙΑΣ ΜΑΘΗΤΩΝ/ΤΡΙΩΝ</span>
+        <button class="copy-btn" onclick="copyPrompt(this, 'prompt5')">COPY</button>
+      </div>
+      <div class="prompt-content" id="prompt5">Τέλεια! Τώρα βοήθησέ με να φτιάξω ένα φύλλο εργασίας για τους/τις μαθητές/τριές μου (Γ' Γυμνασίου) που θα χρησιμοποιήσουν την προσομοίωσή μας.
+
+ΧΡΕΙΑΖΟΜΑΙ φύλλο εργασίας 1-2 σελίδων με:
+
+ΤΜΗΜΑ Α: "Προβλέπω" (πριν την προσομοίωση)
+- 3 ερωτήσεις πρόβλεψης με πολλαπλές επιλογές
+
+ΤΜΗΜΑ Β: "Πειραματίζομαι"
+- Πίνακας με 5 πειράματα
+- Στήλες: Μάζα (kg/gr) | Σταθερά k | Περίοδος T (s) | Παρατηρήσεις
+- Οδηγίες για κάθε πείραμα
+
+ΤΜΗΜΑ Γ: "Ανακαλύπτω"
+- 3 ερωτήσεις που οδηγούν σε συμπέρασμα
+- "Τι σχέση έχει η μάζα με την περίοδο;"
+- Κενό για συμπεράσματα
+
+ΤΜΗΜΑ Δ: "Εφαρμόζω"
+- 2-3 ερωτήσεις σύνδεσης με καθημερινότητα
+- "Γιατί τα αυτοκίνητα έχουν αμορτισέρ;"
+- "Σε τι διαφέρει εκκρεμές ρολόι από ελατήριο;"
+
+ΤΜΗΜΑ Ε: "Αναστοχάζομαι"
+- "Τι με εξέπληξε;"
+- "Τι νόμιζα πριν που άλλαξε;"
+
+ΣΧΕΔΙΑΣΜΟΣ:
+- A4, εκτυπώσιμο
+- Γλώσσα ΑΠΛΗ για 14χρονους/ες
+- Χρήση «μαθητές/τριες» (περιεκτική γλώσσα)
+- Σωστή ορολογία: «απόσβεση», «σώμα με μεγαλύτερη μάζα»
+- ΟΛΟ στα Ελληνικά
+
+Δώσε το φύλλο εργασίας σε μορφή HTML για εύκολη εκτύπωση.</div>
+    </div>
+    
+    <div class="instruction" style="margin-top: 25px;">
+      <h4>💾 Αποθήκευση φύλλου εργασίας</h4>
+      <ol>
+        <li>Αντιγράψτε τον HTML κώδικα</li>
+        <li>Νέο αρχείο Notepad → Επικόλληση</li>
+        <li>Αποθηκεύστε ως: <span class="filename-box">Worksheet_Hooke.html</span></li>
+        <li>Ανοίξτε στον browser → πατήστε <strong>Ctrl+P</strong> για εκτύπωση!</li>
+      </ol>
+    </div>
+    
+    <div class="teacher-box">
+      <h4>Σημείο παρέμβασης εκπαιδευτικού · FINAL CHECK</h4>
+      <p><strong>ΔΙΑΒΑΣΤΕ το φύλλο πριν το δώσετε!</strong></p>
+      <p>Τα AI tools μπορεί να κάνουν λάθη. Ζητήστε αλλαγές αν χρειαστεί.</p>
+    </div>
+    
+    <div class="bral-box">
+      <strong>Σύνδεση με BRaL · LEARN Phase</strong>
+      Η μάθηση δεν τελειώνει με την προσομοίωση — τελειώνει με τη <strong>διδακτική εφαρμογή</strong>.
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="section" id="close">
+  
+  <div class="section-intro" style="background: var(--green);">
+    <h2>Ολοκληρώσατε τον κύκλο BRaL ✓</h2>
+    <p>Έχετε τώρα <strong>πλήρη εμπειρία</strong> του BRaL framework <strong>μόνο με DeepSeek</strong>: από τον νόμο του Hooke στις καταστάσεις απόσβεσης, από τη θεωρία στην εφαρμογή.</p>
+  </div>
+  
+  <div class="checklist-box">
+    <h3>🎯 Τι έχετε αποθηκευμένα</h3>
+    <ul>
+      <li><strong>Hooke_version1.html</strong> — Αρχική απλή προσομοίωση</li>
+      <li><strong>Hooke_version2.html</strong> — Με kg/gr και απόσβεση</li>
+      <li><strong>Hooke_version3.html</strong> — Με γραφική και info box</li>
+      <li><strong>Hooke_final.html</strong> — Τελική έκδοση μετά φυσικό έλεγχο</li>
+      <li><strong>Worksheet_Hooke.html</strong> — Φύλλο εργασίας μαθητών/τριών</li>
+    </ul>
+  </div>
+  
+  <div class="checklist-box" style="background: var(--green-soft);">
+    <h3>✨ Πλεονεκτήματα της DeepSeek-only ροής</h3>
+    <ul>
+      <li><strong>Απλότητα:</strong> Ένα μόνο εργαλείο, ένα μόνο chat</li>
+      <li><strong>Πολλά credits:</strong> Δεν φοβάστε να εξαντλήσετε τα μηνύματα</li>
+      <li><strong>Συνεχόμενη μνήμη:</strong> Όλη η ιστορία διατηρείται σε ένα chat</li>
+      <li><strong>Συνέπεια:</strong> Το AI θυμάται τους κανόνες σε όλο το workshop</li>
+    </ul>
+  </div>
+  
+  <div class="teacher-box">
+    <h4>Εφαρμογή στην τάξη με DeepSeek</h4>
+    <p><strong>Προτεινόμενη δομή (2 διδακτικές ώρες):</strong></p>
+    <ul style="margin-top: 10px;">
+      <li><strong>Ώρα 1 (45'):</strong>
+        <ul>
+          <li>5' — Setup DeepSeek + αρχικό prompt</li>
+          <li>10' — Πρόβλεψη (Βήμα 2)</li>
+          <li>15' — Πρώτη προσομοίωση (Βήμα 3)</li>
+          <li>15' — Πειράματα + αποθήκευση Hooke_version1.html (Βήμα 4)</li>
+        </ul>
+      </li>
+      <li><strong>Ώρα 2 (45'):</strong>
+        <ul>
+          <li>15' — Refine #1 (Βήμα 5)</li>
+          <li>15' — Refine #2 (Βήμα 6)</li>
+          <li>10' — Φυσικός έλεγχος (Βήμα 7)</li>
+          <li>5' — Συζήτηση + Transfer</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="warning-box" style="margin-top: 30px;">
+    <h4>💡 Άλλες εκδόσεις του workshop</h4>
+    <p>Αν προτιμάτε <strong>πολλαπλά εργαλεία</strong> για να διδάξετε AI literacy και διαφορετικές χρήσεις:</p>
+    <ul style="margin-top: 10px;">
+      <li><strong>Γυμνάσιο v2:</strong> Claude → Gemini → Claude (πιο πλούσια εμπειρία)</li>
+      <li><strong>Λύκειο v3:</strong> Πιο προχωρημένο, με τις 3 καταστάσεις απόσβεσης μαθηματικά</li>
+    </ul>
+  </div>
+  
+  <div class="checklist-box" style="background: var(--blue-soft);">
+    <h3>📚 Για περισσότερα</h3>
+    <ul>
+      <li>Sotiropoulos, D. (2026). <em>Student-Created GenAI Physics Simulations: A BRaL Framework.</em> IGI Global.</li>
+      <li>UNESCO (2024): Guidance for Generative AI in Education and Research</li>
+    </ul>
+  </div>
+  
+</section>
+
+<footer>
+  <h3>BRaL Framework · DeepSeek Edition · Γυμνάσιο</h3>
+  <p>Χτίσε · Διόρθωσε · Μάθε</p>
+  
+  <div class="golden-rule">
+    «Δεν μετράει τι φτιάξαμε — μετράει τι μάθαμε φτιάχνοντάς το.»
+  </div>
+  
+  <p class="meta">Workshop Worksheet · DeepSeek-only Edition · Γυμνάσιο · University of Thessaly · 2026</p>
+</footer>
+
+<script>
+  function copyPrompt(btn, promptId) {
+    const promptText = document.getElementById(promptId).innerText;
+    navigator.clipboard.writeText(promptText).then(() => {
+      btn.textContent = '✓ COPIED!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(err => {
+      const textarea = document.createElement('textarea');
+      textarea.value = promptText;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      btn.textContent = '✓ COPIED!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+  
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+  });
+</script>
+
+</body>
+</html>
