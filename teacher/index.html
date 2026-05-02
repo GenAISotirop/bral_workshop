@@ -1,1 +1,841 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRaL για Εκπαιδευτικούς · Πολυ-εργαλειακή Δημιουργία Προσομοιώσεων</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --accent: #D4462F;
+    --yellow: #F4C430;
+    --green: #2D5A3D;
+    --blue: #1E3A5F;
+    --purple: #6B4C9A;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-image: 
+      radial-gradient(circle at 15% 10%, rgba(107, 76, 154, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 85% 90%, rgba(244, 196, 48, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(212, 70, 47, 0.05) 0%, transparent 60%);
+  }
+  
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  /* BACK BUTTON */
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 20px;
+    text-decoration: none;
+    margin-bottom: 30px;
+    transition: all 0.3s;
+    border: 3px solid var(--ink);
+  }
+  
+  .back-button:hover {
+    background: var(--bg);
+    color: var(--ink);
+    transform: translateX(-4px);
+  }
+  
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 40px 20px 50px;
+    position: relative;
+  }
+  
+  .hero::before {
+    content: 'TEACHER';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 180px;
+    color: rgba(107, 76, 154, 0.06);
+    letter-spacing: -8px;
+    line-height: 1;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .hero-content { position: relative; z-index: 1; }
+  
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    background: var(--purple);
+    color: white;
+    padding: 6px 16px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  
+  h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+  }
+  
+  h1 em {
+    color: var(--purple);
+    font-style: italic;
+    font-weight: 400;
+  }
+  
+  .subtitle {
+    font-family: var(--serif);
+    font-size: clamp(16px, 2vw, 22px);
+    font-style: italic;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    line-height: 1.5;
+  }
+  
+  /* WORKFLOW DIAGRAM */
+  .workflow-diagram {
+    background: white;
+    border: 3px solid var(--ink);
+    padding: 30px;
+    margin: 40px 0;
+    text-align: center;
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+  
+  .workflow-title {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+  
+  .workflow-flow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .workflow-step {
+    background: var(--bg);
+    padding: 12px 20px;
+    border: 2px solid var(--ink);
+    white-space: nowrap;
+  }
+  
+  .workflow-step.gemini { border-color: var(--blue); color: var(--blue); }
+  .workflow-step.nanobanana { border-color: var(--yellow); color: #B8860B; }
+  .workflow-step.deepseek { border-color: var(--green); color: var(--green); }
+  .workflow-step.claude { border-color: var(--accent); color: var(--accent); }
+  
+  .workflow-arrow {
+    font-size: 24px;
+    color: var(--ink);
+  }
+  
+  /* STEPS SECTION */
+  .steps-intro {
+    background: white;
+    border: 3px solid var(--ink);
+    padding: 30px;
+    margin: 40px 0 30px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  
+  .steps-intro h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+  
+  /* STEP CARDS */
+  .step {
+    background: white;
+    border: 3px solid var(--ink);
+    padding: 35px;
+    margin-bottom: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .step:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 var(--ink);
+  }
+  
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--bg);
+  }
+  
+  .step-number {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--purple);
+    min-width: 60px;
+  }
+  
+  .step-title-group {
+    flex: 1;
+  }
+  
+  .step-title {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+  }
+  
+  .step-phase {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+  }
+  
+  .step-tool {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: white;
+  }
+  
+  .step-tool.gemini { background: var(--blue); }
+  .step-tool.nanobanana { background: #B8860B; }
+  .step-tool.deepseek { background: var(--green); }
+  .step-tool.claude { background: var(--accent); }
+  
+  .step-content {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .step-example {
+    background: var(--bg);
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-left: 4px solid var(--purple);
+    font-size: 14px;
+    line-height: 1.6;
+    font-style: italic;
+    position: relative;
+  }
+  
+  .step-example strong {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--purple);
+  }
+  
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 3px;
+  }
+  
+  .copy-btn:hover {
+    background: var(--ink);
+    transform: scale(1.05);
+  }
+  
+  .copy-btn.copied {
+    background: var(--green);
+  }
+  
+  .step-goal {
+    background: #f0f0f0;
+    padding: 12px 18px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .step-goal strong {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--purple);
+  }
+  
+  /* PEDAGOGY SECTION */
+  .pedagogy {
+    background: white;
+    border: 3px solid var(--ink);
+    padding: 35px;
+    margin: 50px 0;
+    box-shadow: 8px 8px 0 var(--purple);
+  }
+  
+  .pedagogy h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .pedagogy-intro {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .pedagogy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+  
+  .pedagogy-item {
+    background: var(--bg);
+    padding: 25px;
+    border-left: 5px solid;
+  }
+  
+  .pedagogy-item:nth-child(1) { border-left-color: var(--blue); }
+  .pedagogy-item:nth-child(2) { border-left-color: var(--accent); }
+  .pedagogy-item:nth-child(3) { border-left-color: var(--green); }
+  
+  .pedagogy-item h3 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .pedagogy-item p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #444;
+  }
+  
+  .pedagogy-item ul {
+    list-style: none;
+    margin-top: 15px;
+  }
+  
+  .pedagogy-item li {
+    padding: 5px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+  }
+  
+  .pedagogy-item li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+  
+  /* ADVANTAGES */
+  .advantages {
+    background: var(--purple);
+    color: white;
+    border: 3px solid var(--ink);
+    padding: 35px;
+    margin: 40px 0;
+  }
+  
+  .advantages h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  
+  .advantages-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .advantage-item {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-left: 4px solid var(--yellow);
+  }
+  
+  .advantage-item h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--yellow);
+  }
+  
+  .advantage-item p {
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  
+  /* CONCLUSION */
+  .conclusion {
+    background: white;
+    border: 3px solid var(--ink);
+    padding: 40px;
+    margin: 40px 0;
+    text-align: center;
+  }
+  
+  .conclusion h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  
+  .conclusion-content {
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto 20px;
+  }
+  
+  .conclusion-highlight {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--purple);
+    margin-top: 25px;
+  }
+  
+  /* FOOTER */
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 2px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .author {
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  
+  .tag {
+    margin-top: 10px;
+    color: var(--purple);
+    letter-spacing: 2px;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .workflow-flow {
+      flex-direction: column;
+    }
+    
+    .workflow-arrow {
+      transform: rotate(90deg);
+    }
+    
+    .step-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .step-number {
+      margin-bottom: 10px;
+    }
+  }
+</style>
+</head>
+<body>
 
+<div class="container">
+  
+  <a href="../index.html" class="back-button">
+    <span>←</span>
+    <span>Επιστροφή στην Αρχική</span>
+  </a>
+  
+  <div class="hero">
+    <div class="hero-content">
+      <span class="eyebrow">👨‍🏫 ΟΔΗΓΟΣ ΕΚΠΑΙΔΕΥΤΙΚΩΝ</span>
+      <h1>Build-Refine-Learn με<br><em>Πολλαπλά AI Εργαλεία</em></h1>
+      <p class="subtitle">Μια βήμα-προς-βήμα διαδικασία για τη δημιουργία υψηλής ποιότητας διαδραστικών προσομοιώσεων φυσικής, αξιοποιώντας τα δυνατά σημεία τεσσάρων διαφορετικών AI συστημάτων</p>
+    </div>
+  </div>
+  
+  <div class="workflow-diagram">
+    <h2 class="workflow-title">Η Ροή της Διαδικασίας</h2>
+    <div class="workflow-flow">
+      <div class="workflow-step gemini">1. Gemini</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step nanobanana">2. nanoBanana</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step deepseek">3. DeepSeek</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step claude">4. Claude</div>
+      <span class="workflow-arrow">→</span>
+      <div class="workflow-step deepseek">5. DeepSeek</div>
+    </div>
+  </div>
+  
+  <div class="steps-intro">
+    <h2>Περιγραφή της Διαδικασίας</h2>
+    <p>Η παρακάτω διαδικασία περιγράφει έναν πρακτικό τρόπο για τους εκπαιδευτικούς να αξιοποιήσουν πολλαπλά εργαλεία Παραγωγικής Τεχνητής Νοημοσύνης (GenAI) για τη δημιουργία υψηλής ποιότητας διαδραστικών προσομοιώσεων φυσικών φαινομένων. Η μέθοδος ακολουθεί την αρχιτεκτονική Build-Refine-Learn (BRaL), όπου ο δάσκαλος <strong>χρησιμοποιεί διαφορετικά AI εργαλεία για τα δυνατά τους σημεία</strong>, <strong>βελτιώνει σταδιακά την προσομοίωση</strong> μέσω επαναληπτικής ανατροφοδότησης, και <strong>μαθαίνει</strong> για τις δυνατότητες και τους περιορισμούς κάθε εργαλείου.</p>
+  </div>
+  
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Δημιουργία Οπτικού Προτύπου</h3>
+        <div class="step-phase">Build Phase · Αρχικός Σχεδιασμός</div>
+      </div>
+      <span class="step-tool gemini">Gemini</span>
+    </div>
+    <div class="step-content">
+      <p>Ζητήστε από το <strong>Gemini</strong> να δημιουργήσει ένα λεπτομερές prompt για το nanoBanana, ώστε να παραχθεί μια εικόνα που να μοιάζει με screenshot από διαδραστική προσομοίωση του επιθυμητού φυσικού φαινομένου (π.χ. Νόμος του Hooke, βλήματα, απλή αρμονική ταλάντωση).</p>
+    </div>
+    <div class="step-example">
+      <button class="copy-btn" onclick="copyPrompt(this, 'Δημιούργησε ένα prompt για το nanoBanana για να φτιάξει εικόνα που να δείχνει διαδραστική προσομοίωση του Νόμου του Hooke. Η εικόνα πρέπει να περιλαμβάνει ελατήριο με μάζα, ρυθμιστικά για σταθερά k και μάζα m, γραφήματα δύναμης-επιμήκυνσης, και UI στοιχεία όπως κουμπιά play/pause.')">Copy</button>
+      <strong>Παράδειγμα prompt:</strong> "Δημιούργησε ένα prompt για το nanoBanana για να φτιάξει εικόνα που να δείχνει διαδραστική προσομοίωση του Νόμου του Hooke. Η εικόνα πρέπει να περιλαμβάνει ελατήριο με μάζα, ρυθμιστικά για σταθερά k και μάζα m, γραφήματα δύναμης-επιμήκυνσης, και UI στοιχεία όπως κουμπιά play/pause."
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος:</strong> Να δημιουργηθεί μια οπτική αναπαράσταση του επιθυμητού αποτελέσματος που θα χρησιμεύσει ως "πρότυπο" για την ανάπτυξη του κώδικα.
+    </div>
+  </div>
+  
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Παραγωγή Εικόνας</h3>
+        <div class="step-phase">Build Phase · Οπτικοποίηση</div>
+      </div>
+      <span class="step-tool nanobanana">nanoBanana</span>
+    </div>
+    <div class="step-content">
+      <p>Χρησιμοποιήστε το prompt που δημιουργήθηκε στο Βήμα 1 για να παράγετε την εικόνα της προσομοίωσης στο <strong>nanoBanana</strong> ή <strong>Gemini Image Generation</strong>. Το AI θα δημιουργήσει μια οπτική αναπαράσταση που δείχνει πώς θα έπρεπε να φαίνεται η τελική διαδραστική εφαρμογή.</p>
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος:</strong> Να έχετε μια συγκεκριμένη οπτική αναφορά που θα καθοδηγήσει την ανάπτυξη του κώδικα.
+    </div>
+  </div>
+  
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Λήψη Εικόνας</h3>
+        <div class="step-phase">Προετοιμασία</div>
+      </div>
+      <span class="step-tool nanobanana">Download</span>
+    </div>
+    <div class="step-content">
+      <p>Κατεβάστε την εικόνα που δημιουργήθηκε στον υπολογιστή σας. Αυτή η εικόνα θα χρησιμοποιηθεί ως οδηγός για το επόμενο βήμα της δημιουργίας κώδικα.</p>
+    </div>
+  </div>
+  
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Δημιουργία Αρχικού Κώδικα</h3>
+        <div class="step-phase">Build Phase · Υλοποίηση</div>
+      </div>
+      <span class="step-tool deepseek">DeepSeek</span>
+    </div>
+    <div class="step-content">
+      <p>Ανεβάστε την εικόνα στο <strong>DeepSeek</strong> και ζητήστε να δημιουργήσει διαδραστική προσομοίωση σε HTML/JavaScript που να αναπαράγει τη λειτουργικότητα που φαίνεται στην εικόνα.</p>
+    </div>
+    <div class="step-example">
+      <button class="copy-btn" onclick="copyPrompt(this, 'Δημιούργησε διαδραστική προσομοίωση του Νόμου του Hooke βασισμένη σε αυτή την εικόνα. Ο κώδικας πρέπει να περιλαμβάνει ελατήριο με ρυθμιζόμενες παραμέτρους, γραφήματα, και κουμπιά ελέγχου. Χρησιμοποίησε HTML, CSS και JavaScript.')">Copy</button>
+      <strong>Παράδειγμα prompt:</strong> "Δημιούργησε διαδραστική προσομοίωση του Νόμου του Hooke βασισμένη σε αυτή την εικόνα. Ο κώδικας πρέπει να περιλαμβάνει ελατήριο με ρυθμιζόμενες παραμέτρους, γραφήματα, και κουμπιά ελέγχου. Χρησιμοποίησε HTML, CSS και JavaScript."
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος:</strong> Να δημιουργηθεί μια λειτουργική πρώτη έκδοση της προσομοίωσης.
+    </div>
+  </div>
+  
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Αξιολόγηση και Λειτουργική Βελτίωση</h3>
+        <div class="step-phase">Refine Phase · Πρώτη Επανάληψη</div>
+      </div>
+      <span class="step-tool deepseek">DeepSeek</span>
+    </div>
+    <div class="step-content">
+      <p>Δοκιμάστε την προσομοίωση και ζητήστε από το <strong>DeepSeek</strong> να:</p>
+      <ul style="margin: 15px 0; padding-left: 25px;">
+        <li>Αξιολογήσει τη λειτουργικότητα του κώδικα</li>
+        <li>Εντοπίσει πιθανά bugs ή προβλήματα</li>
+        <li>Βελτιώσει τη φυσική ακρίβεια της προσομοίωσης</li>
+        <li>Προσθέσει λειτουργίες που λείπουν</li>
+      </ul>
+    </div>
+    <div class="step-example">
+      <button class="copy-btn" onclick="copyPrompt(this, 'Αξιολόγησε αυτόν τον κώδικα για λειτουργικότητα και φυσική ακρίβεια. Πρόσθεσε απόσβεση (damping), βελτίωσε τα γραφήματα ώστε να ενημερώνονται σε πραγματικό χρόνο, και διόρθωσε τυχόν σφάλματα.')">Copy</button>
+      <strong>Παράδειγμα prompt:</strong> "Αξιολόγησε αυτόν τον κώδικα για λειτουργικότητα και φυσική ακρίβεια. Πρόσθεσε απόσβεση (damping), βελτίωσε τα γραφήματα ώστε να ενημερώνονται σε πραγματικό χρόνο, και διόρθωσε τυχόν σφάλματα."
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος (Learn Phase):</strong> Να κατανοήσετε τα δυνατά και αδύνατα σημεία του DeepSeek στη δημιουργία φυσικών προσομοιώσεων.
+    </div>
+  </div>
+  
+  <!-- STEP 6 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Οπτική Βελτίωση με Artifacts</h3>
+        <div class="step-phase">Refine Phase · Δεύτερη Επανάληψη</div>
+      </div>
+      <span class="step-tool claude">Claude</span>
+    </div>
+    <div class="step-content">
+      <p>Αντιγράψτε τον βελτιωμένο κώδικα από το DeepSeek και επικολλήστε τον στο <strong>Claude</strong>. Ζητήστε να:</p>
+      <ul style="margin: 15px 0; padding-left: 25px;">
+        <li>Βελτιώσει την οπτική εμφάνιση και τη διάταξη (UI/UX)</li>
+        <li>Προσθέσει σύγχρονο σχεδιασμό με CSS</li>
+        <li>Δημιουργήσει artifact για άμεση προβολή</li>
+        <li>Κάνει τη διεπαφή πιο φιλική προς τον χρήστη</li>
+      </ul>
+    </div>
+    <div class="step-example">
+      <button class="copy-btn" onclick="copyPrompt(this, 'Βελτίωσε οπτικά αυτόν τον κώδικα προσομοίωσης. Χρησιμοποίησε σύγχρονο design, gradient backgrounds, καλύτερη τυπογραφία, και δημιούργησε artifact για να το δω αμέσως. Βεβαιώσου ότι τα controls είναι διαισθητικά και ότι τα γραφήματα είναι ευανάγνωστα.')">Copy</button>
+      <strong>Παράδειγμα prompt:</strong> "Βελτίωσε οπτικά αυτόν τον κώδικα προσομοίωσης. Χρησιμοποίησε σύγχρονο design, gradient backgrounds, καλύτερη τυπογραφία, και δημιούργησε artifact για να το δω αμέσως. Βεβαιώσου ότι τα controls είναι διαισθητικά και ότι τα γραφήματα είναι ευανάγνωστα."
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος (Learn Phase):</strong> Να μάθετε πώς το Claude μετατρέπει λειτουργικό κώδικα σε οπτικά ελκυστική και εκπαιδευτικά αποτελεσματική διεπαφή.
+    </div>
+  </div>
+  
+  <!-- STEP 7 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">7</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Δοκιμή και Ανατροφοδότηση</h3>
+        <div class="step-phase">Learn Phase · Αξιολόγηση</div>
+      </div>
+      <span class="step-tool claude">Artifact Viewer</span>
+    </div>
+    <div class="step-content">
+      <p>Τρέξτε την προσομοίωση ως artifact στο Claude και:</p>
+      <ul style="margin: 15px 0; padding-left: 25px;">
+        <li>Δοκιμάστε όλες τις λειτουργίες και τα controls</li>
+        <li>Εντοπίστε περιοχές που χρειάζονται βελτίωση</li>
+        <li>Σκεφτείτε πώς οι μαθητές θα αλληλεπιδράσουν με την προσομοίωση</li>
+        <li>Σημειώστε συγκεκριμένες αλλαγές που θέλετε να κάνετε</li>
+      </ul>
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος:</strong> Να αξιολογήσετε την προσομοίωση από εκπαιδευτική σκοπιά και να προσδιορίσετε βελτιώσεις.
+    </div>
+  </div>
+  
+  <!-- STEP 8 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">8</div>
+      <div class="step-title-group">
+        <h3 class="step-title">Τελική Βελτίωση και Προσαρμογή</h3>
+        <div class="step-phase">Refine Phase · Τρίτη Επανάληψη</div>
+      </div>
+      <span class="step-tool deepseek">DeepSeek</span>
+    </div>
+    <div class="step-content">
+      <p>Αντιγράψτε τον τελικό βελτιωμένο κώδικα από το Claude πίσω στο <strong>DeepSeek</strong> και ζητήστε συγκεκριμένες βελτιώσεις που εντοπίσατε στο Βήμα 7, όπως:</p>
+      <ul style="margin: 15px 0; padding-left: 25px;">
+        <li>Προσθήκη εκπαιδευτικών στοιχείων (π.χ. εξηγήσεις εννοιών, οδηγίες χρήσης)</li>
+        <li>Βελτίωση της φυσικής μοντελοποίησης (π.χ. πιο ρεαλιστική κίνηση)</li>
+        <li>Προσθήκη δυνατότητας εξαγωγής δεδομένων για ανάλυση</li>
+        <li>Δημιουργία ασκήσεων ή ερωτήσεων που ενσωματώνονται στην προσομοίωση</li>
+      </ul>
+    </div>
+    <div class="step-example">
+      <button class="copy-btn" onclick="copyPrompt(this, 'Πρόσθεσε ένα info panel που εξηγεί τον Νόμο του Hooke όταν ο μαθητής πατήσει το κουμπί \\'Βοήθεια\\'. Επίσης, πρόσθεσε τη δυνατότητα να εξάγονται τα δεδομένα του γραφήματος σε CSV format για ανάλυση. Τέλος, δημιούργησε 3 προκαθορισμένα σενάρια που οι μαθητές μπορούν να επιλέξουν.')">Copy</button>
+      <strong>Παράδειγμα prompt:</strong> "Πρόσθεσε ένα info panel που εξηγεί τον Νόμο του Hooke όταν ο μαθητής πατήσει το κουμπί 'Βοήθεια'. Επίσης, πρόσθεσε τη δυνατότητα να εξάγονται τα δεδομένα του γραφήματος σε CSV format για ανάλυση. Τέλος, δημιούργησε 3 προκαθορισμένα σενάρια που οι μαθητές μπορούν να επιλέξουν."
+    </div>
+    <div class="step-goal">
+      <strong>Στόχος (Learn Phase):</strong> Να δημιουργήσετε την τελική, εκπαιδευτικά βελτιστοποιημένη έκδοση της προσομοίωσης.
+    </div>
+  </div>
+  
+  <!-- PEDAGOGY SECTION -->
+  <div class="pedagogy">
+    <h2>Παιδαγωγικές Αρχές της Διαδικασίας</h2>
+    <p class="pedagogy-intro">Η παραπάνω διαδικασία ενσωματώνει το πλαίσιο Build-Refine-Learn σε πολλαπλά επίπεδα:</p>
+    
+    <div class="pedagogy-grid">
+      <div class="pedagogy-item">
+        <h3>Build (Δημιουργία)</h3>
+        <p>Ο δάσκαλος δημιουργεί το αρχικό όραμα (Βήμα 1-4), χρησιμοποιώντας διαφορετικά εργαλεία για να μετατρέψει μια αφηρημένη ιδέα σε λειτουργικό κώδικα. Αυτή η φάση εισάγει τον εκπαιδευτικό στις δυνατότητες των AI εργαλείων.</p>
+      </div>
+      
+      <div class="pedagogy-item">
+        <h3>Refine (Βελτίωση)</h3>
+        <p>Μέσα από επαναληπτικές βελτιώσεις (Βήμα 5-8), ο δάσκαλος μαθαίνει να αναγνωρίζει ποιο εργαλείο είναι καλύτερο για κάθε είδους εργασία: το DeepSeek για λειτουργικότητα και φυσική ακρίβεια, το Claude για οπτική βελτίωση και εκπαιδευτικό σχεδιασμό.</p>
+      </div>
+      
+      <div class="pedagogy-item">
+        <h3>Learn (Μάθηση)</h3>
+        <p>Καθώς ο δάσκαλος επαναλαμβάνει τη διαδικασία για διαφορετικά φαινόμενα, αναπτύσσει:</p>
+        <ul>
+          <li><strong>Μεταγνωστικές δεξιότητες:</strong> Κατανόηση του πότε να χρησιμοποιεί κάθε εργαλείο</li>
+          <li><strong>Παιδαγωγική διαίσθηση:</strong> Αναγνώριση ποιες λειτουργίες βοηθούν την εννοιολογική κατανόηση</li>
+          <li><strong>Τεχνική ευχέρεια:</strong> Ικανότητα αξιολόγησης και βελτίωσης κώδικα χωρίς βαθιές γνώσεις προγραμματισμού</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ADVANTAGES -->
+  <div class="advantages">
+    <h2>Πλεονεκτήματα της Πολυ-εργαλειακής Προσέγγισης</h2>
+    <div class="advantages-list">
+      <div class="advantage-item">
+        <h3>1. Αξιοποίηση Δυνατών Σημείων</h3>
+        <p>Κάθε AI εργαλείο έχει διαφορετικά δυνατά σημεία — το Gemini για δημιουργική οπτικοποίηση, το DeepSeek για ακριβή κώδικα, το Claude για UX και εκπαιδευτικό σχεδιασμό.</p>
+      </div>
+      
+      <div class="advantage-item">
+        <h3>2. Σταδιακή Βελτίωση</h3>
+        <p>Η μετακίνηση του κώδικα μεταξύ συστημάτων επιτρέπει προοδευτική βελτίωση χωρίς να χάνεται η προηγούμενη δουλειά.</p>
+      </div>
+      
+      <div class="advantage-item">
+        <h3>3. Κριτική Σκέψη</h3>
+        <p>Ο δάσκαλος αναπτύσσει την ικανότητα να αξιολογεί και να επιλέγει το καταλληλότερο εργαλείο για κάθε εργασία.</p>
+      </div>
+      
+      <div class="advantage-item">
+        <h3>4. Ευελιξία</h3>
+        <p>Η διαδικασία μπορεί να προσαρμοστεί ανάλογα με τα διαθέσιμα εργαλεία και τις ανάγκες.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- CONCLUSION -->
+  <div class="conclusion">
+    <h2>Σύνοψη</h2>
+    <div class="conclusion-content">
+      <p>Αυτή η 8-βηματη διαδικασία δείχνει πώς οι εκπαιδευτικοί μπορούν να χρησιμοποιήσουν πολλαπλά AI εργαλεία συνεργατικά για να δημιουργήσουν υψηλής ποιότητας διαδραστικές προσομοιώσεις. Η μέθοδος:</p>
+      <ul style="text-align: left; max-width: 600px; margin: 20px auto; list-style-position: inside;">
+        <li>Δεν απαιτεί προηγούμενη εμπειρία προγραμματισμού</li>
+        <li>Ενθαρρύνει την επαναληπτική βελτίωση και τη μάθηση από την πρακτική</li>
+        <li>Αναπτύσσει παιδαγωγική και τεχνολογική ικανότητα ταυτόχρονα</li>
+        <li>Παράγει επαγγελματικής ποιότητας εκπαιδευτικά εργαλεία</li>
+      </ul>
+    </div>
+    <p class="conclusion-highlight">Με αυτόν τον τρόπο, οι δάσκαλοι μετατρέπονται από απλούς χρήστες AI εργαλείων σε συνειδητούς ενορχηστρωτές τεχνολογίας, ικανούς να δημιουργούν προσαρμοσμένες εκπαιδευτικές εμπειρίες που αντικατοπτρίζουν τις ανάγκες των μαθητών τους και τους στόχους μάθησης του μαθήματός τους.</p>
+  </div>
+  
+</div>
+
+<footer>
+  <div class="author">Dr. Dimitrios Sotiropoulos</div>
+  <div>Πανεπιστήμιο Θεσσαλίας · 2026</div>
+  <div class="tag">TEACHER WORKFLOW · BRAL FRAMEWORK v2.0</div>
+</footer>
+
+<script>
+function copyPrompt(button, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = button.textContent;
+    button.textContent = '✓ Copied!';
+    button.classList.add('copied');
+    
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.classList.remove('copied');
+    }, 2000);
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+    button.textContent = '✗ Error';
+    setTimeout(() => {
+      button.textContent = 'Copy';
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
