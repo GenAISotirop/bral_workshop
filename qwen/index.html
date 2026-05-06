@@ -152,12 +152,15 @@
     <p><strong>Γιατί χρειάζεται;</strong> Οι πλήρεις οδηγίες είναι μεγάλες και δεν χωράνε στο Instructions field. Τις βάζουμε σε αρχείο.</p>
     
     <div style="background: #E8F0FF; border: 2px dashed #1E3A5F; padding: 25px; margin: 20px 0;">
-      <h4 style="font-family: var(--serif); font-weight: 900; color: #1E3A5F; margin-bottom: 15px;">📝 Πώς να φτιάξετε το αρχείο:</h4>
+      <h4 style="font-family: var(--serif); font-weight: 900; color: #1E3A5F; margin-bottom: 15px;">📝 Δημιουργία αρχείου qwen_instructions.txt</h4>
       <ol style="padding-left: 25px; margin: 10px 0;">
         <li><strong>Ανοίξτε Notepad</strong></li>
-        <li><strong>Copy</strong> τις πλήρεις οδηγίες από το κουτί παρακάτω ↓</li>
+        <li><strong>Copy</strong> τις οδηγίες από το παραπάνω κουτί ↑</li>
         <li><strong>Paste</strong> στο Notepad</li>
-        <li><strong>Save As</strong> → Όνομα: <code>qwen_instructions.txt</code></li>
+        <li><strong>Save As</strong> → Όνομα: 
+          <span style="background: white; padding: 4px 8px; border: 1px solid #1E3A5F; font-family: var(--mono); font-size: 13px; display: inline-block; margin: 0 8px;">qwen_instructions.txt</span>
+          <button onclick="copyFilename()" style="background: var(--purple); color: white; border: none; padding: 4px 10px; font-family: var(--mono); font-size: 10px; font-weight: 700; cursor: pointer; letter-spacing: 1px;">COPY</button>
+        </li>
         <li>Τύπος: <strong>"Text Documents (*.txt)"</strong></li>
         <li>Πατήστε <strong>Save</strong></li>
       </ol>
@@ -166,7 +169,7 @@
 
   <div class="prompt-box">
     <div class="prompt-header">
-      <span>📄 FULL INSTRUCTIONS (για το .txt αρχείο)</span>
+      <span>📄 ΑΡΧΕΙΟ: qwen_instructions.txt (Copy για το αρχείο)</span>
       <button class="copy-btn" onclick="copyFullInstructions()">COPY</button>
     </div>
     <div class="prompt-content" id="full-instructions" style="max-height: 400px; overflow-y: auto;">Είσαι εκπαιδευτικός βοηθός για μαθητές/τριες Γ' Γυμνασίου που δημιουργούν φυσικές προσομοιώσεις με BRaL (Build-Refine-Learn).
@@ -438,6 +441,35 @@ function copyShortInstructions() {
 
 function copyFullInstructions() {
   copyToClipboard('full-instructions');
+}
+
+function copyFilename() {
+  const filename = 'qwen_instructions.txt';
+  const btn = event.target;
+  
+  navigator.clipboard.writeText(filename).then(() => {
+    const originalText = btn.textContent;
+    btn.textContent = '✓';
+    btn.style.background = '#4CAF50';
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '#8B5FBF';
+    }, 2000);
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = filename;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    const originalText = btn.textContent;
+    btn.textContent = '✓';
+    btn.style.background = '#4CAF50';
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '#8B5FBF';
+    }, 2000);
+  });
 }
 
 function copyToClipboard(elementId) {
