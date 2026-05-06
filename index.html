@@ -101,15 +101,15 @@
     line-height: 1.4;
   }
   
-  /* CARDS CONTAINER - 5 cards */
+  /* CARDS CONTAINER - 6 cards */
   .cards {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 25px;
     margin: 60px 0;
   }
   
-  @media (max-width: 1400px) {
+  @media (max-width: 1600px) {
     .cards {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -696,6 +696,26 @@
       </div>
     </a>
     
+    <a href="./qwen-teacher/" class="card qwen">
+      <span class="card-badge">🎓 Qwen Teacher</span>
+      <h2>Qwen for Teachers</h2>
+      <div class="card-age">ΓΙΑ ΕΚΠΑΙΔΕΥΤΙΚΟΥΣ</div>
+      <div class="card-flow">Qwen (μόνο)</div>
+      <p class="card-description">Απλή έκδοση <strong>για εκπαιδευτικούς</strong> με Qwen Projects. Γρήγορη δημιουργία και βελτίωση προσομοιώσεων — χωρίς Σωκρατικό διάλογο.</p>
+      <ul class="card-features">
+        <li>Ένα εργαλείο, γρήγορη εκτέλεση</li>
+        <li>Projects για συνέπεια</li>
+        <li>Artifacts για live preview</li>
+        <li>Χωρίς Socratic method</li>
+        <li>Build-Refine-Learn workflow</li>
+        <li>Professional code generation</li>
+      </ul>
+      <div class="card-cta">
+        <span>Ξεκινήστε</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+    
     <a href="./teacher/" class="card teacher">
       <span class="card-badge">👨‍🏫 Εκπαιδευτικοί</span>
       <h2>Teacher Workflow</h2>
@@ -719,7 +739,7 @@
   </div>
   
   <div class="comparison">
-    <h2>Σύγκριση των 5 εκδόσεων</h2>
+    <h2>Σύγκριση των 6 εκδόσεων</h2>
     <table>
       <thead>
         <tr>
@@ -728,6 +748,7 @@
           <th>🎓 Λύκειο</th>
           <th>🤖 DeepSeek</th>
           <th>💜 Qwen</th>
+          <th>🎓 Qwen Teacher</th>
           <th>👨‍🏫 Teachers</th>
         </tr>
       </thead>
@@ -739,12 +760,14 @@
           <td>Γ' Γυμνασίου</td>
           <td>Γ' Γυμνασίου</td>
           <td>Εκπαιδευτικοί</td>
+          <td>Εκπαιδευτικοί</td>
         </tr>
         <tr>
           <td class="feature-name">Εργαλεία AI</td>
           <td>Claude + Gemini</td>
           <td>Claude + Gemini</td>
           <td>DeepSeek</td>
+          <td>Qwen</td>
           <td>Qwen</td>
           <td>Gemini + DeepSeek + Claude</td>
         </tr>
@@ -754,6 +777,7 @@
           <td>3 περάσματα</td>
           <td>1 μόνο εργαλείο</td>
           <td>1 μόνο εργαλείο (με Projects)</td>
+          <td>1 μόνο εργαλείο (με Projects)</td>
           <td>8 βήματα πολυ-εργαλείων</td>
         </tr>
         <tr>
@@ -762,6 +786,7 @@
           <td>~120-180 λεπτά</td>
           <td>~90 λεπτά</td>
           <td>~90 λεπτά</td>
+          <td>~45-60 λεπτά</td>
           <td>~60-90 λεπτά</td>
         </tr>
         <tr>
@@ -771,6 +796,7 @@
           <td>Απλή ταλάντωση</td>
           <td>Απλή ταλάντωση + απόσβεση</td>
           <td>Προσαρμόσιμο</td>
+          <td>Προσαρμόσιμο</td>
         </tr>
         <tr>
           <td class="feature-name">Μαθηματικά</td>
@@ -779,12 +805,14 @@
           <td>Βασικά (T = 2π√(m/k))</td>
           <td>Βασικά (T = 2π√(m/k))</td>
           <td>Προσαρμόσιμο</td>
+          <td>Προσαρμόσιμο</td>
         </tr>
         <tr>
           <td class="feature-name">Απαιτεί Projects/Gems</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
           <td><span class="no">✗</span> (μόνο prompt)</td>
+          <td><span class="yes">✓</span> (Qwen Project)</td>
           <td><span class="yes">✓</span> (Qwen Project)</td>
           <td><span class="no">✗</span> (όχι)</td>
         </tr>
@@ -795,6 +823,7 @@
           <td><span class="yes">✓</span></td>
           <td><span class="yes">✓</span></td>
           <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
         </tr>
         <tr>
           <td class="feature-name">Σωκρατικός διάλογος</td>
@@ -803,11 +832,13 @@
           <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
           <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
           <td><span class="no">✗</span> (για εκπαιδευτικούς)</td>
+          <td><span class="no">✗</span> (για εκπαιδευτικούς)</td>
         </tr>
         <tr>
           <td class="feature-name">Διπλή επαλήθευση</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
+          <td><span class="partial">~</span> (αυτο-έλεγχος)</td>
           <td><span class="partial">~</span> (αυτο-έλεγχος)</td>
           <td><span class="partial">~</span> (αυτο-έλεγχος)</td>
           <td><span class="yes">✓</span> (πολλαπλά AI)</td>
@@ -818,12 +849,14 @@
           <td><span class="yes">✓</span> (Claude)</td>
           <td><span class="no">✗</span> (Notepad μόνο)</td>
           <td><span class="yes">✓</span> (Qwen Artifacts)</td>
+          <td><span class="yes">✓</span> (Qwen Artifacts)</td>
           <td><span class="yes">✓</span> (Claude)</td>
         </tr>
         <tr>
           <td class="feature-name">Δωρεάν credits</td>
           <td>Περιορισμένα</td>
           <td>Περιορισμένα</td>
+          <td><span class="yes">Πολλά</span></td>
           <td><span class="yes">Πολλά</span></td>
           <td><span class="yes">Πολλά</span></td>
           <td>Μικτά (Gemini + DeepSeek)</td>
