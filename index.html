@@ -17,6 +17,7 @@
     --green: #2D5A3D;
     --blue: #1E3A5F;
     --purple: #6B4C9A;
+    --qwen-purple: #8B5FBF;
     --serif: 'Fraunces', serif;
     --sans: 'Inter Tight', sans-serif;
     --mono: 'JetBrains Mono', monospace;
@@ -98,15 +99,21 @@
     line-height: 1.4;
   }
   
-  /* CARDS CONTAINER - 4 cards */
+  /* CARDS CONTAINER - 5 cards */
   .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 25px;
     margin: 60px 0;
   }
   
-  @media (max-width: 1200px) {
+  @media (max-width: 1400px) {
+    .cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 1000px) {
     .cards {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -137,6 +144,7 @@
   .card.gymnasio:hover { box-shadow: 10px 10px 0 var(--yellow); }
   .card.lyceum:hover { box-shadow: 10px 10px 0 var(--accent); }
   .card.deepseek:hover { box-shadow: 10px 10px 0 var(--green); }
+  .card.qwen:hover { box-shadow: 10px 10px 0 var(--qwen-purple); }
   .card.teacher:hover { box-shadow: 10px 10px 0 var(--purple); }
   
   .card-badge {
@@ -154,6 +162,7 @@
   .card.gymnasio .card-badge { background: var(--yellow); color: var(--ink); }
   .card.lyceum .card-badge { background: var(--accent); color: white; }
   .card.deepseek .card-badge { background: var(--green); color: white; }
+  .card.qwen .card-badge { background: var(--qwen-purple); color: white; }
   .card.teacher .card-badge { background: var(--purple); color: white; }
   
   .card h2 {
@@ -187,6 +196,7 @@
   .card.gymnasio .card-flow { border-left-color: var(--yellow); }
   .card.lyceum .card-flow { border-left-color: var(--accent); }
   .card.deepseek .card-flow { border-left-color: var(--green); }
+  .card.qwen .card-flow { border-left-color: var(--qwen-purple); }
   .card.teacher .card-flow { border-left-color: var(--purple); }
   
   .card-description {
@@ -223,6 +233,7 @@
   .card.gymnasio .card-features li::before { color: #B8860B; }
   .card.lyceum .card-features li::before { color: var(--accent); }
   .card.deepseek .card-features li::before { color: var(--green); }
+  .card.qwen .card-features li::before { color: var(--qwen-purple); }
   .card.teacher .card-features li::before { color: var(--purple); }
   
   .card-cta {
@@ -663,11 +674,31 @@
       </div>
     </a>
     
+    <a href="./qwen/" class="card qwen">
+      <span class="card-badge">💜 Qwen</span>
+      <h2>Qwen Edition</h2>
+      <div class="card-age">Γ' ΓΥΜΝΑΣΙΟΥ · 13-15 ΕΤΩΝ</div>
+      <div class="card-flow">Qwen Projects + Artifacts</div>
+      <p class="card-description">Έκδοση με <strong>Qwen Projects</strong> και <strong>Artifacts</strong>. Συνδυάζει custom instructions με live preview — Σωκρατική καθοδήγηση και άμεσο download.</p>
+      <ul class="card-features">
+        <li>Projects με custom instructions</li>
+        <li>Artifacts για live preview</li>
+        <li>Download button για αποθήκευση</li>
+        <li>Σωκρατικός διάλογος (anti-capitulation)</li>
+        <li>Ένα εργαλείο, πλήρης ροή</li>
+        <li>Δωρεάν, γενναιόδωρα credits</li>
+      </ul>
+      <div class="card-cta">
+        <span>Ξεκινήστε</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+    
     <a href="./teacher/" class="card teacher">
       <span class="card-badge">👨‍🏫 Εκπαιδευτικοί</span>
       <h2>Teacher Workflow</h2>
       <div class="card-age">ΓΙΑ ΔΑΣΚΑΛΟΥΣ/ΚΑΘΗΓΗΤΕΣ</div>
-      <div class="card-flow">Gemini → Nano Banana → DeepSeek → Claude</div>
+      <div class="card-flow">Gemini → nanoBanana → DeepSeek → Claude</div>
       <p class="card-description">Πολυ-εργαλειακή διαδικασία για <strong>δημιουργία προσομοιώσεων από εκπαιδευτικούς</strong>. Χτίσιμο, βελτίωση, μάθηση με 4 AI εργαλεία.</p>
       <ul class="card-features">
         <li>8 βήματα Build-Refine-Learn</li>
@@ -686,7 +717,7 @@
   </div>
   
   <div class="comparison">
-    <h2>Σύγκριση των 4 εκδόσεων</h2>
+    <h2>Σύγκριση των 5 εκδόσεων</h2>
     <table>
       <thead>
         <tr>
@@ -694,6 +725,7 @@
           <th>📚 Γυμνάσιο</th>
           <th>🎓 Λύκειο</th>
           <th>🤖 DeepSeek</th>
+          <th>💜 Qwen</th>
           <th>👨‍🏫 Teachers</th>
         </tr>
       </thead>
@@ -703,6 +735,7 @@
           <td>Γ' Γυμνασίου</td>
           <td>Α'-Γ' Λυκείου</td>
           <td>Γ' Γυμνασίου</td>
+          <td>Γ' Γυμνασίου</td>
           <td>Εκπαιδευτικοί</td>
         </tr>
         <tr>
@@ -710,6 +743,7 @@
           <td>Claude + Gemini</td>
           <td>Claude + Gemini</td>
           <td>DeepSeek</td>
+          <td>Qwen</td>
           <td>Gemini + DeepSeek + Claude</td>
         </tr>
         <tr>
@@ -717,12 +751,14 @@
           <td>3 περάσματα</td>
           <td>3 περάσματα</td>
           <td>1 μόνο εργαλείο</td>
+          <td>1 μόνο εργαλείο (με Projects)</td>
           <td>8 βήματα πολυ-εργαλείων</td>
         </tr>
         <tr>
           <td class="feature-name">Διάρκεια</td>
           <td>~120 λεπτά</td>
           <td>~120-180 λεπτά</td>
+          <td>~90 λεπτά</td>
           <td>~90 λεπτά</td>
           <td>~60-90 λεπτά</td>
         </tr>
@@ -731,12 +767,14 @@
           <td>Απλή ταλάντωση</td>
           <td>+ 3 καταστάσεις απόσβεσης</td>
           <td>Απλή ταλάντωση</td>
+          <td>Απλή ταλάντωση + απόσβεση</td>
           <td>Προσαρμόσιμο</td>
         </tr>
         <tr>
           <td class="feature-name">Μαθηματικά</td>
           <td>Βασικά (T = 2π√(m/k))</td>
           <td>Προχωρημένα (Δ, c_crit)</td>
+          <td>Βασικά (T = 2π√(m/k))</td>
           <td>Βασικά (T = 2π√(m/k))</td>
           <td>Προσαρμόσιμο</td>
         </tr>
@@ -745,10 +783,12 @@
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
           <td><span class="no">✗</span> (μόνο prompt)</td>
+          <td><span class="yes">✓</span> (Qwen Project)</td>
           <td><span class="no">✗</span> (όχι)</td>
         </tr>
         <tr>
           <td class="feature-name">Anti-capitulation rules</td>
+          <td><span class="yes">✓</span></td>
           <td><span class="yes">✓</span></td>
           <td><span class="yes">✓</span></td>
           <td><span class="yes">✓</span></td>
@@ -759,12 +799,14 @@
           <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
           <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
           <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
+          <td><span class="yes">✓</span> (μία ερώτηση τη φορά)</td>
           <td><span class="no">✗</span> (για εκπαιδευτικούς)</td>
         </tr>
         <tr>
           <td class="feature-name">Διπλή επαλήθευση</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
           <td><span class="yes">✓</span> (Claude + Gemini)</td>
+          <td><span class="partial">~</span> (αυτο-έλεγχος)</td>
           <td><span class="partial">~</span> (αυτο-έλεγχος)</td>
           <td><span class="yes">✓</span> (πολλαπλά AI)</td>
         </tr>
@@ -773,12 +815,14 @@
           <td><span class="yes">✓</span> (Claude)</td>
           <td><span class="yes">✓</span> (Claude)</td>
           <td><span class="no">✗</span> (Notepad μόνο)</td>
+          <td><span class="yes">✓</span> (Qwen Artifacts)</td>
           <td><span class="yes">✓</span> (Claude)</td>
         </tr>
         <tr>
           <td class="feature-name">Δωρεάν credits</td>
           <td>Περιορισμένα</td>
           <td>Περιορισμένα</td>
+          <td><span class="yes">Πολλά</span></td>
           <td><span class="yes">Πολλά</span></td>
           <td>Μικτά (Gemini + DeepSeek)</td>
         </tr>
