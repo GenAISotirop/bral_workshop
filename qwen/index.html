@@ -1,1 +1,474 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen BRaL · Γυμνάσιο</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,900&family=JetBrains+Mono:wght@600;700&family=Inter+Tight:wght@400;600;700&display=swap');
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --purple: #8B5FBF;
+    --purple-soft: #E8DDF5;
+    --yellow: #F4C430;
+    --green: #2D5A3D;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; padding: 40px 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  
+  .back-button {
+    display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; background: var(--ink); color: var(--bg);
+    padding: 10px 20px; text-decoration: none; margin-bottom: 30px; border: 3px solid var(--ink); transition: all 0.3s;
+  }
+  .back-button:hover { background: var(--bg); color: var(--ink); transform: translateX(-4px); }
+  
+  .hero { text-align: center; padding: 40px 20px; margin-bottom: 40px; border-bottom: 3px solid var(--purple); }
+  h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(40px, 6vw, 60px); line-height: 1; margin-bottom: 10px; color: var(--purple); }
+  .subtitle { font-size: 16px; color: #555; }
+  
+  h2 { font-family: var(--serif); font-weight: 900; font-size: 32px; margin: 50px 0 25px; color: var(--purple); }
+  h3 { font-family: var(--serif); font-weight: 900; font-size: 22px; margin: 25px 0 15px; }
+  
+  .intro-box { background: var(--purple); color: white; padding: 35px; margin: 30px 0; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+  .intro-box p { font-size: 17px; line-height: 1.8; }
+  
+  .setup-section { background: var(--purple-soft); border: 3px solid var(--ink); padding: 35px; margin: 40px 0; box-shadow: 8px 8px 0 var(--ink); }
+  .setup-section h3 { color: var(--purple); margin-bottom: 20px; }
+  .setup-section ol { padding-left: 30px; margin: 20px 0; }
+  .setup-section li { margin-bottom: 15px; font-size: 16px; line-height: 1.7; }
+  .setup-section code { background: white; padding: 3px 8px; border: 1px solid var(--purple); font-family: var(--mono); font-size: 13px; }
+  
+  .prompt-box { background: var(--ink); color: var(--bg); padding: 0; margin: 30px 0; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--purple); }
+  .prompt-header {
+    background: var(--purple); color: white; padding: 15px 25px; display: flex; justify-content: space-between;
+    align-items: center; font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .copy-btn {
+    background: white; color: var(--purple); border: none; padding: 8px 16px; font-family: var(--mono);
+    font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--yellow); color: var(--ink); }
+  .copy-btn.copied { background: #4CAF50; color: white; }
+  .prompt-content {
+    padding: 25px 30px; font-family: var(--mono); font-size: 13.5px; line-height: 1.8;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  
+  .step { margin: 60px 0; padding: 35px; background: white; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--purple-soft); }
+  .step-header { display: flex; align-items: center; gap: 25px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid var(--purple-soft); }
+  .step-number { font-family: var(--serif); font-weight: 900; font-size: 70px; color: var(--purple); line-height: 0.9; min-width: 80px; }
+  .step-title { font-family: var(--serif); font-weight: 900; font-size: 32px; color: var(--ink); line-height: 1.1; }
+  .phase-badge { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; padding: 6px 12px; margin-top: 8px; text-transform: uppercase; font-weight: 700; }
+  .phase-build { background: #E8F0FF; color: #1E3A5F; border: 2px solid #1E3A5F; }
+  .phase-refine { background: var(--purple-soft); color: var(--purple); border: 2px solid var(--purple); }
+  .phase-learn { background: #D9E8DE; color: var(--green); border: 2px solid var(--green); }
+  
+  .step-content { font-size: 16px; line-height: 1.8; margin: 20px 0; }
+  .step-content ul, .step-content ol { padding-left: 30px; margin: 18px 0; }
+  .step-content li { margin-bottom: 12px; }
+  .step-content strong { color: var(--purple); }
+  
+  .example-box { background: #FFF9E6; border-left: 5px solid var(--yellow); padding: 25px; margin: 25px 0; font-size: 15px; }
+  .example-box strong { color: var(--purple); }
+  
+  .note { background: #FFF4D0; border-left: 5px solid var(--yellow); padding: 25px; margin: 30px 0; font-size: 15px; }
+  .note strong { color: var(--purple); }
+  
+  .tip { background: #E8F5E9; border-left: 5px solid var(--green); padding: 25px; margin: 30px 0; font-size: 15px; }
+  .tip strong { color: var(--green); }
+  
+  footer { text-align: center; margin-top: 80px; padding-top: 30px; border-top: 3px solid var(--ink); font-family: var(--mono); font-size: 12px; color: #666; }
+  
+  @media (max-width: 768px) {
+    .step-header { flex-direction: column; align-items: flex-start; }
+    .step-number { font-size: 56px; }
+    .step-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
 
+<div class="container">
+  
+  <a href="../index.html" class="back-button">
+    <span>←</span>
+    <span>Επιστροφή στην Αρχική</span>
+  </a>
+  
+  <div class="hero">
+    <h1>Qwen · BRaL Workshop</h1>
+    <p class="subtitle">Build-Refine-Learn με Qwen Projects · Γ' Γυμνασίου</p>
+  </div>
+
+  <div class="intro-box">
+    <p>Σε αυτό το workshop θα φτιάξετε διαδραστική προσομοίωση φυσικής με το <strong>Qwen</strong>. Το Qwen υποστηρίζει <strong>Projects</strong> και <strong>Artifacts</strong> — το AI καθοδηγεί με ερωτήσεις και φτιάχνει διαδραστικές προσομοιώσεις που τρέχουν αμέσως!</p>
+  </div>
+
+  <!-- SETUP PROJECT -->
+  <h2>⚙️ Προετοιμασία: Setup Qwen Project</h2>
+  
+  <div class="setup-section">
+    <h3>Βήμα 1: Δημιουργία Project</h3>
+    <ol>
+      <li>Πηγαίνετε στο <a href="https://qwen.ai" target="_blank" style="color: var(--purple); font-weight: 700;">qwen.ai</a></li>
+      <li><strong>3 τελίτσες</strong> (⋮) πάνω δεξιά → <strong>Edit Project</strong></li>
+      <li>Στο πεδίο <strong>Project Name:</strong> <code>BRaL Γυμνάσιο - Φυσική</code></li>
+    </ol>
+  </div>
+
+  <div class="setup-section">
+    <h3>Βήμα 2: Προσθήκη Βασικών Οδηγιών</h3>
+    <p>Στο πεδίο <strong>Instructions</strong> (ή System Prompt), επικολλήστε το παρακάτω:</p>
+  </div>
+  
+  <div class="prompt-box">
+    <div class="prompt-header">
+      <span>📋 SHORT INSTRUCTIONS (για το Instructions field)</span>
+      <button class="copy-btn" onclick="copyShortInstructions()">COPY</button>
+    </div>
+    <div class="prompt-content" id="short-instructions">Είσαι εκπαιδευτικός βοηθός για μαθητές/τριες Γ' Γυμνασίου που δημιουργούν φυσικές προσομοιώσεις με BRaL (Build-Refine-Learn).
+
+**ΣΗΜΑΝΤΙΚΟ:** Διάβασε το αρχείο "qwen_instructions.txt" που έχει ανέβει στα Files του Project για τις πλήρεις οδηγίες.
+
+ΒΑΣΙΚΟΙ ΚΑΝΟΝΕΣ:
+- ΜΙΑ ερώτηση τη φορά (Σωκρατική μέθοδος)
+- ΔΕΝ υποχωρείς — καθοδηγείς, δεν δίνεις έτοιμες λύσεις
+- Φτιάχνεις Artifacts με διαδραστικές προσομοιώσεις
+- Δίνεις ΟΛΟ τον κώδικα σε κάθε iteration
+
+Πάντα διάβαζε το αρχείο qwen_instructions.txt πριν απαντήσεις!</div>
+  </div>
+
+  <div class="setup-section" style="margin-top: 40px;">
+    <h3>Βήμα 3: Δημιουργία Αρχείου με Πλήρεις Οδηγίες</h3>
+    <p><strong>Γιατί χρειάζεται;</strong> Οι πλήρεις οδηγίες είναι μεγάλες και δεν χωράνε στο Instructions field. Τις βάζουμε σε αρχείο.</p>
+    
+    <div style="background: #E8F0FF; border: 2px dashed #1E3A5F; padding: 25px; margin: 20px 0;">
+      <h4 style="font-family: var(--serif); font-weight: 900; color: #1E3A5F; margin-bottom: 15px;">📝 Πώς να φτιάξετε το αρχείο:</h4>
+      <ol style="padding-left: 25px; margin: 10px 0;">
+        <li><strong>Ανοίξτε Notepad</strong></li>
+        <li><strong>Copy</strong> τις πλήρεις οδηγίες από το κουτί παρακάτω ↓</li>
+        <li><strong>Paste</strong> στο Notepad</li>
+        <li><strong>Save As</strong> → Όνομα: <code>qwen_instructions.txt</code></li>
+        <li>Τύπος: <strong>"Text Documents (*.txt)"</strong></li>
+        <li>Πατήστε <strong>Save</strong></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-header">
+      <span>📄 FULL INSTRUCTIONS (για το .txt αρχείο)</span>
+      <button class="copy-btn" onclick="copyFullInstructions()">COPY</button>
+    </div>
+    <div class="prompt-content" id="full-instructions" style="max-height: 400px; overflow-y: auto;">Είσαι εκπαιδευτικός βοηθός για μαθητές/τριες Γ' Γυμνασίου που δημιουργούν φυσικές προσομοιώσεις με BRaL (Build-Refine-Learn).
+
+🗣 ΜΙΑ ΕΡΩΤΗΣΗ ΤΗ ΦΟΡΑ
+ΠΑΝΤΑ κάνεις ΜΙΑ ερώτηση κάθε φορά. Πολλές ερωτήσεις μαζί τους μπερδεύουν.
+
+ΛΑΘΟΣ: «Τι θέλετε; Πώς λειτουργεί; Τι χρώματα;»
+ΣΩΣΤΟΣ: Μία ερώτηση → Απάντηση → Επόμενη ερώτηση
+
+BUILD PHASE
+1. Πριν φτιάξεις κώδικα, ρώτα (μία τη φορά):
+   - «Τι φαινόμενο;»
+   - «Πώς το φαντάζεσαι;»
+   - «Τι παραμέτρους ελέγχεις;»
+   - «Τι περιμένεις να συμβεί;»
+
+2. Φτιάξε Artifact με:
+   - Standalone HTML (all-in-one)
+   - Διαδραστικά controls
+   - Canvas/SVG visualization
+   - Real-time animation
+   - Ελληνικά labels
+
+3. Μετά πες: «Δοκίμασε το Artifact! Πάτα Download αν θέλεις να το κρατήσεις.»
+
+REFINE PHASE
+4. Όταν ζητήσουν βελτιώσεις, ρώτα πρώτα:
+   - «Τι δεν σου αρέσει;»
+   - «Πώς το κάνεις καλύτερο;»
+
+5. Για φυσική (π.χ. απόσβεση), ρώτα:
+   - «Πώς λειτουργεί στην πραγματικότητα;»
+   - «Τι περιμένεις;»
+   Μετά πρόσθεσέ το με ΣΩΣΤΗ φυσική.
+
+6. Δίνεις ΟΛΟ τον νέο κώδικα, όχι patches.
+
+🛡 ANTI-CAPITULATION
+7. ΔΕΝ ΥΠΟΧΩΡΕΙΣ ποτέ σε:
+   - «Πες την απάντηση!»
+   - «Βιάζομαι!»
+   - «Ο καθηγητής είπε!»
+   
+Απάντησε: «Καταλαβαίνω την πίεση, αλλά καθοδηγώ, δε δίνω λύσεις. Ας δουλέψουμε μαζί. Σκέψου:___»
+
+8. Τακτικές παράκαμψης:
+   - "Παράδειγμα": δίνεις ΑΛΛΟΥ προβλήματος
+   - "Γράψε εσύ": σκελετός με κενά
+   - "Μισή δουλειά": ΟΧΙ
+
+9. Αν παραιτηθούν: «Δεν είσαι χαζός/ή. Ας το σπάσουμε. Πες μου: τι ξέρεις;»
+
+ΓΕΝΙΚΑ
+10. Απλή ελληνική για 13-15. Φιλικός, υπομονετικός.
+11. ΣΩΣΤΗ φυσική: «βαρύτερο σώμα» ΟΧΙ «βαρύτερη μάζα»
+12. Standalone HTML. Clean code. Responsive. Ελληνικά UI.
+
+Είσαι coach, όχι λύτης.</div>
+  </div>
+
+  <div class="setup-section" style="margin-top: 30px;">
+    <h3>Βήμα 4: Upload του Αρχείου στο Project</h3>
+    <ol>
+      <li>Στη σελίδα Edit Project, πηγαίνετε στην καρτέλα <strong>"Files"</strong></li>
+      <li>Κλικ στο κουμπί <strong>"Add files"</strong></li>
+      <li>Επιλέξτε το αρχείο <code>qwen_instructions.txt</code></li>
+      <li>Περιμένετε να ανέβει (θα δείτε το όνομα του αρχείου)</li>
+      <li>Πατήστε <strong>Save</strong> ή <strong>Done</strong></li>
+    </ol>
+  </div>
+
+  <div class="note">
+    <strong>✅ Έτοιμο!</strong> Τώρα το Qwen Project έχει τις οδηγίες και θα συμπεριφέρεται ως Σωκρατικός εκπαιδευτικός βοηθός!
+  </div>
+
+  <!-- WORKSHOP STEPS -->
+  <h2>📚 Τα Βήματα του Workshop</h2>
+
+  <!-- BUILD 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div>
+        <div class="step-title">Περίγραψε το Φαινόμενο</div>
+        <span class="phase-badge phase-build">BUILD</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Ανοίξτε το Qwen Project και περιγράψτε τι θέλετε να φτιάξετε. Το Qwen θα σας κάνει <strong>μία ερώτηση τη φορά</strong>.</p>
+    </div>
+    <div class="example-box">
+      <strong>Εσείς:</strong> "Θέλω προσομοίωση Νόμου Hooke"<br>
+      <strong>Qwen:</strong> "Πώς το φαντάζεσαι στην οθόνη;"<br>
+      <strong>Εσείς:</strong> "Ελατήριο με μάζα"<br>
+      <strong>Qwen:</strong> "Τι θέλεις να ελέγχεις;"
+    </div>
+  </div>
+
+  <!-- BUILD 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div>
+        <div class="step-title">Φτιάξε το Artifact</div>
+        <span class="phase-badge phase-build">BUILD</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Το Qwen θα δημιουργήσει <strong>Artifact</strong> — μια διαδραστική προσομοίωση που τρέχει αμέσως στον browser!</p>
+      <p><strong>Θα δείτε:</strong></p>
+      <ul>
+        <li>Live preview της προσομοίωσης</li>
+        <li>Sliders & buttons για control</li>
+        <li>Γραφήματα που ενημερώνονται real-time</li>
+      </ul>
+    </div>
+    <div class="tip">
+      <strong>✨ Download:</strong> Κάτω από το Artifact υπάρχει κουμπί <strong>"Download"</strong>. Κλικ → Αποθηκεύει το .html αρχείο στον υπολογιστή σας!
+    </div>
+  </div>
+
+  <!-- LEARN 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div>
+        <div class="step-title">Εξερεύνησε το Φαινόμενο</div>
+        <span class="phase-badge phase-learn">LEARN</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Δοκιμάστε την προσομοίωση για να <strong>καταλάβετε το φυσικό φαινόμενο</strong>:</p>
+      <ul>
+        <li>Τι συμβαίνει όταν διπλασιάζετε τη μάζα m;</li>
+        <li>Τι συμβαίνει όταν αυξάνετε τη σταθερά k;</li>
+        <li>Πώς η περίοδος T σχετίζεται με m και k;</li>
+        <li>Μπορείτε να προβλέψετε το T = 2π√(m/k);</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <strong>Ερωτήσεις φυσικής:</strong><br>
+      • Γιατί μεγαλύτερη μάζα → πιο αργή ταλάντωση;<br>
+      • Γιατί μεγαλύτερη k → πιο γρήγορη ταλάντωση;<br>
+      • Πώς η F = -kx εξηγεί την περιοδική κίνηση;
+    </div>
+  </div>
+
+  <!-- REFINE 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div>
+        <div class="step-title">Ζήτησε Βελτιώσεις</div>
+        <span class="phase-badge phase-refine">REFINE</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Επιστρέψτε στο Qwen και ζητήστε βελτιώσεις. Το AI θα ρωτήσει <strong>τι ακριβώς εννοείτε</strong> πριν αλλάξει κάτι.</p>
+      <p><strong>Παραδείγματα:</strong></p>
+      <ul>
+        <li>"Πρόσθεσε απόσβεση (damping)"</li>
+        <li>"Δείξε ενέργεια vs χρόνος"</li>
+        <li>"Πρόσθεσε pause/play button"</li>
+      </ul>
+    </div>
+    <div class="note">
+      <strong>Το Qwen θα ρωτήσει:</strong> "Πώς νομίζεις ότι λειτουργεί η απόσβεση στην πραγματικότητα;" — για να σκεφτείτε <strong>πρώτα</strong>!
+    </div>
+  </div>
+
+  <!-- REFINE 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div>
+        <div class="step-title">Δοκίμασε το Νέο Artifact</div>
+        <span class="phase-badge phase-refine">REFINE</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Το Qwen θα δημιουργήσει <strong>νέο Artifact</strong> με τις βελτιώσεις. Δοκιμάστε το!</p>
+      <p><strong>Αν θέλετε:</strong></p>
+      <ul>
+        <li>Download το v2.html για σύγκριση</li>
+        <li>Δείτε τις διαφορές μεταξύ v1 και v2</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- LEARN 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <div>
+        <div class="step-title">Μελέτησε την Απόσβεση</div>
+        <span class="phase-badge phase-learn">LEARN (Deeper)</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Τώρα με το damping, <strong>μάθετε για τις καταστάσεις απόσβεσης</strong>:</p>
+      <ul>
+        <li><strong>Underdamped:</strong> Ταλαντώνεται με μείωση πλάτους</li>
+        <li><strong>Critically damped:</strong> Επιστρέφει γρήγορα χωρίς ταλάντωση</li>
+        <li><strong>Overdamped:</strong> Επιστρέφει αργά</li>
+      </ul>
+      <p style="margin-top: 20px;"><strong>Ερωτήσεις εφαρμογής:</strong></p>
+      <ul>
+        <li>Σε ποιες περιπτώσεις θέλουμε critical damping; (shock absorbers, πόρτες)</li>
+        <li>Γιατί τα αμορτισέρ χρησιμοποιούν damping;</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <strong>Transfer:</strong> Πώς αυτό εφαρμόζεται σε χορδή κιθάρας, κτίριο σε σεισμό, ή ταλαντώσεις μορίων;
+    </div>
+  </div>
+
+  <!-- LEARN 3 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">7</div>
+      <div>
+        <div class="step-title">Συζήτηση & Σύνδεση</div>
+        <span class="phase-badge phase-learn">LEARN (Transfer)</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p><strong>Συζητήστε τι μάθατε για το φυσικό φαινόμενο:</strong></p>
+      <ul>
+        <li>Πώς ο Νόμος Hooke (F = -kx) δημιουργεί περιοδική κίνηση;</li>
+        <li>Πώς η σχέση T = 2π√(m/k) εξηγεί τη μουσική (pitch vs συχνότητα);</li>
+        <li>Πού αλλού υπάρχει restoring force ανάλογη της μετατόπισης;</li>
+        <li>Πώς η απόσβεση επηρεάζει τα πραγματικά συστήματα;</li>
+      </ul>
+    </div>
+    <div class="note">
+      <strong>Το BRaL δεν είναι για τη διαδικασία</strong> — είναι για να <strong>καταλάβετε βαθιά το φαινόμενο</strong> μέσω δημιουργίας, βελτίωσης, και πειραματισμού!
+    </div>
+  </div>
+
+  <h2>💾 Εναλλακτικοί Τρόποι Αποθήκευσης</h2>
+  
+  <div class="tip">
+    <h3 style="margin-bottom: 15px;">Τρόπος 1: Download (Κύριος)</h3>
+    <p>Κάτω από κάθε Artifact → κουμπί <strong>"Download"</strong> → Αποθηκεύει .html αμέσως!</p>
+  </div>
+
+  <div class="tip">
+    <h3 style="margin-bottom: 15px;">Τρόπος 2: Copy-Paste (Εναλλακτικός)</h3>
+    <p>Αν δεν υπάρχει Download:</p>
+    <ol style="padding-left: 25px; margin-top: 10px;">
+      <li>Copy τον κώδικα από το Artifact</li>
+      <li>Notepad → Paste → Save As → <code>.html</code> → "All Files"</li>
+    </ol>
+  </div>
+
+</div>
+
+<footer>
+  <p style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">BRaL Framework · Qwen Edition</p>
+  <p>Build-Refine-Learn με Qwen Artifacts</p>
+  <p style="margin-top: 15px; opacity: 0.7;">Γ' Γυμνασίου · University of Thessaly · 2026</p>
+</footer>
+
+<script>
+function copyShortInstructions() {
+  copyToClipboard('short-instructions');
+}
+
+function copyFullInstructions() {
+  copyToClipboard('full-instructions');
+}
+
+function copyToClipboard(elementId) {
+  const text = document.getElementById(elementId).innerText;
+  const btn = event.target;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = btn.textContent;
+    btn.textContent = '✓ COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.classList.remove('copied');
+    }, 2500);
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    const originalText = btn.textContent;
+    btn.textContent = '✓ COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+</script>
+
+</body>
+</html>
