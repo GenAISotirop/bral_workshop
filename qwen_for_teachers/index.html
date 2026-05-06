@@ -1,1 +1,398 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwen Teacher Workflow · BRaL</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,900&family=JetBrains+Mono:wght@600;700&family=Inter+Tight:wght@400;600;700&display=swap');
+  
+  :root {
+    --bg: #F5F1E8;
+    --ink: #1a1a1a;
+    --purple: #8B5FBF;
+    --purple-soft: #E8DDF5;
+    --purple-dark: #6B4C9A;
+    --yellow: #F4C430;
+    --green: #2D5A3D;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter Tight', sans-serif;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; padding: 40px 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  
+  .back-button {
+    display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; background: var(--ink); color: var(--bg);
+    padding: 10px 20px; text-decoration: none; margin-bottom: 30px; border: 3px solid var(--ink); transition: all 0.3s;
+  }
+  .back-button:hover { background: var(--bg); color: var(--ink); transform: translateX(-4px); }
+  
+  .hero { text-align: center; padding: 40px 20px; margin-bottom: 40px; border-bottom: 3px solid var(--purple); }
+  h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(40px, 6vw, 60px); line-height: 1; margin-bottom: 10px; color: var(--purple); }
+  .subtitle { font-size: 16px; color: #555; }
+  
+  h2 { font-family: var(--serif); font-weight: 900; font-size: 32px; margin: 50px 0 25px; color: var(--purple); }
+  h3 { font-family: var(--serif); font-weight: 900; font-size: 22px; margin: 25px 0 15px; }
+  
+  .intro-box { background: var(--purple); color: white; padding: 35px; margin: 30px 0; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+  .intro-box p { font-size: 17px; line-height: 1.8; }
+  
+  .setup-section { background: var(--purple-soft); border: 3px solid var(--ink); padding: 35px; margin: 40px 0; box-shadow: 8px 8px 0 var(--ink); }
+  .setup-section h3 { color: var(--purple); margin-bottom: 20px; }
+  .setup-section ol { padding-left: 30px; margin: 20px 0; }
+  .setup-section li { margin-bottom: 15px; font-size: 16px; line-height: 1.7; }
+  .setup-section code { background: white; padding: 3px 8px; border: 1px solid var(--purple); font-family: var(--mono); font-size: 13px; }
+  
+  .prompt-box { background: var(--ink); color: var(--bg); padding: 0; margin: 30px 0; border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--purple); }
+  .prompt-header {
+    background: var(--purple); color: white; padding: 15px 25px; display: flex; justify-content: space-between;
+    align-items: center; font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .copy-btn {
+    background: white; color: var(--purple); border: none; padding: 8px 16px; font-family: var(--mono);
+    font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--yellow); color: var(--ink); }
+  .copy-btn.copied { background: #4CAF50; color: white; }
+  .prompt-content {
+    padding: 25px 30px; font-family: var(--mono); font-size: 13.5px; line-height: 1.8;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  
+  .step { margin: 60px 0; padding: 35px; background: white; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--purple-soft); }
+  .step-header { display: flex; align-items: center; gap: 25px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid var(--purple-soft); }
+  .step-number { font-family: var(--serif); font-weight: 900; font-size: 70px; color: var(--purple); line-height: 0.9; min-width: 80px; }
+  .step-title { font-family: var(--serif); font-weight: 900; font-size: 32px; color: var(--ink); line-height: 1.1; }
+  .phase-badge { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; padding: 6px 12px; margin-top: 8px; text-transform: uppercase; font-weight: 700; }
+  .phase-build { background: #E8F0FF; color: #1E3A5F; border: 2px solid #1E3A5F; }
+  .phase-refine { background: var(--purple-soft); color: var(--purple); border: 2px solid var(--purple); }
+  .phase-learn { background: #D9E8DE; color: var(--green); border: 2px solid var(--green); }
+  
+  .step-content { font-size: 16px; line-height: 1.8; margin: 20px 0; }
+  .step-content ul, .step-content ol { padding-left: 30px; margin: 18px 0; }
+  .step-content li { margin-bottom: 12px; }
+  .step-content strong { color: var(--purple); }
+  
+  .example-box { background: #FFF9E6; border-left: 5px solid var(--yellow); padding: 25px; margin: 25px 0; font-size: 15px; }
+  .example-box strong { color: var(--purple); }
+  
+  .note { background: #FFF4D0; border-left: 5px solid var(--yellow); padding: 25px; margin: 30px 0; font-size: 15px; }
+  .note strong { color: var(--purple); }
+  
+  .tip { background: #E8F5E9; border-left: 5px solid var(--green); padding: 25px; margin: 30px 0; font-size: 15px; }
+  .tip strong { color: var(--green); }
+  
+  footer { text-align: center; margin-top: 80px; padding-top: 30px; border-top: 3px solid var(--ink); font-family: var(--mono); font-size: 12px; color: #666; }
+  
+  @media (max-width: 768px) {
+    .step-header { flex-direction: column; align-items: flex-start; }
+    .step-number { font-size: 56px; }
+    .step-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
 
+<div class="container">
+  
+  <a href="../index.html" class="back-button">
+    <span>←</span>
+    <span>Επιστροφή στην Αρχική</span>
+  </a>
+  
+  <div class="hero">
+    <h1>Qwen · Teacher Workflow</h1>
+    <p class="subtitle">Build-Refine-Learn με Qwen Projects · Για Εκπαιδευτικούς</p>
+  </div>
+
+  <div class="intro-box">
+    <p>Αυτό το workflow είναι σχεδιασμένο για <strong>εκπαιδευτικούς</strong> που θέλουν να δημιουργήσουν ή να βελτιώσουν φυσικές προσομοιώσεις με το <strong>Qwen</strong>. Χρησιμοποιεί Projects για συνέπεια και Artifacts για live preview — χωρίς Σωκρατικές ερωτήσεις, με άμεση παραγωγή κώδικα.</p>
+  </div>
+
+  <!-- SETUP PROJECT -->
+  <h2>⚙️ Προετοιμασία: Setup Qwen Project</h2>
+  
+  <div class="setup-section">
+    <h3>Βήματα Δημιουργίας Project</h3>
+    <ol>
+      <li>Πηγαίνετε στο <a href="https://qwen.ai" target="_blank" style="color: var(--purple); font-weight: 700;">qwen.ai</a></li>
+      <li><strong>3 τελίτσες</strong> (⋮) πάνω δεξιά → <strong>Edit Project</strong></li>
+      <li>Στο πεδίο <strong>Project Name:</strong> <code>Teacher BRaL - Φυσική Προσομοίωση</code></li>
+      <li>Στο πεδίο <strong>Instructions:</strong> επικολλήστε το παρακάτω ↓</li>
+    </ol>
+  </div>
+  
+  <div class="prompt-box">
+    <div class="prompt-header">
+      <span>📋 PROJECT INSTRUCTIONS (για εκπαιδευτικούς)</span>
+      <button class="copy-btn" onclick="copyInstructions()">COPY</button>
+    </div>
+    <div class="prompt-content" id="instructions">Είσαι βοηθός για εκπαιδευτικούς που δημιουργούν φυσικές προσομοιώσεις με το πλαίσιο BRaL.
+
+ΡΟΛΟΣ:
+Δεν είσαι Σωκρατικός διδάσκαλος — είσαι coding assistant. Δουλεύεις με εκπαιδευτικούς, όχι με μαθητές. Παράγεις κώδικα γρήγορα και αποτελεσματικά.
+
+BUILD PHASE
+1. Όταν ο εκπαιδευτικός περιγράφει την ιδέα του:
+   - Κάνε 2-3 διευκρινιστικές ερωτήσεις (αν χρειάζεται)
+   - Μην κάνεις Σωκρατικό διάλογο — κατανόησε και φτιάξε
+
+2. Δημιουργία Artifact:
+   - Standalone HTML (all-in-one)
+   - Professional, clean design
+   - Διαδραστικά controls
+   - Canvas/SVG visualization
+   - Real-time animation
+   - Ελληνικά labels
+
+3. Μετά τη δημιουργία:
+   «Δοκιμάστε το Artifact. Πατήστε Download για αποθήκευση. Πείτε μου τι θέλετε να αλλάξει.»
+
+REFINE PHASE
+4. Όταν ζητήσουν βελτιώσεις:
+   - Κάνε την αλλαγή αμέσως
+   - Μην ρωτάς πολλά — είναι εκπαιδευτικοί, ξέρουν τι θέλουν
+   - Αν κάτι είναι ασαφές, ρώτα μόνο εκείνο το σημείο
+
+5. Φυσική ακρίβεια:
+   - Χρησιμοποίησε σωστές εξισώσεις
+   - Προσθέτεις comments στον κώδικα που εξηγούν τη φυσική
+   - Αν υπάρχει σφάλμα στη φυσική, το επισημαίνεις αλλά δεν κάνεις lecture
+
+6. Δίνεις ΟΛΟ τον κώδικα:
+   - Πάντα ολόκληρο το HTML
+   - Όχι patches, όχι "αλλάξτε τη γραμμή X"
+
+ΓΕΝΙΚΑ
+7. Γλώσσα: Επαγγελματική ελληνική. Σεβαστός αλλά όχι formalistic.
+8. Φυσική ορολογία: Σωστή. "βαρύτερο σώμα" όχι "βαρύτερη μάζα".
+9. Code quality: Clean, commented, responsive, production-ready.
+10. Ταχύτητα: Γρήγορες απαντήσεις. Δεν χρειάζεται Σωκρατικός διάλογος.
+
+Είσαι tool, όχι teacher.</div>
+  </div>
+
+  <div class="note">
+    <strong>✅ Έτοιμο!</strong> Το Qwen Project είναι ρυθμισμένο για γρήγορη παραγωγή προσομοιώσεων χωρίς Σωκρατικό διάλογο.
+  </div>
+
+  <!-- WORKSHOP STEPS -->
+  <h2>📚 Τα Βήματα του Workflow</h2>
+
+  <!-- BUILD 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div>
+        <div class="step-title">Περιγράψτε την Ιδέα σας</div>
+        <span class="phase-badge phase-build">BUILD</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Ανοίξτε το Qwen Project και περιγράψτε τι προσομοίωση θέλετε να φτιάξετε. Το Qwen θα κάνει <strong>2-3 διευκρινιστικές ερωτήσεις</strong> (αν χρειάζεται) και μετά θα φτιάξει.</p>
+      <p><strong>Τι να πείτε:</strong></p>
+      <ul>
+        <li>Ποιο φυσικό φαινόμενο;</li>
+        <li>Τι παραμέτρους θέλετε να ελέγχουν οι μαθητές;</li>
+        <li>Τι επίπεδο πολυπλοκότητας; (απλό/μέτριο/προχωρημένο)</li>
+        <li>Υπάρχει κάτι συγκεκριμένο που πρέπει να φαίνεται;</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <strong>Παράδειγμα:</strong><br>
+      "Θέλω προσομοίωση Νόμου Hooke με ελατήριο και μάζα. Οι μαθητές να μπορούν να αλλάζουν τη σταθερά k και τη μάζα m. Να δείχνει τη σχέση F = -kx και την περίοδο T = 2π√(m/k). Επίπεδο Γ' Γυμνασίου."
+    </div>
+  </div>
+
+  <!-- BUILD 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div>
+        <div class="step-title">Λήψη Artifact</div>
+        <span class="phase-badge phase-build">BUILD</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Το Qwen θα δημιουργήσει <strong>Artifact</strong> με την προσομοίωσή σας — τρέχει αμέσως στον browser!</p>
+      <p><strong>Τι θα δείτε:</strong></p>
+      <ul>
+        <li>Live preview της προσομοίωσης</li>
+        <li>Διαδραστικά controls</li>
+        <li>Γραφήματα & animations</li>
+        <li>Professional design</li>
+      </ul>
+      <p style="margin-top: 20px;"><strong>Download:</strong> Πατήστε το κουμπί Download κάτω από το Artifact για να αποθηκεύσετε το .html αρχείο!</p>
+    </div>
+  </div>
+
+  <!-- REFINE 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div>
+        <div class="step-title">Δοκιμάστε & Βελτιώστε</div>
+        <span class="phase-badge phase-refine">REFINE</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Δοκιμάστε την προσομοίωση και πείτε στο Qwen τι θέλετε να αλλάξει. <strong>Μιλάτε απευθείας</strong> — όχι Σωκρατικός διάλογος.</p>
+      <p><strong>Παραδείγματα βελτιώσεων:</strong></p>
+      <ul>
+        <li>"Πρόσθεσε απόσβεση (damping) στο σύστημα"</li>
+        <li>"Δείξε την ενέργεια συναρτήσει του χρόνου"</li>
+        <li>"Άλλαξε τα χρώματα σε πιο φωτεινά"</li>
+        <li>"Πρόσθεσε περισσότερες επεξηγήσεις στο UI"</li>
+        <li>"Κάνε τα γραφήματα πιο μεγάλα"</li>
+      </ul>
+    </div>
+    <div class="tip">
+      <strong>💡 Συμβουλή:</strong> Μιλάτε στο Qwen όπως θα μιλούσατε σε προγραμματιστή. Δώστε ξεκάθαρες οδηγίες — το Qwen δεν κάνει Σωκρατικές ερωτήσεις, εκτελεί.
+    </div>
+  </div>
+
+  <!-- REFINE 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div>
+        <div class="step-title">Επαναληπτικές Βελτιώσεις</div>
+        <span class="phase-badge phase-refine">REFINE</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p>Το Qwen θα δημιουργήσει <strong>νέο Artifact</strong> με τις αλλαγές. Συνεχίστε το κύκλο:</p>
+      <ol>
+        <li>Δοκιμάστε τη νέα έκδοση</li>
+        <li>Ζητήστε περαιτέρω αλλαγές</li>
+        <li>Download το τελικό .html</li>
+      </ol>
+      <p style="margin-top: 20px;"><strong>Version control:</strong> Κάθε Artifact μπορεί να γίνει download ξεχωριστά — κρατήστε v1.html, v2.html, final.html!</p>
+    </div>
+  </div>
+
+  <!-- LEARN 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div>
+        <div class="step-title">Αξιολόγηση & Χρήση</div>
+        <span class="phase-badge phase-learn">LEARN</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p><strong>Αξιολογήστε την προσομοίωση:</strong></p>
+      <ul>
+        <li>Είναι φυσικά ακριβής;</li>
+        <li>Είναι κατάλληλη για το επίπεδο των μαθητών;</li>
+        <li>Τα controls είναι ξεκάθαρα;</li>
+        <li>Η οπτικοποίηση βοηθά στην κατανόηση;</li>
+      </ul>
+      <p style="margin-top: 20px;"><strong>Προετοιμασία για την τάξη:</strong></p>
+      <ul>
+        <li>Δοκιμάστε την προσομοίωση σε διαφορετικά devices</li>
+        <li>Ετοιμάστε ερωτήσεις για συζήτηση</li>
+        <li>Σχεδιάστε το πώς θα το ενσωματώσετε στο μάθημα</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <strong>Ερωτήσεις για την τάξη:</strong><br>
+      • "Τι παρατηρείτε όταν διπλασιάζετε τη μάζα;"<br>
+      • "Πώς η σταθερά k επηρεάζει την ταλάντωση;"<br>
+      • "Μπορείτε να προβλέψετε την περίοδο για k=50, m=2;"
+    </div>
+  </div>
+
+  <!-- LEARN 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <div>
+        <div class="step-title">Αναστοχασμός & Βελτίωση</div>
+        <span class="phase-badge phase-learn">LEARN</span>
+      </div>
+    </div>
+    <div class="step-content">
+      <p><strong>Μετά τη χρήση στην τάξη:</strong></p>
+      <ul>
+        <li>Τι λειτούργησε καλά;</li>
+        <li>Τι μπέρδεψε τους μαθητές;</li>
+        <li>Τι θα αλλάζατε για την επόμενη φορά;</li>
+        <li>Χρειάζονται επιπλέον features;</li>
+      </ul>
+      <p style="margin-top: 20px;"><strong>Iteration:</strong> Επιστρέψτε στο Qwen Project και βελτιώστε την προσομοίωση βάσει feedback!</p>
+    </div>
+  </div>
+
+  <h2>💾 Tips για Εκπαιδευτικούς</h2>
+  
+  <div class="tip">
+    <h3 style="margin-bottom: 15px;">Οργάνωση Αρχείων</h3>
+    <ul style="margin: 10px 0; margin-left: 20px;">
+      <li>Δημιουργήστε φάκελο για κάθε θέμα (π.χ. "Hooke_Law")</li>
+      <li>Αποθηκεύστε iterations (v1.html, v2.html, final.html)</li>
+      <li>Κρατήστε notes για τι άλλαξε κάθε φορά</li>
+    </ul>
+  </div>
+
+  <div class="tip">
+    <h3 style="margin-bottom: 15px;">Διαμοίραση με Μαθητές</h3>
+    <ul style="margin: 10px 0; margin-left: 20px;">
+      <li>Upload το .html σε Google Drive / OneDrive</li>
+      <li>Share link με τους μαθητές</li>
+      <li>Μπορούν να το ανοίξουν απευθείας στον browser!</li>
+    </ul>
+  </div>
+
+  <div class="tip">
+    <h3 style="margin-bottom: 15px;">Επαναχρησιμοποίηση</h3>
+    <ul style="margin: 10px 0; margin-left: 20px;">
+      <li>Το ίδιο Qwen Project μπορεί να χρησιμοποιηθεί για πολλές προσομοιώσεις</li>
+      <li>Δημιουργήστε βιβλιοθήκη με τις προσομοιώσεις σας</li>
+      <li>Μοιραστείτε τα .html με συναδέλφους!</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">BRaL Framework · Qwen Teacher Edition</p>
+  <p>Γρήγορη δημιουργία προσομοιώσεων για εκπαιδευτικούς</p>
+  <p style="margin-top: 15px; opacity: 0.7;">University of Thessaly · 2026</p>
+</footer>
+
+<script>
+function copyInstructions() {
+  const text = document.getElementById('instructions').innerText;
+  const btn = event.target;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 2500);
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    btn.textContent = '✓ COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+</script>
+
+</body>
+</html>
