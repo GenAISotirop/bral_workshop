@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ο Χαρταετός: Γιατί Πετά; — Προσομοίωση | HT-KITE-01</title>
+<style>
+:root{--ink:#16313a;--ink2:#4a626b;--sky:#eaf4f7;--line:#cfdfe4;--acc:#e07a1f;--acc2:#0f6f7c;--ok:#2e7d4f;--bad:#b23a2e;--warn:#b7791f;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Inter","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--sky);line-height:1.5}
+header{background:var(--ink);color:#fff;padding:14px 20px}
+header h1{margin:0;font-size:1.25rem}
+header .meta{font-size:.82rem;opacity:.8;margin-top:2px}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 20px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav button{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 12px;border-radius:20px;cursor:pointer;font:inherit;font-size:.88rem}
+nav button.on{background:var(--acc2);color:#fff;border-color:var(--acc2)}
+nav button .code{font-weight:700;letter-spacing:.02em}
+main{max-width:1100px;margin:0 auto;padding:20px}
+section.phase{display:none}
+section.phase.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+h2{margin:0 0 6px;font-size:1.2rem}
+h3{margin:0 0 8px;font-size:1rem}
+.lead{color:var(--ink2);margin:0 0 12px}
+.dq{border-left:4px solid var(--acc);padding:8px 12px;background:#fff7ef;font-weight:600;margin:10px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+textarea{width:100%;min-height:70px;font:inherit;padding:8px;border:1px solid var(--line);border-radius:6px;resize:vertical}
+select,input[type=text]{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:6px}
+.btn{background:var(--acc2);color:#fff;border:0;border-radius:6px;padding:8px 14px;font:inherit;cursor:pointer}
+.btn.sec{background:#fff;color:var(--acc2);border:1px solid var(--acc2)}
+.btn.acc{background:var(--acc)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.opt{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:5px 10px;margin:3px 4px 3px 0;cursor:pointer;background:#fff}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.fb{margin-top:8px;padding:8px 10px;border-radius:6px;font-size:.92rem;display:none}
+.fb.ok{display:block;background:#e9f6ee;border:1px solid #b5dcc3}
+.fb.no{display:block;background:#fbecea;border:1px solid #efc1bb}
+.fb.info{display:block;background:#eef5f7;border:1px solid var(--line)}
+.tag{display:inline-block;font-size:.75rem;padding:1px 7px;border-radius:10px;background:#eef5f7;border:1px solid var(--line);margin-left:4px}
+.tag.flag{background:#fbecea;border-color:#efc1bb;color:var(--bad)}
+.tag.pilot{background:#fff4e0;border-color:#f0d7a8;color:var(--warn)}
+.ct{font-size:.82rem;color:var(--acc2);font-weight:700;letter-spacing:.03em}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.steps span{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);font-size:.85rem;background:#fff}
+.steps span.done{background:var(--ok);color:#fff;border-color:var(--ok)}
+.steps span.cur{background:var(--acc);color:#fff;border-color:var(--acc)}
+.mc label{display:block;padding:6px 8px;border:1px solid var(--line);border-radius:6px;margin:5px 0;cursor:pointer;background:#fff}
+.mc label:hover{background:#f6fafb}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left}
+th{background:#f4f9fa}
+.lock{font-size:.8rem;color:var(--ink2)}
+canvas{width:100%;height:auto;background:#fbfdfd;border:1px solid var(--line);border-radius:8px;display:block}
+.readout{display:flex;gap:16px;font-variant-numeric:tabular-nums;font-size:.92rem;margin-top:6px;color:var(--ink2)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:700px){.three{grid-template-columns:1fr}}
+.three div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfdfd}
+.three b{display:block;font-size:.85rem;color:var(--acc2);margin-bottom:4px}
+.small{font-size:.85rem;color:var(--ink2)}
+.navbtns{display:flex;justify-content:space-between;margin-top:10px}
+.hyp{font-size:1rem;line-height:2.1}
+.verdict{padding:10px 12px;border-radius:8px;margin-top:10px}
+footer{text-align:center;font-size:.78rem;color:var(--ink2);padding:20px}
+@media print{nav,.btn,footer{display:none}section.phase{display:block}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Ο Χαρταετός: Γιατί Πετά; — Βήμα-βήμα προσομοίωση</h1>
+  <div class="meta">HT-KITE-01 · CT Skill: HT (Hypothesis Testing) · Task Class: TC1 · STEAM-CT Erasmus+ · Science View</div>
+</header>
+<nav id="nav"></nav>
+<main>
+
+<!-- ===================== JOIN (έρευνα) ===================== -->
+<section class="phase" data-phase="JOIN">
+  <div class="card">
+    <div class="ct">ΣΥΜΜΕΤΟΧΗ ΣΤΗΝ ΕΡΕΥΝΑ · προαιρετική</div>
+    <h2>Πριν ξεκινήσετε</h2>
+    <p class="lead">Η προσομοίωση χρησιμοποιείται και σε έρευνα για το πώς φοιτητές και εκπαιδευτικοί διατυπώνουν και ελέγχουν υποθέσεις. Αν συμφωνείτε, η σελίδα καταγράφει <b>ανώνυμα</b> τι κάνετε (επιλογές, δοκιμές, ελέγχους) και τι γράφετε στα πεδία της. Μπορείτε να τη χρησιμοποιήσετε κανονικά και χωρίς να συμμετέχετε.</p>
+    <div class="card" style="background:#fbfdfd">
+      <b>Τι καταγράφεται:</b> οι απαντήσεις στα «Γιατί;» της κατασκευής (και πόσες προσπάθειες χρειάστηκαν), η υπόθεση και οι έλεγχοί της, ο πίνακας των τριών στηλών, κάθε δοκιμή με τις ρυθμίσεις της, τα κείμενα του αναστοχασμού και ο χρόνος σε κάθε φάση. <b>Δεν καταγράφεται</b> όνομα, email ή διεύθυνση IP από τη σελίδα. Μην γράφετε στα πεδία στοιχεία που σας ταυτοποιούν.<br>
+      <b>Υπεύθυνος:</b> Δρ. Δημήτριος Σωτηρόπουλος · Επικοινωνία και ανάκληση συναίνεσης: dsotiropoulos@uth.gr (με τον προσωπικό σας κωδικό).
+    </div>
+    <label class="opt" style="display:flex"><input type="checkbox" class="cons"> Διάβασα τις πληροφορίες και συμμετέχω εθελοντικά· μπορώ να αποσυρθώ οποτεδήποτε.</label>
+    <label class="opt" style="display:flex"><input type="checkbox" class="cons"> Είμαι άνω των 18 ετών.</label>
+    <label class="opt" style="display:flex"><input type="checkbox" class="cons"> Συναινώ στην ανώνυμη επεξεργασία των δεδομένων για ερευνητικούς σκοπούς (δημοσιεύσεις μόνο σε συγκεντρωτική μορφή).</label>
+  </div>
+  <div class="card">
+    <h3>Στοιχεία συμμετοχής</h3>
+    <p class="small"><b>Προσωπικός κωδικός</b> — ίδια φόρμουλα με τα ερωτηματολόγια PRE/POST και με το BRaL: τα 2 πρώτα γράμματα του ονόματος της μητέρας + ημέρα γέννησης (π.χ. ΜΑ15). Με τον ίδιο κωδικό συνδέονται ανώνυμα οι απαντήσεις σας από τις διαφορετικές δράσεις.</p>
+    <input type="text" id="jCode" maxlength="10" placeholder="π.χ. ΜΑ15" style="text-transform:uppercase">
+    <div class="grid2" style="margin-top:10px">
+      <div><p class="small"><b>Ιδιότητα</b></p><select id="jRole"><option value="">— επιλέξτε —</option><option value="preservice">Φοιτητής/τρια (μελλοντικός/ή εκπαιδευτικός)</option><option value="inservice">Εν ενεργεία εκπαιδευτικός</option><option value="other">Άλλο</option></select></div>
+      <div><p class="small"><b>Μορφή συμμετοχής</b></p><select id="jMode"><option value="">— επιλέξτε —</option><option value="inperson">Δια ζώσης</option><option value="online">Εξ αποστάσεως</option><option value="hybrid">Υβριδικά</option><option value="self">Μόνος/η (εκτός workshop)</option></select></div>
+      <div><p class="small"><b>Κωδικός ομάδας</b> (αν δουλεύετε σε ομάδα, π.χ. Ο3)</p><input type="text" id="jGroup" maxlength="8"></div>
+      <div><p class="small"><b>Ποιον χαρταετό φτιάξατε στα χέρια σας;</b></p><select id="jKite"><option value="">— επιλέξτε —</option><option value="none">Κανέναν (μόνο προσομοίωση)</option><option value="rhombus_paper">Ρόμβο από χαρτί A4</option><option value="rhombus_nylon">Ρόμβο από νάιλον</option><option value="hexagon_paper">Εξάγωνο από χαρτί</option><option value="hexagon_nylon">Εξάγωνο από νάιλον</option><option value="other">Άλλο</option></select></div>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="jYes">Συμμετέχω και ξεκινώ →</button><button class="btn sec" id="jNo">Συνέχεια χωρίς συμμετοχή</button></div>
+    <p class="small" style="margin-top:10px">Κοινός υπολογιστής; Πριν ξεκινήσει η επόμενη ομάδα: <a href="#" id="jReset">νέα συνεδρία (διαγράφει ό,τι υπάρχει σε αυτή τη συσκευή)</a>.</p>
+    <div class="fb" id="jFb"></div>
+  </div>
+</section>
+
+<!-- ===================== INTRO ===================== -->
+<section class="phase" data-phase="INTRO">
+  <div class="card">
+    <div class="ct">INTRO</div>
+    <h2>Καθαρά Δευτέρα: ποιος χαρταετός πετά «καλύτερα»;</h2>
+    <p class="lead">Σε λίγες εβδομάδες η τάξη θα πετάξει χαρταετούς. Όλοι έχουν μια ιδέα για το τι κάνει έναν χαρταετό να πετά καλά. Εδώ θα μετατρέψουμε μια τέτοια ιδέα σε υπόθεση που ελέγχεται, ώστε το αποτέλεσμα να μην εξαρτάται από την τύχη.</p>
+    <div class="dq">➤ Ποια σχεδιαστική επιλογή κάνει πραγματικά έναν χαρταετό να πετά καλύτερα — και πώς μπορούμε να το ξέρουμε με βεβαιότητα;</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Το άκαμπτο A4 μπροστά στον ανεμιστήρα</h3>
+      <p class="small">Κρατήστε (ή φανταστείτε) ένα άκαμπτο χαρτόνι A4 μπροστά σε ανεμιστήρα. Αλλάξτε τη γωνία του και δείτε τι «νιώθει» το χέρι σας.</p>
+      <svg id="a4svg" viewBox="0 0 360 220" width="100%"></svg>
+      <div class="row"><label>Γωνία ως προς τον άνεμο: <b id="a4ang">20°</b></label><input id="a4slider" type="range" min="0" max="90" value="20" style="flex:1"></div>
+      <p class="small">Τόξα: <span style="color:#0f6f7c">■ άνωση</span> (κάθετα στον άνεμο) · <span style="color:#e07a1f">■ οπισθέλκουσα</span> (προς την κατεύθυνση του ανέμου). Ποιοτικό μοντέλο, όχι μετρήσεις.</p>
+    </div>
+    <div class="card">
+      <h3>Η πρώτη μας διαίσθηση</h3>
+      <p class="small">Έχετε πετάξει χαρταετό; Τι παρατηρήσατε για το ύψος, τη σταθερότητα ή τις αλλαγές του ανέμου;</p>
+      <textarea data-save="intro_exp"></textarea>
+      <p class="small">Ποιο σχεδιαστικό χαρακτηριστικό μπορεί να κάνει έναν χαρταετό να πετά καλά, και γιατί;</p>
+      <textarea data-save="intro_intuition"></textarea>
+      <p class="small">Μια διαίσθηση δεν είναι ακόμη υπόθεση. Θα την ξαναδούμε στο ARGUE.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BUILD ===================== -->
+<section class="phase" data-phase="BUILD">
+  <div class="card">
+    <div class="ct">ΚΑΤΑΣΚΕΥΗ · Part-task Practice</div>
+    <h2>Φτιάχνουμε τον χαρταετό αναφοράς, βήμα-βήμα</h2>
+    <p class="lead">Αντί για φυσική κατασκευή, χτίζουμε εικονικά τον μικρό χαρταετό από A4. Σε κάθε βήμα απαντήστε στο «Γιατί;». Οι περισσότερες επιλογές κατασκευής υπάρχουν για να μένουν όλα ίδια εκτός από αυτό που θέλουμε να ελέγξουμε.</p>
+    <div class="steps" id="bSteps"></div>
+    <div class="grid2">
+      <div><svg id="buildSvg" viewBox="0 0 300 400" width="100%" style="max-height:470px;background:#fbfdfd;border:1px solid var(--line);border-radius:8px"></svg></div>
+      <div>
+        <h3 id="bTitle"></h3>
+        <p id="bText"></p>
+        <div class="card" style="background:#fbfdfd">
+          <b>Γιατί;</b> <span id="bQ"></span>
+          <div class="mc" id="bOpts"></div>
+          <div class="fb" id="bFb"></div>
+        </div>
+        <div class="navbtns"><button class="btn sec" id="bPrev">← Προηγούμενο</button><button class="btn" id="bNext" disabled>Επόμενο βήμα →</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ARGUE ===================== -->
+<section class="phase" data-phase="ARGUE">
+  <div class="card">
+    <div class="ct">ARGUE · Φύλλο εργασίας H</div>
+    <h2>Από τη διαίσθηση στην ελέγξιμη υπόθεση</h2>
+    <p class="lead">Ένα κριτήριο, μία μεταβλητή. Αν αλλάξουμε δύο πράγματα μαζί, δεν θα ξέρουμε ποιο προκάλεσε το αποτέλεσμα.</p>
+  </div>
+  <div class="card">
+    <h3>1. Ορίστε το «πετά καλά» — επιλέξτε ΕΝΑ κριτήριο</h3>
+    <div id="critOpts"></div>
+  </div>
+  <div class="card">
+    <h3>2. Επιλέξτε ΜΙΑ σχεδιαστική μεταβλητή</h3>
+    <div id="varOpts"></div>
+    <p class="small">Στο workshop όλες οι ομάδες ελέγχουν το μήκος της ουράς (TC1). Σημείο πρόσδεσης, σχήμα και υλικό είναι διαθέσιμα για το TRANSFER (TC2). Προσοχή στο σχήμα: ένα εξάγωνο κομμένο από το ίδιο A4 δεν έχει το ίδιο εμβαδόν με τον ρόμβο. Το μέγεθος ελέγχεται μόνο στο φυσικό εργαστήριο.</p>
+  </div>
+  <div class="card">
+    <h3>3. Επιχειρησιοποίηση του αποτελέσματος</h3>
+    <p id="opText" class="hyp"></p>
+  </div>
+  <div class="card">
+    <h3>4. Η υπόθεσή μας</h3>
+    <div class="hyp">
+      <b>ΑΝ</b> αλλάξουμε <span id="hIf"></span>,<br>
+      <b>ΤΟΤΕ</b> <span id="hY"></span> θα γίνει
+      <select id="hDir"><option value="">— επιλέξτε —</option><option value="down">μικρότερη/ο</option><option value="up">μεγαλύτερη/ο</option><option value="same">ίδια/ο</option></select><br>
+      <b>ΕΠΕΙΔΗ</b> <input type="text" id="hBec" data-save="h_because" style="width:100%" placeholder="φυσικός λόγος — τι κάνει η αλλαγή στον αέρα, στις δυνάμεις ή στο βάρος;">
+    </div>
+    <button class="btn" id="hCheck" style="margin-top:10px">Έλεγχος υπόθεσης</button>
+    <div class="fb" id="hFb"></div>
+  </div>
+  <div class="card">
+    <h3>5. Ο πίνακας των τριών στηλών</h3>
+    <div class="three">
+      <div><b>Αλλάζω (ανεξάρτητη)</b><span id="tcIV"></span></div>
+      <div><b>Μετράω (εξαρτημένη)</b><span id="tcDV"></span></div>
+      <div><b>Κρατάω σταθερά</b><div id="tcCV"></div></div>
+    </div>
+    <button class="btn" id="cvCheck" style="margin-top:10px">Έλεγχος σχεδιασμού</button>
+    <div class="fb" id="cvFb"></div>
+  </div>
+</section>
+
+<!-- ===================== TEST ===================== -->
+<section class="phase" data-phase="TEST">
+  <div class="card">
+    <div class="ct">TEST · Ελεγχόμενο πείραμα</div>
+    <h2>Ο χαρταετός μπροστά στον ανεμιστήρα</h2>
+    <p class="lead">Όψη από τη θέση του ανεμιστήρα, με το πλέγμα των 5 εκ. στον τοίχο πίσω από τον χαρταετό. Νήμα πρόσδεσης 1 μ. Κάθε δοκιμή διαρκεί 12 δευτερόλεπτα· μετράμε από το 2ο δευτερόλεπτο και μετά.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <canvas id="cv" width="640" height="440"></canvas>
+      <div class="readout"><span>t = <b id="roT">0.0</b> s</span><span>πλευρικά: <b id="roX">0</b> εκ.</span><span>ύψος: <b id="roY">0</b> εκ.</span></div>
+    </div>
+    <div class="card">
+      <h3>Ρυθμίσεις</h3>
+      <div id="ctrls"></div>
+      <p class="lock" id="lockNote"></p>
+      <label class="opt"><input type="checkbox" id="pilotChk"> δοκιμή-πιλότος (δεν μπαίνει στη σύγκριση)</label>
+      <div class="row" style="margin-top:8px">
+        <button class="btn acc" id="runBtn">▶ Έναρξη δοκιμής</button>
+        <label class="small">Ταχύτητα αναπαραγωγής <select id="pb"><option value="1">×1</option><option value="2">×2</option><option value="4">×4</option></select></label>
+      </div>
+      <div class="fb" id="runFb"></div>
+      <p class="small" style="margin-top:10px">Κανόνας τριών δοκιμών: κάθε συνθήκη χρειάζεται τουλάχιστον 3 δοκιμές πριν συγκριθεί. Μια μεμονωμένη δοκιμή μπορεί να «τύχει».</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Δεδομένα</h3>
+    <table><thead><tr><th>#</th><th>Ουρά</th><th>Βρόχος</th><th>Ανεμιστήρας</th><th>Σχήμα</th><th>Υλικό</th><th>Μέγ. πλευρική απόκλιση (εκ.)</th><th>Μέσο ύψος (εκ.)</th><th>Βουτιές</th><th></th></tr></thead><tbody id="dataBody"></tbody></table>
+    <div class="row" style="margin-top:8px"><button class="btn sec" id="csvBtn">Λήψη CSV</button><button class="btn sec" id="clrBtn">Διαγραφή όλων</button></div>
+  </div>
+  <div class="card">
+    <h3>Σύγκριση: σήμα έναντι θορύβου</h3>
+    <div id="cmpChart"></div>
+    <div id="cmpText"></div>
+  </div>
+</section>
+
+<!-- ===================== REFLECT ===================== -->
+<section class="phase" data-phase="REFLECT">
+  <div class="card">
+    <div class="ct">REFLECT</div>
+    <h2>Τι μας λένε — και τι δεν μας λένε — τα δεδομένα;</h2>
+    <div id="refSummary" class="fb info" style="display:block"></div>
+  </div>
+  <div class="card">
+    <h3>1. Υποστηρίζεται η υπόθεσή μας; Με ποια δεδομένα;</h3><textarea data-save="r1"></textarea>
+    <h3>2. Ήταν η διαφορά μεγαλύτερη από τον θόρυβο ανάμεσα στις επαναλήψεις; Πώς το κρίνατε;</h3><textarea data-save="r2"></textarea>
+    <h3>3. Τι κρατήσαμε σταθερό; Υπάρχει συγχυτικός παράγοντας που μπορεί να ξέφυγε;</h3><textarea data-save="r3"></textarea>
+    <h3>4. Η ουρά 2Χ ήταν κορδέλα με το ίδιο βάρος με τη χάρτινη Χ. Αν ήταν χάρτινη (διπλό βάρος), τι δεν θα μπορούσαμε να συμπεράνουμε;</h3><textarea data-save="r4"></textarea>
+    <h3>5. Τι δεν μπορεί να δείξει αυτή η προσομοίωση, σε σχέση με έναν πραγματικό χαρταετό;</h3><textarea data-save="r5"></textarea>
+    <h3>6. Μεταγνωστικά: σε ποιο σημείο αλλάξατε γνώμη ή διορθώσατε τον σχεδιασμό σας;</h3><textarea data-save="r6"></textarea>
+    <h3>7. Πόσο βέβαιοι είστε για το συμπέρασμά σας;</h3>
+    <div id="confOpts" class="row"></div>
+    <div class="row"><button class="btn" id="expBtn">Λήψη σημειώσεων και δεδομένων (.txt)</button><button class="btn sec" onclick="window.print()">Εκτύπωση</button></div>
+  </div>
+</section>
+
+<!-- ===================== TRANSFER ===================== -->
+<section class="phase" data-phase="TRANSFER">
+  <div class="card">
+    <div class="ct">TRANSFER · ματιά στο TC2</div>
+    <h2>Από την ουρά σε άλλες μεταβλητές</h2>
+    <p class="lead">Στο TC2 κάθε ομάδα επιλέγει δικό της κριτήριο και δική της μεταβλητή, με λιγότερη σκαλωσιά. Δοκιμάστε εδώ: επιστρέψτε στο ARGUE, διαλέξτε <b>σημείο πρόσδεσης</b> ή κριτήριο <b>ύψος</b>, και σχεδιάστε μόνοι σας τον πίνακα των τριών στηλών πριν πατήσετε «Έλεγχος».</p>
+    <button class="btn sec" id="toTC2">Μετάβαση στο ARGUE (TC2)</button>
+  </div>
+  <div class="card">
+    <h3>Ο άγνωστος χαρταετός του βίντεο</h3>
+    <p>Ένα βίντεο στο διαδίκτυο δείχνει έναν εξάγωνο χαρταετό με μακριά ουρά να πετά τέλεια, κι ο τίτλος λέει «το καλύτερο σχέδιο που υπάρχει». Διατυπώστε υπόθεση (ΑΝ/ΤΟΤΕ/ΕΠΕΙΔΗ) και περιγράψτε πώς θα την ελέγχατε. Αρκεί το βίντεο από μόνο του; Τι λείπει;</p>
+    <textarea data-save="t1" style="min-height:110px"></textarea>
+  </div>
+  <div class="card" id="submitCard">
+    <h3>Ολοκλήρωση</h3>
+    <p class="small">Πατήστε όταν τελειώσετε, για να σταλεί η τελική εικόνα των απαντήσεών σας στην έρευνα. Μπορείτε να το πατήσετε ξανά αν αλλάξετε κάτι.</p>
+    <div class="row"><button class="btn acc" id="subBtn">Υποβολή για την έρευνα</button><button class="btn sec" id="jsonBtn">Λήψη αρχείου καταγραφής (.json)</button></div>
+    <div class="fb" id="subFb"></div>
+  </div>
+</section>
+
+</main>
+<footer>STEAM-CT Erasmus+ · Science View · Ποιοτικό μοντέλο για διδακτική χρήση — δεν αντικαθιστά το πραγματικό πείραμα.</footer>
+
+<script>
+/* ================= CONFIG (επεξεργάσιμο) ================= */
+const CONFIG={
+  trialSeconds:12, measureFrom:2, minTrials:3,
+  // Κανόνας σήματος: διαφορά = σήμα όταν τα εύρη (min–max) δεν επικαλύπτονται
+  reference:{tail:'X',bridle:'mid',speed:2,shape:'rhombus',material:'paper'},
+  kite:{spine:24,spar:16,sparFromTop:7,bridle:35,loopFromTop:14.5,lowerTieFromBottom:4.5}, // εκ., πρότυπο A4
+  // ΕΡΕΥΝΑ: URL του Google Apps Script (Web app) για την καταγραφή. Κενό = τίποτα δεν στέλνεται, όλα μένουν τοπικά.
+  research:{endpoint:'',study:'HT-KITE-01-SIM',version:'1.1',flushSeconds:60}
+};
+const LABELS={
+  tail:{none:'καμία',X:'Χ (χαρτί)',X2:'2Χ (κορδέλα, ίδιο βάρος)'},
+  bridle:{high:'ψηλά (προς τη μύτη)',mid:'αναφοράς (14,5 εκ.)',low:'χαμηλά (προς την ουρά)'},
+  speed:{1:'ταχύτητα 1',2:'ταχύτητα 2',3:'ταχύτητα 3'},
+  shape:{rhombus:'ρόμβος (αναφοράς)',hexagon:'εξάγωνο'},
+  material:{paper:'χαρτί A4 (αναφοράς)',nylon:'νάιλον (σακούλα)'}
+};
+const VARNAME={tail:'το μήκος της ουράς',bridle:'το σημείο πρόσδεσης (βρόχος χαλινού)',shape:'το σχήμα του χαρταετού',material:'το υλικό του πανιού'};
+const VARSHORT={tail:'την ουρά',bridle:'τον βρόχο',speed:'την ταχύτητα',shape:'το σχήμα',material:'το υλικό'};
+
+/* ================= MODEL ================= */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+const MODEL={L:100,
+  tail:{none:{damp:0,massDeg:0,len:0},X:{damp:1.7,massDeg:4,len:40},X2:{damp:3.8,massDeg:4,len:80}},
+  bridle:{high:{mu:1.6,phi:56},mid:{mu:1.2,phi:48},low:{mu:0.8,phi:38}},
+  speed:{1:{w:1.0,noise:0.55,phi:-6},2:{w:1.15,noise:0.75,phi:0},3:{w:1.3,noise:1.0,phi:4}},beta:4,
+  // ΠΑΡΑΔΟΧΕΣ (ποιοτικές, όχι μετρήσεις): muMul>1 = λιγότερο σταθερός, phi = αλλαγή γωνίας ανύψωσης (μοίρες), noiseMul = ευαισθησία στις ριπές
+  shape:{rhombus:{muMul:1,phi:0,noiseMul:1},hexagon:{muMul:1.25,phi:2,noiseMul:1}},          // εξάγωνο: μεγαλύτερο πανί, χωρίς ουρά πιο ασταθές
+  material:{paper:{muMul:1,phi:0,noiseMul:1},nylon:{muMul:1,phi:4,noiseMul:1.2}}};          // νάιλον: ελαφρύτερο αλλά «κυματίζει»
+function makeTrial(cfg,seed){const r=mulberry32(seed),tl=MODEL.tail[cfg.tail],br=MODEL.bridle[cfg.bridle],sp=MODEL.speed[cfg.speed],
+  sh=MODEL.shape[cfg.shape||'rhombus'],ma=MODEL.material[cfg.material||'paper'];
+  const phi0=(br.phi+sp.phi+sh.phi+ma.phi-tl.massDeg+2*gauss(r))*Math.PI/180;
+  return{r,mu:br.mu*sh.muMul*ma.muMul*(1+0.2*gauss(r))-tl.damp,w:2*Math.PI/1.6*sp.w,gustScale:sp.noise*sh.noiseMul*ma.noiseMul*(0.8+0.4*r()),phi0,psi:0.05*gauss(r),dpsi:0,phi:phi0,g:0,t:0,maxX:0,sumY:0,n:0,dives:0,inDive:false}}
+function stepSim(s,dt){s.g+=-s.g*dt/0.4+s.gustScale*Math.sqrt(dt)*gauss(s.r)*2.2;
+  const acc=-s.w*s.w*Math.sin(s.psi)+(s.mu-MODEL.beta*s.psi*s.psi)*s.dpsi*s.w*0.5+s.g*s.w*0.9;
+  s.dpsi+=acc*dt;s.psi+=s.dpsi*dt;
+  if(s.psi>1.45){s.psi=1.45;s.dpsi*=-0.3}if(s.psi<-1.45){s.psi=-1.45;s.dpsi*=-0.3}
+  s.phi+=(s.phi0-0.6*Math.abs(s.psi)-s.phi)*dt*2;s.t+=dt;
+  const L=MODEL.L,x=L*Math.cos(s.phi)*Math.sin(s.psi),y=L*Math.sin(s.phi)*Math.cos(s.psi);
+  if(s.t>CONFIG.measureFrom){s.maxX=Math.max(s.maxX,Math.abs(x));s.sumY+=y;s.n++;const d=Math.abs(s.psi)>1.0;if(d&&!s.inDive)s.dives++;s.inDive=d}
+  return{x,y}}
+
+/* ================= STATE / STORAGE ================= */
+const store={get(k,d){try{const v=localStorage.getItem('htkite_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('htkite_'+k,JSON.stringify(v))}catch(e){}}};
+const S={crit:store.get('crit','stab'),iv:store.get('iv','tail'),dir:store.get('dir',''),cv:store.get('cv',{}),trials:store.get('trials',[]),
+  cfg:Object.assign({},CONFIG.reference),unlocked:{}};
+document.querySelectorAll('[data-save]').forEach(el=>{el.value=store.get('t_'+el.dataset.save,'');el.addEventListener('input',()=>store.set('t_'+el.dataset.save,el.value));
+  el.addEventListener('change',()=>{const k='rev_'+el.dataset.save,n=store.get(k,0)+1;store.set(k,n);if(typeof LOG==='function')LOG('text',{field:el.dataset.save,revision:n,chars:el.value.length,text:el.value})})});
+
+/* ================= ΕΡΕΥΝΑ: καταγραφή διαδικασίας ================= */
+const VERDICTS={};
+const RES={on:store.get('res_on',false),decided:store.get('res_decided',false),
+  sid:store.get('sid',null)||(()=>{const v=Array.from(crypto.getRandomValues(new Uint8Array(6))).map(b=>b.toString(16).padStart(2,'0')).join('');store.set('sid',v);return v})(),
+  meta:store.get('res_meta',{}),q:store.get('res_q',[]),all:store.get('res_all',[]),seq:store.get('res_seq',0),
+  phaseT:store.get('res_phaseT',{}),phase:null,enterT:Date.now(),busy:false,
+  save(){store.set('res_q',this.q);store.set('res_all',this.all);store.set('res_seq',this.seq);store.set('res_phaseT',this.phaseT)},
+  post(body){return fetch(CONFIG.research.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)})},
+  flush(){if(!this.on||!CONFIG.research.endpoint||!this.q.length||this.busy)return;const batch=this.q.slice(0,200);this.busy=true;
+    this.post({kind:'events',study:CONFIG.research.study,version:CONFIG.research.version,events:batch})
+      .then(()=>{this.q.splice(0,batch.length);this.save()}).catch(()=>{}).finally(()=>{this.busy=false})}};
+function LOG(type,data){if(!RES.on)return;RES.seq++;
+  const ev={sid:RES.sid,code:RES.meta.code||'',group:RES.meta.group||'',seq:RES.seq,ts:new Date().toISOString(),phase:RES.phase||'',type,data:JSON.stringify(data||{})};
+  RES.q.push(ev);RES.all.push(ev);RES.save()}
+function trackPhase(to){const now=Date.now();if(RES.phase)RES.phaseT[RES.phase]=(RES.phaseT[RES.phase]||0)+Math.round((now-RES.enterT)/1000);RES.enterT=now;RES.save()}
+setInterval(()=>RES.flush(),CONFIG.research.flushSeconds*1000);
+addEventListener('pagehide',()=>{trackPhase();if(RES.on&&CONFIG.research.endpoint&&RES.q.length&&navigator.sendBeacon){
+  const ok=navigator.sendBeacon(CONFIG.research.endpoint,new Blob([JSON.stringify({kind:'events',study:CONFIG.research.study,version:CONFIG.research.version,events:RES.q.slice(0,200)})],{type:'text/plain;charset=utf-8'}));
+  if(ok){RES.q.splice(0,200);RES.save()}}});
+function snapshot(){const q=k=>store.get('t_'+k,'');const valid=S.trials.filter(t=>!t.pilot&&!t.conf.length);const ev=t=>RES.all.filter(e=>e.type===t);
+  const build={};BSTEPS.forEach((_,i)=>{const tr=bTries[i]||[];build['b'+(i+1)+'_first']=tr.length?(BSTEPS[i].o[tr[0]][1]?1:0):'';build['b'+(i+1)+'_tries']=tr.length});
+  return Object.assign({kind:'snapshot',study:CONFIG.research.study,version:CONFIG.research.version,sid:RES.sid,ts:new Date().toISOString()},RES.meta,build,{
+    crit:S.crit,iv:S.iv,dir:S.dir,because:q('h_because'),constants:Object.keys(S.cv).filter(k=>S.cv[k]).join('|'),
+    n_hyp_checks:ev('hypothesis_check').length,hyp_first_ok:(ev('hypothesis_check')[0]?JSON.parse(ev('hypothesis_check')[0].data).ok:''),
+    n_design_checks:ev('design_check').length,design_first_ok:(ev('design_check')[0]?JSON.parse(ev('design_check')[0].data).ok:''),
+    n_trials:S.trials.length,n_valid:valid.length,n_pilot:S.trials.filter(t=>t.pilot).length,n_confounded:S.trials.filter(t=>t.conf.length).length,
+    n_unlocks:ev('unlock').filter(e=>JSON.parse(e.data).on).length,verdicts:JSON.stringify(VERDICTS),confidence:store.get('conf',''),
+    intro_exp:q('intro_exp'),intro_intuition:q('intro_intuition'),r1:q('r1'),r2:q('r2'),r3:q('r3'),r4:q('r4'),r5:q('r5'),r6:q('r6'),t1:q('t1'),
+    phase_seconds:JSON.stringify(RES.phaseT),trials_csv:csv()})}
+
+/* ================= NAV ================= */
+const PHASES=[['JOIN','Συμμετοχή'],['INTRO','Εισαγωγή'],['BUILD','Κατασκευή'],['ARGUE','Υπόθεση'],['TEST','Πείραμα'],['REFLECT','Αναστοχασμός'],['TRANSFER','Μεταφορά']];
+const nav=document.getElementById('nav');
+function go(p){if(RES.phase!==p){trackPhase();LOG('phase_enter',{from:RES.phase,to:p});RES.phase=p;RES.flush()}document.querySelectorAll('section.phase').forEach(s=>s.classList.toggle('on',s.dataset.phase===p));
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));store.set('phase',p);
+  if(p==='TEST'){buildControls();drawFrame(null)} if(p==='REFLECT')reflectSummary(); window.scrollTo(0,0)}
+PHASES.forEach(([c,g],i)=>{const b=document.createElement('button');b.dataset.p=c;b.innerHTML=(c==='JOIN'?'0':i)+'. <span class="code">'+c+'</span> · '+g;b.onclick=()=>go(c);nav.appendChild(b)});
+
+/* ================= INTRO: rigid A4 ================= */
+function drawA4(){const a=+document.getElementById('a4slider').value;document.getElementById('a4ang').textContent=a+'°';
+  const r=a*Math.PI/180,cx=200,cy=115,h=70;
+  const x1=cx-h*Math.cos(Math.PI/2-r)*0+(-Math.sin(r))*0, dx=Math.cos(r)*h, dy=Math.sin(r)*h;
+  const lift=Math.sin(2*r)*70, drag=(0.15+Math.sin(r)*Math.sin(r))*70;
+  let s='<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker></defs>';
+  for(let i=0;i<5;i++){const y=40+i*35;s+='<line x1="10" y1="'+y+'" x2="90" y2="'+y+'" stroke="#9fbcc4" stroke-width="2" marker-end="url(#ah)"/>'}
+  s+='<text x="10" y="214" font-size="12" fill="#4a626b">άνεμος →</text>';
+  s+='<line x1="'+(cx-dy)+'" y1="'+(cy+dx)+'" x2="'+(cx+dy)+'" y2="'+(cy-dx)+'" stroke="#16313a" stroke-width="6" stroke-linecap="round"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+cx+'" y2="'+(cy-lift)+'" stroke="#0f6f7c" stroke-width="4" marker-end="url(#ah)"/>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+drag)+'" y2="'+cy+'" stroke="#e07a1f" stroke-width="4" marker-end="url(#ah)"/>';
+  document.getElementById('a4svg').innerHTML=s}
+document.getElementById('a4slider').oninput=drawA4;drawA4();
+
+/* ================= BUILD ================= */
+const K0=CONFIG.kite,K={};for(const k in K0)K[k]=K0[k];const gr=v=>String(v).replace('.',',');
+const BSTEPS=[
+ {t:'Κόψτε το πανί από A4',x:'Σημαδέψτε την κορυφή και τη βάση στη μέση του φύλλου, και δύο πλευρικά σημεία '+K.sparFromTop+' εκ. κάτω από την κορυφή, '+K.spar+' εκ. μεταξύ τους. Ενώστε με χάρακα και κόψτε τον ρόμβο. Φτιάξτε πρώτα έναν και χρησιμοποιήστε τον ως πρότυπο για όλους.',
+  q:'Γιατί κόβουμε όλα τα πανιά από το ίδιο πρότυπο;',o:[['Για να είναι πιο όμορφοι οι χαρταετοί',0,'Η εμφάνιση δεν είναι ο λόγος.'],['Για να είναι ίδιοι όλοι οι χαρταετοί, ώστε το σχήμα και το μέγεθος να μένουν σταθερά',1,'Σωστά. Σχήμα και μέγεθος είναι πιθανές μεταβλητές· τις «κλειδώνουμε» για να μη μπερδέψουν τη σύγκριση.'],['Επειδή το A4 είναι το φθηνότερο χαρτί',0,'Το κόστος βοηθά, αλλά δεν εξηγεί γιατί χρειαζόμαστε πρότυπο.']]},
+ {t:'Κόψτε τα ξυλάκια',x:'Ένα ξυλάκι '+K.spine+' εκ. για τη σπονδυλική (κατακόρυφο) και ένα '+K.spar+' εκ. για την εγκάρσια (οριζόντιο). Κόψτε ή τυλίξτε τις μύτες με ταινία.',
+  q:'Γιατί κόβουμε ή καλύπτουμε τις μύτες από τα ξυλάκια για σουβλάκι;',o:[['Για ασφάλεια: οι μύτες τρυπούν και τραυματίζουν',1,'Σωστά. Η ασφάλεια προηγείται κάθε πειράματος.'],['Για να πετά ψηλότερα',0,'Δεν έχει αισθητή επίδραση στην πτήση.'],['Για να ζυγίζει λιγότερο',0,'Η μύτη ζυγίζει ελάχιστα· ο λόγος είναι άλλος.']]},
+ {t:'Στήστε τον σκελετό',x:'Βάλτε την εγκάρσια πάνω στη σπονδυλική, '+K.sparFromTop+' εκ. από την πάνω άκρη, και δέστε τον σταυρό. Κολλήστε τον σκελετό στο πανί, στις τέσσερις άκρες και στον σταυρό, στην πλευρά που θα κοιτάει τον ανεμιστήρα.',
+  q:'Τι προσφέρει ο σκελετός στο πανί; (Θυμηθείτε το άκαμπτο A4 της INTRO.)',o:[['Το κάνει πιο βαρύ για να μη φεύγει',0,'Το βάρος δεν είναι ο σκοπός· μάλιστα θέλουμε όσο γίνεται λιγότερο.'],['Το κρατά άκαμπτο, ώστε να διατηρεί σχήμα και γωνία απέναντι στον άνεμο',1,'Σωστά. Ένα μαλακό χαρτί αναδιπλώνεται· ένα άκαμπτο «σπρώχνεται» με σταθερό τρόπο, όπως το A4 της INTRO.'],['Χρησιμεύει μόνο για να δέσουμε την κλωστή',0,'Βοηθά και σε αυτό, αλλά ο κύριος ρόλος είναι άλλος.']]},
+ {t:'Ενισχύστε και τρυπήστε',x:'Ταινία σε τρία σημεία: στον σταυρό, '+gr(K.lowerTieFromBottom)+' εκ. πάνω από την κάτω άκρη, και στην κάτω άκρη. Ανοίξτε μικρές τρύπες με βελόνα μέσα από την ταινία.',
+  q:'Γιατί τρυπάμε μέσα από ταινία;',o:[['Για να μη σκιστεί το χαρτί, ώστε ο χαρταετός να μείνει ίδιος σε όλες τις δοκιμές',1,'Σωστά. Ένα σκίσιμο στη μέση του πειράματος θα άλλαζε τον χαρταετό: νέος, ανεπιθύμητος παράγοντας.'],['Για να φαίνονται καλύτερα οι τρύπες',0,'Όχι, ο λόγος είναι η αντοχή.'],['Δεν έχει σημασία',0,'Έχει: οι δοκιμές πρέπει να γίνονται με τον ίδιο, ακέραιο χαρταετό.']]},
+ {t:'Δέστε τον χαλινό',x:'Νήμα '+K.bridle+' εκ.: η μία άκρη στον σταυρό, η άλλη στη σπονδυλική '+gr(K.lowerTieFromBottom)+' εκ. από κάτω. Βρόχος περίπου στα '+gr(K.loopFromTop)+' εκ. από το πάνω δέσιμο. Όταν βρεθεί η σωστή θέση στον πιλότο, κολλήστε τον κόμπο με ταινία.',
+  q:'Γιατί κολλάμε τον κόμπο του βρόχου με ταινία;',o:[['Για να μη λύνεται η κλωστή',0,'Βοηθά, αλλά υπάρχει πιο σημαντικός λόγος για το πείραμα.'],['Επειδή η θέση του βρόχου αλλάζει τη γωνία του χαρταετού· αν γλιστρήσει, αλλάζει μια δεύτερη μεταβλητή χωρίς να το ξέρουμε',1,'Ακριβώς. Ένας βρόχος που γλιστρά είναι κρυφός συγχυτικός παράγοντας. Στο TC2 θα μπορούσε να γίνει η ίδια η μεταβλητή.'],['Για να πετά ψηλότερα',0,'Η ταινία δεν αλλάζει το ύψος· σταθεροποιεί μια ρύθμιση.']]},
+ {t:'Βάλτε τον συνδετήρα της ουράς',x:'Περάστε έναν συνδετήρα από την τρύπα στην κάτω άκρη. Οι ουρές κρέμονται από αυτόν, οπότε η αλλαγή από καμία σε Χ ή 2Χ γίνεται σε δευτερόλεπτα.',
+  q:'Γιατί συνδετήρας και όχι κόμπος για την ουρά;',o:[['Για να αλλάζουμε μόνο την ουρά, γρήγορα, χωρίς να αγγίζουμε τίποτε άλλο στον χαρταετό',1,'Σωστά. Ο ίδιος χαρταετός δοκιμάζεται με όλες τις ουρές: η σύγκριση γίνεται «μέσα» στον ίδιο χαρταετό.'],['Επειδή ο συνδετήρας είναι βαρύτερος',0,'Το βάρος του είναι ίδιο σε όλες τις συνθήκες· δεν είναι ο λόγος.'],['Επειδή είναι πιο όμορφος',0,'Όχι.']]},
+ {t:'Ετοιμάστε τις ουρές',x:'Ουρά Χ: λωρίδα χαρτιού 2 εκ. (το μήκος Χ ορίζεται στον πιλότο). Ουρά 2Χ: λεπτή σατέν κορδέλα διπλάσιου μήκους, που ζυγίζει περίπου όσο η χάρτινη Χ. Ο χαρταετός με την ουρά Χ είναι ο χαρταετός αναφοράς.',
+  q:'Γιατί η ουρά 2Χ είναι κορδέλα με το ίδιο βάρος, κι όχι απλώς διπλάσιο χαρτί;',o:[['Επειδή η κορδέλα είναι πιο ανθεκτική',0,'Ισχύει, αλλά δεν είναι ο λόγος του σχεδιασμού.'],['Για να αλλάζει μόνο το μήκος και όχι μαζί και το βάρος· αλλιώς δεν θα ξέραμε ποιο από τα δύο προκάλεσε το αποτέλεσμα',1,'Ακριβώς: αποφεύγουμε έναν συγχυτικό παράγοντα. Αν αλλάζαν μήκος και βάρος μαζί, η εξήγηση θα έμενε ανοιχτή.'],['Επειδή φαίνεται καλύτερα στο βίντεο',0,'Όχι.']]}
+];
+let bi=store.get('bi',0),bAns=store.get('bAns',{}),bTries=store.get('bTries',{});
+function kiteSVG(n){const W=300,H=400,s=12.5,ox=(W-21*s)/2,oy=(H-29.7*s)/2;
+  const P=(x,y)=>[ox+x*s,oy+y*s];const top=P(10.5,2.85),bot=P(10.5,26.85),l=P(10.5-K.spar/2,2.85+K.sparFromTop),r=P(10.5+K.spar/2,2.85+K.sparFromTop),cross=P(10.5,2.85+K.sparFromTop),low=P(10.5,26.85-K.lowerTieFromBottom);
+  let g='<rect x="'+ox+'" y="'+oy+'" width="'+21*s+'" height="'+29.7*s+'" fill="#fff" stroke="#999" stroke-dasharray="5 4"/>';
+  const poly=[top,r,bot,l].map(p=>p.join(',')).join(' ');
+  g+=n===0?'<polygon points="'+poly+'" fill="none" stroke="#e07a1f" stroke-width="2" stroke-dasharray="6 4"/>':'<polygon points="'+poly+'" fill="#fac775" fill-opacity=".55" stroke="#ba7517" stroke-width="1.5"/>';
+  const lbl=(p,t,dx=8,dy=0)=>'<text x="'+(p[0]+dx)+'" y="'+(p[1]+dy)+'" font-size="11" fill="#16313a">'+t+'</text>';
+  if(n===0){[top,bot,l,r].forEach(p=>g+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#e07a1f"/>');g+=lbl(l,K.sparFromTop+' εκ. από πάνω',-10,-10)}
+  if(n===1){g+='<line x1="30" y1="370" x2="'+(30+K.spine*s*0.9)+'" y2="370" stroke="#6b5a45" stroke-width="5" stroke-linecap="round"/>'+lbl([30,362],K.spine+' εκ.',0,0);g+='<line x1="30" y1="388" x2="'+(30+K.spar*s*0.9)+'" y2="388" stroke="#6b5a45" stroke-width="5" stroke-linecap="round"/>'+lbl([30+K.spar*s*0.9,392],K.spar+' εκ.')}
+  if(n>=2){g+='<line x1="'+top[0]+'" y1="'+top[1]+'" x2="'+bot[0]+'" y2="'+bot[1]+'" stroke="#6b5a45" stroke-width="4" stroke-linecap="round"/><line x1="'+l[0]+'" y1="'+l[1]+'" x2="'+r[0]+'" y2="'+r[1]+'" stroke="#6b5a45" stroke-width="4" stroke-linecap="round"/>'}
+  if(n===2)g+=lbl(cross,'σταυρός',8,-6);
+  if(n>=3)[cross,low,bot].forEach((p,i)=>g+='<rect x="'+(p[0]-7)+'" y="'+(p[1]-5)+'" width="14" height="10" fill="#d8eef2" stroke="#0f6f7c"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="2" fill="#16313a"/>'+(n===3?lbl(p,['1','2','3'][i],10,4):''));
+  if(n>=4){const loopY=cross[1]+(low[1]-cross[1])*0.45,loopX=cross[0]+70;g+='<path d="M'+cross.join(' ')+' Q '+(loopX)+' '+(cross[1]+20)+' '+loopX+' '+loopY+' Q '+(loopX-5)+' '+(low[1]-25)+' '+low.join(' ')+'" fill="none" stroke="#378add" stroke-width="1.6"/><circle cx="'+loopX+'" cy="'+loopY+'" r="6" fill="none" stroke="#378add" stroke-width="2"/>';if(n===4)g+=lbl([loopX,loopY],'βρόχος',10,4)}
+  if(n>=5)g+='<rect x="'+(bot[0]-4)+'" y="'+(bot[1]+1)+'" width="8" height="13" rx="3" fill="none" stroke="#16313a" stroke-width="2"/>';
+  if(n>=6){g+='<path d="M'+bot[0]+' '+(bot[1]+14)+' q -10 15 0 30" stroke="#e07a1f" stroke-width="5" fill="none"/>';g+=lbl([bot[0],bot[1]+30],'Χ ή 2Χ',12,0)}
+  return g}
+function renderBuild(){const st=BSTEPS[bi];document.getElementById('bTitle').textContent=(bi+1)+'. '+st.t;document.getElementById('bText').textContent=st.x;document.getElementById('bQ').textContent=st.q;
+  document.getElementById('buildSvg').innerHTML=kiteSVG(bi);
+  document.getElementById('bSteps').innerHTML=BSTEPS.map((_,i)=>'<span class="'+(i===bi?'cur':(bAns[i]?'done':''))+'">'+(i+1)+'</span>').join('');
+  const fb=document.getElementById('bFb');fb.className='fb';
+  document.getElementById('bOpts').innerHTML=st.o.map((o,i)=>'<label><input type="radio" name="bq" value="'+i+'"> '+o[0]+'</label>').join('');
+  document.querySelectorAll('#bOpts input').forEach(inp=>inp.onchange=()=>{const o=st.o[+inp.value];(bTries[bi]=bTries[bi]||[]).push(+inp.value);store.set('bTries',bTries);LOG('build_answer',{step:bi+1,choice:+inp.value,correct:!!o[1],attempt:bTries[bi].length,already_solved:!!bAns[bi]});fb.className='fb '+(o[1]?'ok':'no');fb.textContent=o[2];if(o[1]){bAns[bi]=1;store.set('bAns',bAns);document.getElementById('bNext').disabled=false;renderStepsOnly()}});
+  if(bAns[bi]){const ci=st.o.findIndex(o=>o[1]);document.querySelectorAll('#bOpts input')[ci].checked=true;fb.className='fb ok';fb.textContent=st.o[ci][2]}
+  document.getElementById('bNext').disabled=!bAns[bi];document.getElementById('bNext').textContent=bi===BSTEPS.length-1?'Στο ARGUE →':'Επόμενο βήμα →';document.getElementById('bPrev').disabled=bi===0;store.set('bi',bi)}
+function renderStepsOnly(){document.getElementById('bSteps').innerHTML=BSTEPS.map((_,i)=>'<span class="'+(i===bi?'cur':(bAns[i]?'done':''))+'">'+(i+1)+'</span>').join('')}
+document.getElementById('bNext').onclick=()=>{if(bi<BSTEPS.length-1){bi++;renderBuild()}else go('ARGUE')};
+document.getElementById('bPrev').onclick=()=>{if(bi>0){bi--;renderBuild()}};
+renderBuild();
+
+/* ================= ARGUE ================= */
+const CRITS=[['stab','πετά πιο σταθερά',1],['height','πετά ψηλότερα',1],['range','λειτουργεί σε ευρύτερο εύρος ανέμου',0]];
+const VARS=[['shape','σχήμα (ρόμβος / εξάγωνο)',1],['tail','μήκος ουράς',1],['material','υλικό (χαρτί / νάιλον)',1],['bridle','σημείο πρόσδεσης',1],['size','μέγεθος',0]];
+function radios(id,list,key){document.getElementById(id).innerHTML=list.map(([v,t,en])=>'<label class="opt'+(en?'':' dis')+'"><input type="radio" name="'+id+'" value="'+v+'" '+(en?'':'disabled')+' '+(S[key]===v?'checked':'')+'> '+t+'</label>').join('');
+  document.querySelectorAll('#'+id+' input').forEach(i=>i.onchange=()=>{const old=S[key];S[key]=i.value;store.set(key,i.value);S.cv={};store.set('cv',{});LOG('argue_select',{field:key,from:old,to:i.value});renderArgue()})}
+function dvText(){return S.crit==='stab'?'η μέγιστη πλευρική απόκλιση':'το μέσο ύψος'}
+function ivLevels(){return Object.keys(LABELS[S.iv])}
+function cvList(){const base=[['speed','Ταχύτητα ανεμιστήρα'],['dist','Απόσταση από τον ανεμιστήρα'],['tether','Μήκος νήματος πρόσδεσης (1 μ.)']];
+  const extra={
+    tail:[['kite','Ίδιος χαρταετός σε όλες τις δοκιμές'],['bridle','Θέση βρόχου χαλινού'],['tailmass','Βάρος ουράς (κορδέλα 2Χ = βάρος Χ)'],['wrong','Το μήκος της ουράς']],
+    bridle:[['kite','Ίδιος χαρταετός σε όλες τις δοκιμές'],['tailfix','Ουρά Χ σε όλες τις δοκιμές'],['wrong','Η θέση του βρόχου']],
+    shape:[['tailfix','Ουρά Χ σε όλες τις δοκιμές'],['bridle','Θέση βρόχου χαλινού'],['matfix','Ίδιο υλικό πανιού'],['area','Ίδιο εμβαδόν πανιού (όχι απλώς «από ένα A4»)'],['wrong','Το σχήμα']],
+    material:[['tailfix','Ουρά Χ σε όλες τις δοκιμές'],['bridle','Θέση βρόχου χαλινού'],['shapefix','Ίδιο σχήμα και μέγεθος'],['frame','Ίδιος σκελετός (ίδια ξυλάκια)'],['wrong','Το υλικό']]};
+  return base.concat(extra[S.iv])}
+function renderArgue(){radios('critOpts',CRITS,'crit');radios('varOpts',VARS,'iv');
+  document.getElementById('opText').innerHTML='Θα μετρήσουμε <b>'+(S.crit==='stab'?'τη μέγιστη πλευρική απόκλιση του χαρταετού από το κέντρο':'το μέσο ύψος του χαρταετού πάνω από το σημείο πρόσδεσης')+'</b> με <b>το πλέγμα των 5 εκ. στον τοίχο (και βίντεο από κινητό)</b> (μονάδα: <b>εκ.</b>), σε 10 δευτερόλεπτα πτήσης. '+(S.crit==='stab'?'Μικρότερη τιμή = πιο σταθερός.':'Μεγαλύτερη τιμή = ψηλότερα.');
+  document.getElementById('hIf').innerHTML='<b>'+VARNAME[S.iv]+'</b> ('+ivLevels().map(v=>LABELS[S.iv][v]).join(' / ')+')';
+  document.getElementById('hY').innerHTML='<b>'+dvText()+'</b>';document.getElementById('hDir').value=S.dir;
+  document.getElementById('tcIV').textContent=VARNAME[S.iv]+': '+ivLevels().map(v=>LABELS[S.iv][v]).join(', ');
+  document.getElementById('tcDV').textContent=dvText()+' (εκ.), 3 δοκιμές ανά συνθήκη';
+  document.getElementById('tcCV').innerHTML=cvList().map(([k,t])=>'<label class="opt" style="display:flex"><input type="checkbox" data-cv="'+k+'" '+(S.cv[k]?'checked':'')+'> '+t+'</label>').join('');
+  document.querySelectorAll('[data-cv]').forEach(c=>c.onchange=()=>{LOG('constant_tick',{item:c.dataset.cv,on:c.checked});S.cv[c.dataset.cv]=c.checked;store.set('cv',S.cv)});
+  document.getElementById('hFb').className='fb';document.getElementById('cvFb').className='fb'}
+document.getElementById('hDir').onchange=e=>{LOG('argue_select',{field:'dir',from:S.dir,to:e.target.value});S.dir=e.target.value;store.set('dir',S.dir)};
+document.getElementById('hCheck').onclick=()=>{const fb=document.getElementById('hFb'),b=document.getElementById('hBec').value.trim();const p=[],codes=[];
+  if(!S.dir)codes.push('no_direction'),p.push('Λείπει η κατεύθυνση στο ΤΟΤΕ: τι ακριβώς περιμένετε να συμβεί στη μέτρηση;');
+  if(b.length<15)codes.push('because_short'),p.push('Το ΕΠΕΙΔΗ χρειάζεται φυσικό λόγο (π.χ. τι κάνει η ουρά στον αέρα ή στο βάρος), όχι «επειδή πετά καλύτερα».');
+  if(/καλύτερ|ωραί|τέλει/.test(b)&&b.length<40)codes.push('because_vague'),p.push('Το «καλύτερα» δεν είναι εξήγηση. Ποιος μηχανισμός;');
+  if(S.dir==='same')codes.push('null_hypothesis'),p.push('Υπόθεση «καμία διαφορά» είναι θεμιτή, αλλά βεβαιωθείτε ότι μπορείτε να την ξεχωρίσετε από τον θόρυβο: θα χρειαστείτε προσεκτική σύγκριση εύρους τιμών.');
+  const okH=!(p.length&&!(p.length===1&&S.dir==='same'));LOG('hypothesis_check',{ok:okH,issues:codes.join('|'),iv:S.iv,crit:S.crit,dir:S.dir,because:b});
+  fb.className='fb '+(okH?'ok':'no');
+  fb.innerHTML=p.length?p.join('<br>'):'Η υπόθεση είναι ελέγξιμη: μία μεταβλητή, μετρήσιμο αποτέλεσμα, κατεύθυνση και φυσικός λόγος. Η προσομοίωση δεν «βαθμολογεί» το περιεχόμενο του ΕΠΕΙΔΗ — αυτό θα κριθεί από τα δεδομένα.'};
+document.getElementById('cvCheck').onclick=()=>{const fb=document.getElementById('cvFb');const L=cvList(),miss=L.filter(([k])=>k!=='wrong'&&!S.cv[k]).map(x=>x[1]);const p=[];
+  if(S.cv.wrong)p.push('Σημειώσατε ως σταθερό «'+L.find(x=>x[0]==='wrong')[1].toLowerCase()+'». Αυτή είναι η ανεξάρτητη μεταβλητή — αν μένει σταθερή, δεν υπάρχει πείραμα.');
+  if(miss.length)p.push('Δεν σημειώσατε ως σταθερά: '+miss.join(', ')+'. Αν κάποιο από αυτά αλλάζει μαζί με '+VARNAME[S.iv]+', γίνεται συγχυτικός παράγοντας.');
+  LOG('design_check',{ok:!p.length,iv:S.iv,ticked:Object.keys(S.cv).filter(k=>S.cv[k]).join('|'),missing:L.filter(([k])=>k!=='wrong'&&!S.cv[k]).map(x=>x[0]).join('|'),iv_as_constant:!!S.cv.wrong});
+  fb.className='fb '+(p.length?'no':'ok');fb.innerHTML=p.length?p.join('<br>'):'Ο σχεδιασμός είναι ελεγχόμενο πείραμα. Ο χαρταετός αναφοράς: ουρά Χ, βρόχος αναφοράς, ταχύτητα 2. <button class="btn" style="margin-left:8px" onclick="go(\'TEST\')">Στο TEST →</button>'};
+document.getElementById('toTC2').onclick=()=>{LOG('to_tc2',{});go('ARGUE')};
+renderArgue();
+
+/* ================= TEST ================= */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');let running=null,tailPts=null;
+function buildControls(){const el=document.getElementById('ctrls');let h='';
+  [['tail','Ουρά'],['bridle','Βρόχος χαλινού'],['speed','Ανεμιστήρας'],['shape','Σχήμα'],['material','Υλικό πανιού']].forEach(([k,t])=>{const isIV=k===S.iv,locked=!isIV&&!S.unlocked[k];
+    h+='<div style="margin:6px 0"><b>'+t+'</b> '+(isIV?'<span class="tag">ανεξάρτητη μεταβλητή</span>':'<span class="tag">σταθερή</span> <label class="small"><input type="checkbox" data-unl="'+k+'" '+(S.unlocked[k]?'checked':'')+'> ξεκλείδωμα</label>')+'<br>';
+    Object.keys(LABELS[k]).forEach(v=>h+='<label class="opt'+(locked?' dis':'')+'"><input type="radio" name="c_'+k+'" value="'+v+'" '+(String(S.cfg[k])===String(v)?'checked':'')+' '+(locked?'disabled':'')+'> '+LABELS[k][v]+'</label>');h+='</div>'});
+  el.innerHTML=h;
+  el.querySelectorAll('input[type=radio]').forEach(i=>i.onchange=()=>{const k=i.name.slice(2);S.cfg[k]=k==='speed'?+i.value:i.value;LOG('cfg_change',{var:k,to:S.cfg[k],is_iv:k===S.iv});tailPts=null;drawFrame(null);noteLock()});
+  el.querySelectorAll('[data-unl]').forEach(c=>c.onchange=()=>{const k=c.dataset.unl;S.unlocked[k]=c.checked;LOG('unlock',{var:k,on:c.checked});if(!c.checked)S.cfg[k]=CONFIG.reference[k];buildControls();noteLock()});noteLock()}
+function confounded(cfg){return Object.keys(CONFIG.reference).filter(k=>k!==S.iv&&String(cfg[k])!==String(CONFIG.reference[k]))}
+function noteLock(){const c=confounded(S.cfg);document.getElementById('lockNote').innerHTML=c.length?'<span style="color:var(--bad)">⚠ Αλλάξατε και '+c.map(k=>VARSHORT[k]).join(', ')+'. Οι δοκιμές θα σημειωθούν ως πιθανός συγχυτικός παράγοντας και δεν θα μπουν στη σύγκριση.</span>':'Οι σταθερές μεταβλητές είναι κλειδωμένες στις τιμές του χαρταετού αναφοράς. Για να δείτε τι θα γινόταν αν άλλαζαν, ξεκλειδώστε τες.'}
+function toPx(x,y){const sc=Math.min(cv.width/230,(cv.height-60)/100);return[cv.width/2+x*sc,cv.height-30-y*sc,sc]}
+function drawFrame(st){const W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);const sc=toPx(0,0)[2];
+  for(let x=-115;x<=115;x+=5){const p=toPx(x,0)[0];ctx.strokeStyle=x%25===0?'#c8d9de':'#e7f0f2';ctx.beginPath();ctx.moveTo(p,0);ctx.lineTo(p,H-30);ctx.stroke()}
+  for(let y=0;y<=110;y+=5){const p=toPx(0,y)[1];ctx.strokeStyle=y%25===0?'#c8d9de':'#e7f0f2';ctx.beginPath();ctx.moveTo(0,p);ctx.lineTo(W,p);ctx.stroke()}
+  ctx.fillStyle='#4a626b';ctx.font='12px sans-serif';for(let x=-100;x<=100;x+=25){const p=toPx(x,0);ctx.fillText(x,p[0]-8,H-14)}
+  for(let y=25;y<=100;y+=25){const p=toPx(0,y);ctx.fillText(y,4,p[1]+4)}
+  ctx.textAlign='right';ctx.fillText('εκ. (πλέγμα 5 εκ.)',W-6,16);ctx.textAlign='left';
+  const a=toPx(0,0);ctx.fillStyle='#16313a';ctx.beginPath();ctx.arc(a[0],a[1],5,0,7);ctx.fill();
+  const pos=st?st.pos:{x:0,y:MODEL.L*Math.sin((MODEL.bridle[S.cfg.bridle].phi+MODEL.speed[S.cfg.speed].phi+MODEL.shape[S.cfg.shape].phi+MODEL.material[S.cfg.material].phi-MODEL.tail[S.cfg.tail].massDeg)*Math.PI/180)};
+  const roll=st?(st.s.psi*0.9+st.s.dpsi*0.06):0;const k=toPx(pos.x,pos.y);
+  ctx.strokeStyle='#5f5e5a';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.quadraticCurveTo((a[0]+k[0])/2+10,(a[1]+k[1])/2+15,k[0],k[1]);ctx.stroke();
+  const sp=K.spine*sc*0.5,hw=K.spar*sc*0.5,tf=K.sparFromTop*sc*0.5;
+  ctx.save();ctx.translate(k[0],k[1]);ctx.rotate(roll);
+  const top=[0,-sp*0.45],bot=[0,sp*0.55],L=[-hw,-sp*0.45+tf],R=[hw,-sp*0.45+tf];
+  const nyl=S.cfg.material==='nylon';ctx.fillStyle=nyl?'rgba(170,205,230,.75)':'rgba(250,199,117,.85)';ctx.strokeStyle=nyl?'#3a6f96':'#ba7517';ctx.lineWidth=1.5;ctx.beginPath();
+  if(S.cfg.shape==='hexagon'){const rr=sp*0.5;const P=[];for(let i=0;i<6;i++){const a=i*Math.PI/3;P.push([rr*Math.cos(a),rr*Math.sin(a)+sp*0.1])} // επίπεδη πάνω πλευρά
+    ctx.moveTo(...P[0]);P.forEach(p=>ctx.lineTo(...p));ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.strokeStyle='#6b5a45';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(...P[0]);ctx.lineTo(...P[3]);ctx.moveTo(...P[1]);ctx.lineTo(...P[4]);ctx.moveTo(...P[2]);ctx.lineTo(...P[5]);ctx.stroke()}
+  else{ctx.moveTo(...top);ctx.lineTo(...R);ctx.lineTo(...bot);ctx.lineTo(...L);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.strokeStyle='#6b5a45';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(...top);ctx.lineTo(...bot);ctx.moveTo(...L);ctx.lineTo(...R);ctx.stroke()}
+  ctx.restore();
+  const tb=[k[0]-Math.sin(roll)*sp*0.55,k[1]+Math.cos(roll)*sp*0.55];const tl=MODEL.tail[S.cfg.tail].len*sc*0.5;
+  if(tl>0){const N=14,seg=tl/N;if(!tailPts||tailPts.length!==N+1){tailPts=[];for(let i=0;i<=N;i++)tailPts.push([tb[0],tb[1]+i*seg,tb[0],tb[1]+i*seg])}
+    tailPts[0]=[tb[0],tb[1],tb[0],tb[1]];for(let i=1;i<=N;i++){const p=tailPts[i];const vx=(p[0]-p[2])*0.9,vy=(p[1]-p[3])*0.9;p[2]=p[0];p[3]=p[1];p[0]+=vx;p[1]+=vy+0.25}
+    for(let it=0;it<4;it++)for(let i=1;i<=N;i++){const a1=tailPts[i-1],b1=tailPts[i];const dx=b1[0]-a1[0],dy=b1[1]-a1[1],d=Math.hypot(dx,dy)||1,df=(d-seg)/d;if(i===1){b1[0]-=dx*df;b1[1]-=dy*df}else{a1[0]+=dx*df*0.5;a1[1]+=dy*df*0.5;b1[0]-=dx*df*0.5;b1[1]-=dy*df*0.5}}
+    ctx.strokeStyle=S.cfg.tail==='X2'?'#c0392b':'#e07a1f';ctx.lineWidth=S.cfg.tail==='X2'?2:4;ctx.beginPath();ctx.moveTo(tailPts[0][0],tailPts[0][1]);tailPts.forEach(p=>ctx.lineTo(p[0],p[1]));ctx.stroke()}
+  ctx.fillStyle='#16313a';ctx.font='12px sans-serif';ctx.fillText('ουρά: '+LABELS.tail[S.cfg.tail]+' · βρόχος: '+LABELS.bridle[S.cfg.bridle]+' · '+LABELS.speed[S.cfg.speed],8,16);
+  ctx.fillText(LABELS.shape[S.cfg.shape]+' · '+LABELS.material[S.cfg.material],8,32)}
+document.getElementById('runBtn').onclick=()=>{if(running)return;const cfg=Object.assign({},S.cfg),seed=(Date.now()^Math.floor(Math.random()*1e9))>>>0;
+  const s=makeTrial(cfg,seed);LOG('trial_start',{cfg:JSON.stringify(cfg),pilot:document.getElementById('pilotChk').checked});tailPts=null;const btn=document.getElementById('runBtn');btn.disabled=true;document.getElementById('runFb').className='fb';
+  let last=performance.now();const dt=1/120;running=true;
+  function frame(now){const pb=+document.getElementById('pb').value;let el=Math.min(0.05,(now-last)/1000)*pb;last=now;let pos;
+    while(el>0&&s.t<CONFIG.trialSeconds){pos=stepSim(s,dt);el-=dt}
+    if(!pos){const L=MODEL.L;pos={x:L*Math.cos(s.phi)*Math.sin(s.psi),y:L*Math.sin(s.phi)*Math.cos(s.psi)}}
+    drawFrame({s,pos});document.getElementById('roT').textContent=s.t.toFixed(1);document.getElementById('roX').textContent=Math.round(pos.x);document.getElementById('roY').textContent=Math.round(pos.y);
+    if(s.t<CONFIG.trialSeconds)requestAnimationFrame(frame);else finish()}
+  function finish(){running=null;btn.disabled=false;const res={id:S.trials.length?Math.max(...S.trials.map(t=>t.id))+1:1,cfg,sway:Math.round(s.maxX),height:Math.round(s.sumY/s.n),dives:s.dives,pilot:document.getElementById('pilotChk').checked,conf:confounded(cfg)};
+    S.trials.push(res);store.set('trials',S.trials);renderData();
+    LOG('trial',{id:res.id,iv:S.iv,crit:S.crit,tail:cfg.tail,bridle:cfg.bridle,speed:cfg.speed,shape:cfg.shape,material:cfg.material,sway:res.sway,height:res.height,dives:res.dives,pilot:res.pilot,confounded:res.conf.join('|'),n_valid_by_level:groups().map(g=>g.l+':'+g.n).join(' ')});RES.flush();const fb=document.getElementById('runFb');fb.className='fb info';
+    fb.innerHTML='Δοκιμή #'+res.id+': μέγ. πλευρική απόκλιση <b>'+res.sway+' εκ.</b>, μέσο ύψος <b>'+res.height+' εκ.</b>'+(res.dives?', <b>'+res.dives+'</b> βουτιές/στριφογυρίσματα':'')+'.'+(res.pilot?' (πιλότος)':'')}
+  requestAnimationFrame(frame)};
+function renderData(){const tb=document.getElementById('dataBody');
+  tb.innerHTML=S.trials.map(t=>'<tr><td>'+t.id+'</td><td>'+LABELS.tail[t.cfg.tail]+'</td><td>'+LABELS.bridle[t.cfg.bridle]+'</td><td>'+t.cfg.speed+'</td><td>'+LABELS.shape[t.cfg.shape||'rhombus']+'</td><td>'+LABELS.material[t.cfg.material||'paper']+'</td><td>'+t.sway+'</td><td>'+t.height+'</td><td>'+t.dives+'</td><td>'+(t.pilot?'<span class="tag pilot">πιλότος</span>':'')+(t.conf.length?'<span class="tag flag">συγχυτικός</span>':'')+' <a href="#" data-del="'+t.id+'" class="small">διαγραφή</a></td></tr>').join('')||'<tr><td colspan="10" class="small">Καμία δοκιμή ακόμη.</td></tr>';
+  tb.querySelectorAll('[data-del]').forEach(a=>a.onclick=e=>{e.preventDefault();LOG('trial_delete',{id:+a.dataset.del});S.trials=S.trials.filter(t=>t.id!==+a.dataset.del);store.set('trials',S.trials);renderData()});renderCompare()}
+function groups(){const key=S.crit==='stab'?'sway':'height';const valid=S.trials.filter(t=>!t.pilot&&!t.conf.length);
+  return ivLevels().map(l=>{const v=valid.filter(t=>String(t.cfg[S.iv])===l).map(t=>t[key]);return{l,v,n:v.length,mean:v.length?v.reduce((a,b)=>a+b,0)/v.length:null,min:v.length?Math.min(...v):null,max:v.length?Math.max(...v):null}})}
+function renderCompare(){for(const k in VERDICTS)delete VERDICTS[k];const G=groups(),ref=CONFIG.reference[S.iv],unit=S.crit==='stab'?'μέγ. πλευρική απόκλιση (εκ.)':'μέσο ύψος (εκ.)';
+  const W=620,H=200,pad=50,max=Math.max(100,...G.flatMap(g=>g.v));let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%"><text x="4" y="14" font-size="12" fill="#4a626b">'+unit+'</text>';
+  for(let y=0;y<=max;y+=25){const py=H-30-(y/max)*(H-50);s+='<line x1="'+pad+'" x2="'+(W-10)+'" y1="'+py+'" y2="'+py+'" stroke="#e7f0f2"/><text x="'+(pad-6)+'" y="'+(py+4)+'" font-size="11" text-anchor="end" fill="#4a626b">'+y+'</text>'}
+  G.forEach((g,i)=>{const cx=pad+(i+0.5)*(W-pad-10)/G.length;const Y=v=>H-30-(v/max)*(H-50);
+    s+='<text x="'+cx+'" y="'+(H-10)+'" font-size="12" text-anchor="middle" fill="#16313a">'+LABELS[S.iv][g.l]+(g.l===ref?' ★':'')+' (n='+g.n+')</text>';
+    if(g.n){s+='<line x1="'+cx+'" x2="'+cx+'" y1="'+Y(g.min)+'" y2="'+Y(g.max)+'" stroke="#9fbcc4" stroke-width="10" stroke-linecap="round"/>';
+      g.v.forEach((v,j)=>s+='<circle cx="'+(cx-12+j%5*6)+'" cy="'+Y(v)+'" r="4" fill="#0f6f7c" fill-opacity=".8"/>');
+      s+='<line x1="'+(cx-22)+'" x2="'+(cx+22)+'" y1="'+Y(g.mean)+'" y2="'+Y(g.mean)+'" stroke="#e07a1f" stroke-width="3"/>'}});
+  s+='</svg><p class="small">● δοκιμή · ━ μέσος όρος · ▮ εύρος (min–max) · ★ χαρταετός αναφοράς. Πιλότοι και δοκιμές με συγχυτικό παράγοντα δεν περιλαμβάνονται.</p>';
+  document.getElementById('cmpChart').innerHTML=s;
+  const R=G.find(g=>g.l===ref);let t='';
+  G.filter(g=>g.l!==ref).forEach(g=>{const lab=LABELS[S.iv][g.l],rl=LABELS[S.iv][ref];
+    if(g.n<CONFIG.minTrials||R.n<CONFIG.minTrials){t+='<div class="verdict fb info" style="display:block">'+lab+' έναντι '+rl+': χρειάζονται τουλάχιστον '+CONFIG.minTrials+' έγκυρες δοκιμές σε κάθε συνθήκη (τώρα: '+g.n+' και '+R.n+').</div>';return}
+    const sep=g.min>R.max||g.max<R.min;const d=(g.mean-R.mean).toFixed(1);VERDICTS[g.l]=sep?'signal':'overlap';
+    t+='<div class="verdict fb '+(sep?'ok':'info')+'" style="display:block"><b>'+lab+' έναντι '+rl+'</b>: διαφορά μέσων όρων '+d+' εκ. Εύρος '+g.min+'–'+g.max+' έναντι '+R.min+'–'+R.max+'. '+(sep?'Τα εύρη <b>δεν επικαλύπτονται</b>: η διαφορά είναι μεγαλύτερη από τον θόρυβο ανάμεσα στις επαναλήψεις — πιθανό <b>σήμα</b>.':'Τα εύρη <b>επικαλύπτονται</b>: η διαφορά μπορεί να είναι <b>θόρυβος</b>. Περισσότερες δοκιμές ή δεν υπάρχει διαφορά; Τι θα κάνατε;')+'</div>'});
+  document.getElementById('cmpText').innerHTML=t}
+document.getElementById('clrBtn').onclick=()=>{if(S.trials.length&&confirmClear()){LOG('trial_clear_all',{n:S.trials.length});S.trials=[];store.set('trials',[]);renderData()}};
+function confirmClear(){const b=document.getElementById('clrBtn');if(b.dataset.arm){delete b.dataset.arm;b.textContent='Διαγραφή όλων';return true}b.dataset.arm=1;b.textContent='Πατήστε ξανά για επιβεβαίωση';setTimeout(()=>{delete b.dataset.arm;b.textContent='Διαγραφή όλων'},3000);return false}
+function csv(){return'id,tail,bridle,fan_speed,shape,material,max_lateral_cm,mean_height_cm,dives,pilot,confounded\n'+S.trials.map(t=>[t.id,t.cfg.tail,t.cfg.bridle,t.cfg.speed,t.cfg.shape||'rhombus',t.cfg.material||'paper',t.sway,t.height,t.dives,t.pilot?1:0,t.conf.join('|')].join(',')).join('\n')}
+function dl(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+document.getElementById('csvBtn').onclick=()=>LOG('download_csv',{})||dl('htkite_data.csv','﻿'+csv(),'text/csv;charset=utf-8');
+
+/* ================= REFLECT ================= */
+function reflectSummary(){const G=groups(),ref=CONFIG.reference[S.iv];const dirTxt={down:'μικρότερη/ο',up:'μεγαλύτερη/ο',same:'ίδια/ο'}[S.dir]||'(δεν δηλώθηκε)';
+  let h='<b>Υπόθεση:</b> ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' θα γίνει '+dirTxt+', ΕΠΕΙΔΗ '+(document.getElementById('hBec').value||'…')+'<br><b>Δεδομένα (έγκυρες δοκιμές):</b> '+G.map(g=>LABELS[S.iv][g.l]+': '+(g.n?'μ.ό. '+g.mean.toFixed(1)+' εκ., εύρος '+g.min+'–'+g.max+', n='+g.n:'—')).join(' · ');
+  const ex=S.trials.filter(t=>t.pilot||t.conf.length).length;if(ex)h+='<br><span class="small">'+ex+' δοκιμή(-ές) εξαιρέθηκαν (πιλότος ή συγχυτικός παράγοντας).</span>';
+  h+='<br><span class="small">Το μοντέλο είναι ποιοτικό: η ουρά προσθέτει απόσβεση (μέσω οπισθέλκουσας) και λίγο βάρος· οι ριπές του ανεμιστήρα δίνουν τον θόρυβο. Δεν αντικαθιστά το πραγματικό πείραμα.</span>';
+  document.getElementById('refSummary').innerHTML=h}
+document.getElementById('expBtn').onclick=()=>{LOG('download_notes',{});const q=k=>store.get('t_'+k,'');
+  const txt=['HT-KITE-01 — Σημειώσεις προσομοίωσης','','INTRO','Εμπειρία: '+q('intro_exp'),'Διαίσθηση: '+q('intro_intuition'),'','ARGUE','Κριτήριο: '+(CRITS.find(c=>c[0]===S.crit)||[])[1],'Μεταβλητή: '+VARNAME[S.iv],'Υπόθεση: ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' → '+S.dir+', ΕΠΕΙΔΗ '+q('h_because'),'','TEST (CSV)',csv(),'','REFLECT',...[1,2,3,4,5,6].map(i=>i+'. '+q('r'+i)),'','TRANSFER',q('t1')].join('\n');
+  dl('htkite_notes.txt','﻿'+txt,'text/plain;charset=utf-8')};
+
+/* ================= INIT ================= */
+/* ================= ΕΡΕΥΝΑ: JOIN / ΥΠΟΒΟΛΗ ================= */
+(function(){const m=RES.meta;['code','role','mode','group','kite'].forEach(k=>{const el=document.getElementById('j'+k[0].toUpperCase()+k.slice(1));if(el&&m[k])el.value=m[k]})})();
+document.getElementById('jYes').onclick=()=>{const fb=document.getElementById('jFb');const cons=[...document.querySelectorAll('.cons')].every(c=>c.checked);
+  const meta={code:document.getElementById('jCode').value.trim().toUpperCase(),role:document.getElementById('jRole').value,mode:document.getElementById('jMode').value,group:document.getElementById('jGroup').value.trim().toUpperCase(),kite:document.getElementById('jKite').value};
+  const miss=[];if(!cons)miss.push('τσεκάρετε και τις τρεις δηλώσεις');if(meta.code.length<3)miss.push('συμπληρώστε τον προσωπικό κωδικό');if(!meta.role)miss.push('επιλέξτε ιδιότητα');
+  if(miss.length){fb.className='fb no';fb.textContent='Για να συμμετέχετε: '+miss.join(', ')+'.';return}
+  RES.on=true;RES.decided=true;RES.meta=meta;store.set('res_on',true);store.set('res_decided',true);store.set('res_meta',meta);
+  LOG('session_start',Object.assign({ua_mobile:/Mobi/.test(navigator.userAgent),lang:navigator.language,resumed_trials:S.trials.length},meta));
+  go('INTRO')};
+document.getElementById('jReset').onclick=e=>{e.preventDefault();const el=e.target;if(!el.dataset.arm){el.dataset.arm=1;el.textContent='πατήστε ξανά για επιβεβαίωση';return}
+  LOG('session_reset',{});if(RES.on&&CONFIG.research.endpoint&&RES.q.length&&navigator.sendBeacon)navigator.sendBeacon(CONFIG.research.endpoint,new Blob([JSON.stringify({kind:'events',study:CONFIG.research.study,version:CONFIG.research.version,events:RES.q.slice(0,200)})],{type:'text/plain;charset=utf-8'}));
+  RES.on=false;RES.q=[];RES.save=()=>{};Object.keys(localStorage).filter(k=>k.startsWith('htkite_')).forEach(k=>localStorage.removeItem(k));location.reload()};
+document.getElementById('jNo').onclick=()=>{if(RES.on)LOG('withdraw_logging',{});RES.on=false;RES.decided=true;store.set('res_on',false);store.set('res_decided',true);go('INTRO')};
+document.getElementById('confOpts').innerHTML=[1,2,3,4,5].map(v=>'<label class="opt"><input type="radio" name="conf" value="'+v+'" '+(String(store.get('conf',''))===String(v)?'checked':'')+'> '+v+'</label>').join('')+'<span class="small">1 = καθόλου · 5 = απόλυτα</span>';
+document.querySelectorAll('[name=conf]').forEach(i=>i.onchange=()=>{store.set('conf',+i.value);LOG('confidence',{value:+i.value})});
+document.getElementById('subBtn').onclick=()=>{const fb=document.getElementById('subFb');
+  if(!RES.on){fb.className='fb info';fb.innerHTML='Δεν έχετε δηλώσει συμμετοχή στην έρευνα. Αν θέλετε να συμμετέχετε, πηγαίνετε στο <a href="#" onclick="go(\'JOIN\');return false">0. JOIN</a>.';return}
+  trackPhase();const snap=snapshot();LOG('submit',{n_trials:snap.n_trials});
+  if(!CONFIG.research.endpoint){fb.className='fb info';fb.textContent='Η αυτόματη αποστολή δεν έχει ρυθμιστεί. Κατεβάστε το αρχείο καταγραφής (.json) και στείλτε το στον υπεύθυνο του workshop.';return}
+  fb.className='fb info';fb.textContent='Αποστολή…';
+  RES.post(snap).then(()=>{RES.flush();fb.className='fb ok';fb.textContent='Στάλθηκε. Ευχαριστούμε! Κρατήστε τον κωδικό σας ('+RES.meta.code+') για το ερωτηματολόγιο POST.'})
+    .catch(()=>{fb.className='fb no';fb.textContent='Δεν υπάρχει σύνδεση. Οι απαντήσεις έμειναν στη συσκευή· πατήστε ξανά αργότερα ή κατεβάστε το .json.'})};
+document.getElementById('jsonBtn').onclick=()=>{trackPhase();dl('htkite_log_'+(RES.meta.code||'anon')+'_'+RES.sid+'.json',JSON.stringify({snapshot:snapshot(),events:RES.all},null,1),'application/json')};
+renderData();go(RES.decided?store.get('phase','INTRO'):'JOIN');
+</script>
+</body>
+</html>
