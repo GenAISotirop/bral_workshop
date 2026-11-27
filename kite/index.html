@@ -273,13 +273,21 @@ footer{text-align:center;font-size:.78rem;color:var(--ink2);padding:20px}
   <div class="card">
     <div class="ct">TRANSFER · ματιά στο TC2</div>
     <h2>Από την ουρά σε άλλες μεταβλητές</h2>
-    <p class="lead">Στο TC2 κάθε ομάδα επιλέγει δικό της κριτήριο και δική της μεταβλητή, με λιγότερη σκαλωσιά. Δοκιμάστε εδώ: επιστρέψτε στο ARGUE, διαλέξτε <b>σημείο πρόσδεσης</b> ή κριτήριο <b>ύψος</b>, και σχεδιάστε μόνοι σας τον πίνακα των τριών στηλών πριν πατήσετε «Έλεγχος».</p>
+    <p class="lead">Στο TC2 κάθε ομάδα επιλέγει δικό της κριτήριο και δική της μεταβλητή, με λιγότερη σκαλωσιά. Δοκιμάστε εδώ: επιστρέψτε στο ARGUE, διαλέξτε <b>σημείο πρόσδεσης</b>, <b>σχήμα</b> ή <b>υλικό</b>, ή κριτήριο <b>ύψος</b>, και σχεδιάστε μόνοι σας τον πίνακα των τριών στηλών πριν πατήσετε «Έλεγχος».</p>
     <button class="btn sec" id="toTC2">Μετάβαση στο ARGUE (TC2)</button>
   </div>
   <div class="card">
     <h3>Ο άγνωστος χαρταετός του βίντεο</h3>
     <p>Ένα βίντεο στο διαδίκτυο δείχνει έναν εξάγωνο χαρταετό με μακριά ουρά να πετά τέλεια, κι ο τίτλος λέει «το καλύτερο σχέδιο που υπάρχει». Διατυπώστε υπόθεση (ΑΝ/ΤΟΤΕ/ΕΠΕΙΔΗ) και περιγράψτε πώς θα την ελέγχατε. Αρκεί το βίντεο από μόνο του; Τι λείπει;</p>
     <textarea data-save="t1" style="min-height:110px"></textarea>
+  </div>
+  <div class="card" style="border-left:4px solid var(--acc)">
+    <div class="ct">ΑΠΟ ΧΡΗΣΤΕΣ ΣΕ ΔΗΜΙΟΥΡΓΟΥΣ · BRaL</div>
+    <h3>Πώς φτιάχτηκε αυτή η προσομοίωση — και πώς φτιάχνετε τη δική σας</h3>
+    <p>Η προσομοίωση φτιάχτηκε με εργαλεία Παραγωγικής Τεχνητής Νοημοσύνης, σε κύκλους <b>Build–Refine–Learn</b>: μια πρώτη εκδοχή, έλεγχος της φυσικής και της παιδαγωγικής από άνθρωπο, διορθώσεις, ξανά. Το <b>BRaL</b> είναι ο οδηγός για εκπαιδευτικούς που θέλουν να κάνουν το ίδιο για το δικό τους φαινόμενο.</p>
+    <p class="small">Μια πρόκληση για το TRANSFER: όταν σχεδιάζετε τη δική σας προσομοίωση, βάλτε μέσα όσα συναντήσατε εδώ — μία μεταβλητή τη φορά, κλειδωμένες σταθερές, επαναλήψεις, θόρυβο που φαίνεται, πρόβλεψη πριν τη δοκιμή. Μια προσομοίωση που φτιάχνει η ΤΝ δεν τα έχει αυτόματα· πρέπει να τα ζητήσετε και να τα ελέγξετε.</p>
+    <div class="row"><a class="btn sec" href="../" target="_blank" rel="noopener" style="text-decoration:none">BRaL Workshop →</a><a class="btn sec" href="../teacher/" target="_blank" rel="noopener" style="text-decoration:none">Οδηγός BRaL για εκπαιδευτικούς →</a></div>
+    <textarea data-save="t2" placeholder="Ποιο φαινόμενο θα θέλατε να γίνει προσομοίωση για την τάξη σας, και ποια από τα παραπάνω θα ζητούσατε από την ΤΝ;" style="margin-top:10px"></textarea>
   </div>
   <div class="card" id="submitCard">
     <h3>Ολοκλήρωση</h3>
@@ -290,7 +298,7 @@ footer{text-align:center;font-size:.78rem;color:var(--ink2);padding:20px}
 </section>
 
 </main>
-<footer>STEAM-CT Erasmus+ · Science View · Ποιοτικό μοντέλο για διδακτική χρήση — δεν αντικαθιστά το πραγματικό πείραμα.</footer>
+<footer>STEAM-CT Erasmus+ · Science View · Ποιοτικό μοντέλο για διδακτική χρήση — δεν αντικαθιστά το πραγματικό πείραμα.<br>Αναπτύχθηκε με GenAI στη λογική Build–Refine–Learn · <a href="../">BRaL Workshop</a></footer>
 
 <script>
 /* ================= CONFIG (επεξεργάσιμο) ================= */
@@ -370,7 +378,7 @@ function snapshot(){const q=k=>store.get('t_'+k,'');const valid=S.trials.filter(
     n_design_checks:ev('design_check').length,design_first_ok:(ev('design_check')[0]?JSON.parse(ev('design_check')[0].data).ok:''),
     n_trials:S.trials.length,n_valid:valid.length,n_pilot:S.trials.filter(t=>t.pilot).length,n_confounded:S.trials.filter(t=>t.conf.length).length,
     n_unlocks:ev('unlock').filter(e=>JSON.parse(e.data).on).length,verdicts:JSON.stringify(VERDICTS),confidence:store.get('conf',''),realism:store.get('real',''),prediction:q('h_predict'),p1:q('p1'),p2:q('p2'),p3:q('p3'),p4:q('p4'),p5:q('p5'),
-    intro_exp:q('intro_exp'),intro_intuition:q('intro_intuition'),r1:q('r1'),r2:q('r2'),r3:q('r3'),r4:q('r4'),r5:q('r5'),r6:q('r6'),t1:q('t1'),
+    intro_exp:q('intro_exp'),intro_intuition:q('intro_intuition'),r1:q('r1'),r2:q('r2'),r3:q('r3'),r4:q('r4'),r5:q('r5'),r6:q('r6'),t1:q('t1'),t2:q('t2'),
     phase_seconds:JSON.stringify(RES.phaseT),trials_csv:csv()})}
 
 /* ================= NAV ================= */
@@ -568,7 +576,7 @@ function reflectSummary(){const G=groups(),ref=CONFIG.reference[S.iv];const dirT
   h+='<br><span class="small">Το μοντέλο είναι ποιοτικό: η ουρά προσθέτει απόσβεση (μέσω οπισθέλκουσας) και λίγο βάρος· οι ριπές του ανεμιστήρα δίνουν τον θόρυβο. Δεν αντικαθιστά το πραγματικό πείραμα.</span>';
   document.getElementById('refSummary').innerHTML=h;document.getElementById('predEcho').textContent='«'+(store.get('t_h_predict','')||'— δεν γράψατε πρόβλεψη —')+'»'}
 document.getElementById('expBtn').onclick=()=>{LOG('download_notes',{});const q=k=>store.get('t_'+k,'');
-  const txt=['HT-KITE-01 — Σημειώσεις προσομοίωσης','','INTRO','Εμπειρία: '+q('intro_exp'),'Διαίσθηση: '+q('intro_intuition'),'','ARGUE','Κριτήριο: '+(CRITS.find(c=>c[0]===S.crit)||[])[1],'Μεταβλητή: '+VARNAME[S.iv],'Υπόθεση: ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' → '+S.dir+', ΕΠΕΙΔΗ '+q('h_because'),'','TEST (CSV)',csv(),'','Πρόβλεψη: '+q('h_predict'),'','REFLECT',...[1,2,3,4,5,6].map(i=>i+'. '+q('r'+i)),'Βεβαιότητα: '+store.get('conf',''),'','ΠΡΑΓΜΑΤΙΚΕΣ ΣΥΝΘΗΚΕΣ',...[1,2,3,4,5].map(i=>(i+7)+'. '+q('p'+i)),'Ρεαλισμός: '+store.get('real',''),'','TRANSFER',q('t1')].join('\n');
+  const txt=['HT-KITE-01 — Σημειώσεις προσομοίωσης','','INTRO','Εμπειρία: '+q('intro_exp'),'Διαίσθηση: '+q('intro_intuition'),'','ARGUE','Κριτήριο: '+(CRITS.find(c=>c[0]===S.crit)||[])[1],'Μεταβλητή: '+VARNAME[S.iv],'Υπόθεση: ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' → '+S.dir+', ΕΠΕΙΔΗ '+q('h_because'),'','TEST (CSV)',csv(),'','Πρόβλεψη: '+q('h_predict'),'','REFLECT',...[1,2,3,4,5,6].map(i=>i+'. '+q('r'+i)),'Βεβαιότητα: '+store.get('conf',''),'','ΠΡΑΓΜΑΤΙΚΕΣ ΣΥΝΘΗΚΕΣ',...[1,2,3,4,5].map(i=>(i+7)+'. '+q('p'+i)),'Ρεαλισμός: '+store.get('real',''),'','TRANSFER',q('t1'),'BRaL: '+q('t2')].join('\n');
   dl('htkite_notes.txt','﻿'+txt,'text/plain;charset=utf-8')};
 
 /* ================= INIT ================= */
