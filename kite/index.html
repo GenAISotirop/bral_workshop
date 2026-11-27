@@ -184,6 +184,8 @@ footer{text-align:center;font-size:.78rem;color:var(--ink2);padding:20px}
       <select id="hDir"><option value="">— επιλέξτε —</option><option value="down">μικρότερη/ο</option><option value="up">μεγαλύτερη/ο</option><option value="same">ίδια/ο</option></select><br>
       <b>ΕΠΕΙΔΗ</b> <input type="text" id="hBec" data-save="h_because" style="width:100%" placeholder="φυσικός λόγος — τι κάνει η αλλαγή στον αέρα, στις δυνάμεις ή στο βάρος;">
     </div>
+    <p class="small" style="margin-top:10px"><b>Τι νομίζετε ότι θα δείξουν οι μετρήσεις;</b> Γράψτε πρόβλεψη με αριθμούς αν μπορείτε (π.χ. «χωρίς ουρά περίπου 60 εκ., με Χ περίπου 30 εκ.»). Δεν βαθμολογείται· θα τη συγκρίνετε με τα δεδομένα στο REFLECT.</p>
+    <textarea data-save="h_predict" style="min-height:50px"></textarea>
     <button class="btn" id="hCheck" style="margin-top:10px">Έλεγχος υπόθεσης</button>
     <div class="fb" id="hFb"></div>
   </div>
@@ -252,7 +254,17 @@ footer{text-align:center;font-size:.78rem;color:var(--ink2);padding:20px}
     <h3>6. Μεταγνωστικά: σε ποιο σημείο αλλάξατε γνώμη ή διορθώσατε τον σχεδιασμό σας;</h3><textarea data-save="r6"></textarea>
     <h3>7. Πόσο βέβαιοι είστε για το συμπέρασμά σας;</h3>
     <div id="confOpts" class="row"></div>
-    <div class="row"><button class="btn" id="expBtn">Λήψη σημειώσεων και δεδομένων (.txt)</button><button class="btn sec" onclick="window.print()">Εκτύπωση</button></div>
+  </div>
+  <div class="card">
+    <div class="ct">ΑΠΟ ΤΗΝ ΟΘΟΝΗ ΣΤΟΝ ΠΡΑΓΜΑΤΙΚΟ ΑΕΡΑ</div>
+    <h3>8. Η πρόβλεψή σας στο ARGUE ήταν: <span id="predEcho" class="small"></span><br>Πόσο κοντά έπεσε στα δεδομένα; Τι σας ξάφνιασε;</h3><textarea data-save="p1"></textarea>
+    <h3>9. Τι νομίζετε: αν κάνατε το ίδιο πείραμα με πραγματικό χαρταετό μπροστά σε ανεμιστήρα, θα καταλήγατε στο ίδιο συμπέρασμα; Γιατί ναι ή γιατί όχι;</h3><textarea data-save="p2"></textarea>
+    <h3>10. Τι θα ήταν διαφορετικό στον πραγματικό ανεμιστήρα; (π.χ. ροή που δεν είναι ομοιόμορφη, απόσταση, χαρτί που λυγίζει, κόμποι που γλιστρούν)</h3><textarea data-save="p3"></textarea>
+    <h3>11. Αν δοκιμάσατε πραγματικό χαρταετό: τι είδατε; Πού συμφώνησε και πού διέφερε από την προσομοίωση; (Αν δεν πέταξε: τι αλλάξατε — ένα πράγμα τη φορά ή πολλά μαζί;)</h3><textarea data-save="p4"></textarea>
+    <h3>12. Και έξω, με αληθινό άνεμο την Καθαρά Δευτέρα: τι νομίζετε ότι θα άλλαζε, και θα ίσχυε ακόμη το συμπέρασμά σας;</h3><textarea data-save="p5"></textarea>
+    <h3>13. Πόσο ρεαλιστική σας φάνηκε η συμπεριφορά του χαρταετού στην προσομοίωση;</h3>
+    <div id="realOpts" class="row"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="expBtn">Λήψη σημειώσεων και δεδομένων (.txt)</button><button class="btn sec" onclick="window.print()">Εκτύπωση</button></div>
   </div>
 </section>
 
@@ -357,7 +369,7 @@ function snapshot(){const q=k=>store.get('t_'+k,'');const valid=S.trials.filter(
     n_hyp_checks:ev('hypothesis_check').length,hyp_first_ok:(ev('hypothesis_check')[0]?JSON.parse(ev('hypothesis_check')[0].data).ok:''),
     n_design_checks:ev('design_check').length,design_first_ok:(ev('design_check')[0]?JSON.parse(ev('design_check')[0].data).ok:''),
     n_trials:S.trials.length,n_valid:valid.length,n_pilot:S.trials.filter(t=>t.pilot).length,n_confounded:S.trials.filter(t=>t.conf.length).length,
-    n_unlocks:ev('unlock').filter(e=>JSON.parse(e.data).on).length,verdicts:JSON.stringify(VERDICTS),confidence:store.get('conf',''),
+    n_unlocks:ev('unlock').filter(e=>JSON.parse(e.data).on).length,verdicts:JSON.stringify(VERDICTS),confidence:store.get('conf',''),realism:store.get('real',''),prediction:q('h_predict'),p1:q('p1'),p2:q('p2'),p3:q('p3'),p4:q('p4'),p5:q('p5'),
     intro_exp:q('intro_exp'),intro_intuition:q('intro_intuition'),r1:q('r1'),r2:q('r2'),r3:q('r3'),r4:q('r4'),r5:q('r5'),r6:q('r6'),t1:q('t1'),
     phase_seconds:JSON.stringify(RES.phaseT),trials_csv:csv()})}
 
@@ -554,9 +566,9 @@ function reflectSummary(){const G=groups(),ref=CONFIG.reference[S.iv];const dirT
   let h='<b>Υπόθεση:</b> ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' θα γίνει '+dirTxt+', ΕΠΕΙΔΗ '+(document.getElementById('hBec').value||'…')+'<br><b>Δεδομένα (έγκυρες δοκιμές):</b> '+G.map(g=>LABELS[S.iv][g.l]+': '+(g.n?'μ.ό. '+g.mean.toFixed(1)+' εκ., εύρος '+g.min+'–'+g.max+', n='+g.n:'—')).join(' · ');
   const ex=S.trials.filter(t=>t.pilot||t.conf.length).length;if(ex)h+='<br><span class="small">'+ex+' δοκιμή(-ές) εξαιρέθηκαν (πιλότος ή συγχυτικός παράγοντας).</span>';
   h+='<br><span class="small">Το μοντέλο είναι ποιοτικό: η ουρά προσθέτει απόσβεση (μέσω οπισθέλκουσας) και λίγο βάρος· οι ριπές του ανεμιστήρα δίνουν τον θόρυβο. Δεν αντικαθιστά το πραγματικό πείραμα.</span>';
-  document.getElementById('refSummary').innerHTML=h}
+  document.getElementById('refSummary').innerHTML=h;document.getElementById('predEcho').textContent='«'+(store.get('t_h_predict','')||'— δεν γράψατε πρόβλεψη —')+'»'}
 document.getElementById('expBtn').onclick=()=>{LOG('download_notes',{});const q=k=>store.get('t_'+k,'');
-  const txt=['HT-KITE-01 — Σημειώσεις προσομοίωσης','','INTRO','Εμπειρία: '+q('intro_exp'),'Διαίσθηση: '+q('intro_intuition'),'','ARGUE','Κριτήριο: '+(CRITS.find(c=>c[0]===S.crit)||[])[1],'Μεταβλητή: '+VARNAME[S.iv],'Υπόθεση: ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' → '+S.dir+', ΕΠΕΙΔΗ '+q('h_because'),'','TEST (CSV)',csv(),'','REFLECT',...[1,2,3,4,5,6].map(i=>i+'. '+q('r'+i)),'','TRANSFER',q('t1')].join('\n');
+  const txt=['HT-KITE-01 — Σημειώσεις προσομοίωσης','','INTRO','Εμπειρία: '+q('intro_exp'),'Διαίσθηση: '+q('intro_intuition'),'','ARGUE','Κριτήριο: '+(CRITS.find(c=>c[0]===S.crit)||[])[1],'Μεταβλητή: '+VARNAME[S.iv],'Υπόθεση: ΑΝ αλλάξουμε '+VARNAME[S.iv]+', ΤΟΤΕ '+dvText()+' → '+S.dir+', ΕΠΕΙΔΗ '+q('h_because'),'','TEST (CSV)',csv(),'','Πρόβλεψη: '+q('h_predict'),'','REFLECT',...[1,2,3,4,5,6].map(i=>i+'. '+q('r'+i)),'Βεβαιότητα: '+store.get('conf',''),'','ΠΡΑΓΜΑΤΙΚΕΣ ΣΥΝΘΗΚΕΣ',...[1,2,3,4,5].map(i=>(i+7)+'. '+q('p'+i)),'Ρεαλισμός: '+store.get('real',''),'','TRANSFER',q('t1')].join('\n');
   dl('htkite_notes.txt','﻿'+txt,'text/plain;charset=utf-8')};
 
 /* ================= INIT ================= */
@@ -575,6 +587,8 @@ document.getElementById('jReset').onclick=e=>{e.preventDefault();const el=e.targ
 document.getElementById('jNo').onclick=()=>{if(RES.on)LOG('withdraw_logging',{});RES.on=false;RES.decided=true;store.set('res_on',false);store.set('res_decided',true);go('INTRO')};
 document.getElementById('confOpts').innerHTML=[1,2,3,4,5].map(v=>'<label class="opt"><input type="radio" name="conf" value="'+v+'" '+(String(store.get('conf',''))===String(v)?'checked':'')+'> '+v+'</label>').join('')+'<span class="small">1 = καθόλου · 5 = απόλυτα</span>';
 document.querySelectorAll('[name=conf]').forEach(i=>i.onchange=()=>{store.set('conf',+i.value);LOG('confidence',{value:+i.value})});
+document.getElementById('realOpts').innerHTML=[1,2,3,4,5].map(v=>'<label class="opt"><input type="radio" name="real" value="'+v+'" '+(String(store.get('real',''))===String(v)?'checked':'')+'> '+v+'</label>').join('')+'<span class="small">1 = καθόλου ρεαλιστική · 5 = πολύ ρεαλιστική</span>';
+document.querySelectorAll('[name=real]').forEach(i=>i.onchange=()=>{store.set('real',+i.value);LOG('realism',{value:+i.value})});
 document.getElementById('subBtn').onclick=()=>{const fb=document.getElementById('subFb');
   if(!RES.on){fb.className='fb info';fb.innerHTML='Δεν έχετε δηλώσει συμμετοχή στην έρευνα. Αν θέλετε να συμμετέχετε, πηγαίνετε στο <a href="#" onclick="go(\'JOIN\');return false">0. JOIN</a>.';return}
   trackPhase();const snap=snapshot();LOG('submit',{n_trials:snap.n_trials});
